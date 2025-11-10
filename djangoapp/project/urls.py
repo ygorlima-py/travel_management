@@ -17,10 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from expenses import views # type: ignore
+from django.conf import settings # Para importar coisas do settings
+from django.conf.urls.static import static
 
-app_name = 'Despesas'
+app_name = 'despesa'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index' ),
+    path('despesa/<int:expense_id>/detail', views.expense, name='expense' ),
+
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

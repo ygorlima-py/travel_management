@@ -1,0 +1,29 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="single-contact">
+    <h1>
+        {{expense.supply}}
+    </h1>
+
+    <p><b>Identificador: </b>{{expense.id}}</p>
+    <p><b>Categoria: </b>{{expense.category}}</p>
+    <p><b>Fornecedor: </b>{{expense.supply}}</p>
+    <p><b>Localização: </b>{{expense.city}} / {{expense.state_uf}} </p>
+    <p><b>N° da Nota Fiscal: </b>{{expense.nf}}</p>
+    <p><b>Data: </b>{{expense.date}}</p>
+    <p><b>Descriminação: </b>{{expense.description}}</p>
+    <p><b>Quantidade: </b>{{expense.amount}}</p>
+    <p><b>Valor: </b>{{expense.value}}</p>
+
+    <div class="image-content">
+        {% if expense.picture %}
+        <p>
+            <img src="{{expense.picture.url}}" alt="Imagem da nota fiscal">
+        </p>
+        {% else %}
+            <p>Despesa sem imagem da nota fiscal<p>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

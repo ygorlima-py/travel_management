@@ -23,3 +23,18 @@ def index(request):
         context=context,
     )
 
+def expense(request, expense_id):
+    single_expense = Expenses.objects.filter(pk=expense_id).first()
+    
+    if single_expense is None:
+        raise Http404()
+    
+    context = {
+        'expense': single_expense,
+    }
+
+    return render (
+        request=request,
+        template_name='expenses/pages/expense.html',
+        context=context,
+    )
