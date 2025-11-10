@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from expenses import views # type: ignore
 
+app_name = 'Despesas'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index' ),

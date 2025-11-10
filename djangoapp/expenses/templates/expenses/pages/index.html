@@ -1,4 +1,81 @@
 {% extends "expenses/base.html" %}
+
 {% block content %}
-    Gerenciador de Despesas
+
+    {% if page_obj %}
+    <div class='responsive-table'>
+        <table class='contacts-table'>
+            <caption>
+                <div class='table-caption'>
+                    Despesas Realizadas
+                </div>
+            </caption>
+
+            <thead>
+                <tr class='table-row table-row-header'>
+                    <th class='table-header'>ID</th>
+                    <th class='table-header'>Categoria</th>
+                    <th class='table-header'>Fornecedor</th>
+                    <th class='table-header'>Cidade</th>
+                    <th class='table-header'>Estado</th>
+                    <th class='table-header'>N° Nota Fiscal</th>
+                    <th class='table-header'>Data</th>
+                    <th class='table-header'>Quantidade</th>
+                    <th class='table-header'>Valor Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for expense in page_obj %}
+                <tr class='table-row'>
+                    <td class="table-cel">
+                        <a class='table-link' href='#'>
+                            {{expense.id}}
+                        </a>
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.category}}
+                    </td>
+                    
+                    <td class="table-cel">      
+                        {{expense.supply}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.city}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.state_uf}}
+                    </td>
+
+                    <td class="table-cel">
+                        {{expense.nf}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.date}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.amount}}
+                    </td>
+
+                    <td class="table-cel">
+                        R$ {{expense.value}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% else %}
+    <div class="single-contact">
+        <h1 class="single-cont act-name">
+            Nenhum Contato encontrado
+        </h1>
+    </div>
+{% endif %}
 {% endblock content %}

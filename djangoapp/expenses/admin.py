@@ -16,7 +16,9 @@ class ExpensesAdmin(admin.ModelAdmin):
     list_display= (
                 'id', 'category','supply',
                 'state_uf','city','nf', 
-                'date', 'amount', 'value'
+                'date', 'amount', 'value',
                 )
     ordering = '-id',
-    list_display_links = 'id', 
+    list_display_links = 'id',
+    list_filter = 'category', 'owner_expenses',
+    readonly_fields = 'owner_expenses',
