@@ -1,29 +1,96 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-<div class="single-contact">
-    <h1>
-        {{expense.supply}}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title">
+        Detalhes da Despesa
     </h1>
+    
+    <div class="expense-detail-grid">
+        <!-- Card de Informações Básicas -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">Informações Básicas</h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">ID</span>
+                    <span class="expense-info-value">{{expense.id}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Categoria</span>
+                    <span class="expense-info-value">
+                        <span class="expense-badge">{{expense.category}}</span>
+                    </span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Fornecedor</span>
+                    <span class="expense-info-value">{{expense.supply}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">N° Nota Fiscal</span>
+                    <span class="expense-info-value">{{expense.nf|default:"Não informado"}}</span>
+                </div>
+            </div>
+        </div>
 
-    <p><b>Identificador: </b>{{expense.id}}</p>
-    <p><b>Categoria: </b>{{expense.category}}</p>
-    <p><b>Fornecedor: </b>{{expense.supply}}</p>
-    <p><b>Localização: </b>{{expense.city}} / {{expense.state_uf}} </p>
-    <p><b>N° da Nota Fiscal: </b>{{expense.nf}}</p>
-    <p><b>Data: </b>{{expense.date}}</p>
-    <p><b>Descriminação: </b>{{expense.description}}</p>
-    <p><b>Quantidade: </b>{{expense.amount}}</p>
-    <p><b>Valor: </b>{{expense.value}}</p>
+        <!-- Card de Localização -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">Localização</h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Cidade</span>
+                    <span class="expense-info-value">{{expense.city|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Estado</span>
+                    <span class="expense-info-value">{{expense.state_uf|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Data</span>
+                    <span class="expense-info-value">{{expense.date|date:"d/m/Y H:i"|default:"Não informada"}}</span>
+                </div>
+            </div>
+        </div>
 
-    <div class="image-content">
-        {% if expense.picture %}
-        <p>
-            <img src="{{expense.picture.url}}" alt="Imagem da nota fiscal">
-        </p>
-        {% else %}
-            <p>Despesa sem imagem da nota fiscal<p>
+        <!-- Card de Valores -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">Valores</h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Quantidade</span>
+                    <span class="expense-info-value expense-value-highlight">{{expense.amount|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Valor Total</span>
+                    <span class="expense-info-value expense-value-highlight">
+                        {% if expense.value %}
+                            R$ {{expense.value}}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Descrição -->
+        {% if expense.description %}
+        <div class="expense-description-card">
+            <h2 class="expense-description-title">Descrição da Despesa</h2>
+            <p class="expense-description-text">{{expense.description}}</p>
+        </div>
         {% endif %}
+
+        <!-- Card de Imagem -->
+        <div class="expense-image-card">
+            <h2 class="expense-image-title">Imagem da Nota Fiscal</h2>
+            <div class="expense-image-wrapper">
+                {% if expense.picture %}
+                    <img src="{{expense.picture.url}}" alt="Imagem da nota fiscal de {{expense.supply}}">
+                {% else %}
+                    <p class="expense-no-image">Nenhuma imagem anexada</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content %}
