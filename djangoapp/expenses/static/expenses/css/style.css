@@ -416,10 +416,16 @@ img {
 
 .expense-info-title {
     font-size: var(--medium-font-size);
-    color: var(--link-dark-color);
+    color: var(--clr-white);
+    background-color: var(--link-dark-color);
+    border: 1px solid var(--link-dark-color);
+    border-radius: var(--default-border-radius);
+    width: auto;
     margin-bottom: var(--spacing-min);
     padding-bottom: calc(var(--spacing-min) * 0.5);
-    border-bottom: 2px solid var(--clr-light-gray);
+    padding-left: calc(var(--spacing-min) * 0.5);
+    padding-top: calc(var(--spacing-min) * 0.5);
+    /* border-bottom: 2px solid var(--clr-light-gray); */
     font-weight: 600;
 }
 
