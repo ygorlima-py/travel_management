@@ -14,6 +14,13 @@ class ExpenseForm(forms.ModelForm):
         ),
         required=False,
     )
+
+    date = forms.DateField(
+        required=True,
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        input_formats=['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S'],
+        )
+    
     class Meta:
         model = Expenses
         fields = (
@@ -35,7 +42,7 @@ class ExpenseForm(forms.ModelForm):
         supply = cleaned_data.get('supply')
         state_uf = cleaned_data.get('state_uf')
         city = cleaned_data.get('city')
-        date = cleaned_data.get('supply')
+        date = cleaned_data.get('date')
         amount = cleaned_data.get('amount')
         value = cleaned_data.get('value')
         description = cleaned_data.get('description')
@@ -49,8 +56,6 @@ class ExpenseForm(forms.ModelForm):
             self.add_error('state_uf', 'O estado é obrigatório.')
         if not city:
             self.add_error('city', 'A cidade é obrigatória.')
-        if not date:
-            self.add_error('date', 'A data é obrigatória.')
         if not amount:
             self.add_error('amount', 'A quantidade é obrigatória.')
         if not value:

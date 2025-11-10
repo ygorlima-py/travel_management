@@ -29,7 +29,7 @@
                 {% for expense in page_obj %}
                 <tr class='table-row'>
                     <td class="table-cel">
-                        <a class='table-link' href='#'>
+                        <a class='table-link' href="{% url "expense:expense" expense.id %}">
                             {{expense.id}}
                         </a>
                     </td>
