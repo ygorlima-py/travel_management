@@ -1,8 +1,10 @@
+
 <header class="header">
     <h1 class="header-heading">
-        <a href="{% url "expense:index" %}" class="header-link">
-            Gerenciador de custos de viagens
-        </a>              
+        {% comment %} <a href="{% url "expense:index" %}" class="header-link">
+            <img class='header-img'  src="https://i.ibb.co/Z6TVNfCD/Chat-GPT-Image-11-de-nov-de-2025-05-37-36.png"
+            alt="Chat-GPT-Image-11-de-nov-de-2025-05-37-36" border="0">
+        </a>               {% endcomment %}
     </h1>
 
     <nav class="menu">
@@ -24,7 +26,7 @@
                     </a>
                 </li>  
                 <li class="menu-item">
-                    <a href="#" class="menu-link">
+                    <a href="{% url "expense:register" %}" class="menu-link">
                         Cadastrar
                     </a>
                 </li> 

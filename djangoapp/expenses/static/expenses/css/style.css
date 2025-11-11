@@ -51,6 +51,7 @@ body {
     color: var(--clr-black);
     -webkit-font-smoothing: antialiased;
     background: var(--clr-light-gray);
+    background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
 }
 
 img,
@@ -64,11 +65,17 @@ caption {
 }
 
 .header {
-    background: var(--clr-black);
+    background-image: url(https://img.freepik.com/free-photo/liquid-marbling-paint-texture-background-fluid-painting-abstract-texture-intensive-color-mix-wallpaper_1258-91035.jpg?t=st=1762854933~exp=1762858533~hmac=d336ce7e901d177eb05010cb4b2b764c6f0b03a336b75711d4b2fd33a257af45&w=1480);
     padding: var(--spacing-min);
     box-shadow: 0 5px 10px 2px var(--clr-dark-shadow-20);
     z-index: 1;
     position: relative;
+
+}
+
+.header-img {
+    max-width: 300px;
+    max-height: 300px;
 }
 
 .header-heading {
@@ -266,6 +273,10 @@ caption {
 .form-wrapper {
     max-width: 60rem;
     margin: var(--spacing-min) auto;
+     background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
+    box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
+    border-radius: var(--med-border-box);
+    padding: var(--spacing-big);
 }
 
 .form-content {
@@ -276,6 +287,7 @@ caption {
     display: flex;
     flex-direction: column;
     padding-bottom: var(--spacing-min);
+    font-family: sans-serif;
 }
 
 .errorlist {

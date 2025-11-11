@@ -74,17 +74,31 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
         required=True,
         min_length=3,
+        label='Primeiro Nome',
     )
 
     last_name = forms.CharField(
         required=True,
         min_length=3,
+        label='Sobrenome',
+
     )
 
-    email = forms.EmailField()
+    email = forms.EmailField(
+        required=True,
+        label='E-mail',
+    )
 
-    
-    
+    username = forms.CharField(
+        required=True,
+        min_length=3,
+        label='Usuário',
+        help_text='Crie um usuário, não pode conter espaços. ' \
+        'Apenas letas, numeros e simbolos $%&*@'
+    )
+
+
+
 
     class Meta:
         model = User # Usamos o Objeto User

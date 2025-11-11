@@ -2,10 +2,9 @@
     
     {% csrf_token %}
     
-    <div class="form-content">
-        
+    <div class="form-content">    
         {% for field in form %}
-        <div class="form-group">          
+        <div class="form-group">              
             <label for="{{field.id_for_label}}">{{field.label}}</label>
             {{field}}
             {{field.errors}}
@@ -15,6 +14,7 @@
                     {{field.help_text}}
                 </p>
             {% endif %}
+
         </div>            
         {% endfor %}
     </div>
@@ -24,15 +24,14 @@
         <div class="form-group">
             <div class="message error">
                 {{form.non_field_errors}}
-            </div>
-            
+            </div>         
         </div>
     </div>
     {% endif %}
     
     <div class="form-content">
         <div class="form-group">
-            <button class="btn" type='submit'>Send</button>
+            <button class="btn" type='submit'>CADASTRAR-SE</button>
         </div>
     </div>
 
