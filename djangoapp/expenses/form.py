@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 
+
+# Form to register expenses
 class ExpenseForm(forms.ModelForm):
     picture = forms.ImageField(
         widget=forms.FileInput(
@@ -66,4 +68,43 @@ class ExpenseForm(forms.ModelForm):
             self.add_error('picture', 'A imagem da nota é obrigatória.')
 
         return cleaned_data
-                
+
+# Form to register user                   
+class RegisterForm(UserCreationForm):
+    first_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+
+    last_name = forms.CharField(
+        required=True,
+        min_length=3,
+    )
+
+    email = forms.EmailField()
+
+    
+    
+
+    class Meta:
+        model = User # Usamos o Objeto User
+        fields = (
+            'first_name', 'last_name', 'email',
+            'username', 'password1', 'password2',
+        )
+
+
+    # The clen_email method performs validation using an attribute inherited from the UserCreationForm class
+    # UserCreationForm to retrieve the email value and then validate it using
+    # User.objects.filter(email=email).exists():
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+
+        if User.objects.filter(email=email).exists():
+            self.add_error(
+                'email',
+                ValidationError('Email já cadastrado', code='invalid')
+            )
+
+        return email
+    

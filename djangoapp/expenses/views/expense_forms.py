@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='expense:login')
+# @login_required(login_url='expense:login')
 def create(request):
     form_action = reverse('expense:create')
 
