@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django import forms
-from expenses.models import Expenses 
+from expenses.models import Expenses, UserProfile, State 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
@@ -97,9 +97,31 @@ class RegisterForm(UserCreationForm):
         'Apenas letas, numeros e simbolos $%&*@'
     )
 
+    phone = forms.CharField(
+        required=False,
+        max_length=15,
+        label='Celular',
+    )
 
+    state_uf = forms.ModelChoiceField(
+        queryset=State.objects.all(),
+        required=False,
+        label='Estado',
+        empty_label='Selecione o  Estado'
+    )
 
+    city = forms.CharField(
+        required=False,
+        max_length=50,
+        label='Cidade',
+    )
 
+    fleet_number = forms.CharField(
+        required=False,
+        max_length=50,
+        label='Numero da Frota',
+    )
+    
     class Meta:
         model = User # Usamos o Objeto User
         fields = (
@@ -122,3 +144,17 @@ class RegisterForm(UserCreationForm):
 
         return email
     
+    def save(self, commit=True):
+        user = super().save(commit=False)
+
+        if commit:
+            user.save()
+
+            UserProfile.objects.create(
+                user=user,
+                phone=self.cleaned_data.get('phone'),
+                state_uf=self.cleaned_data.get('state_uf'),
+                city=self.cleaned_data.get('city'),
+                fleet_number=self.cleaned_data.get('fleet_number'),
+            )    
+        return user

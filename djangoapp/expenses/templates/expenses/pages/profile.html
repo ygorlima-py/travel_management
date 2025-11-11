@@ -1,0 +1,117 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-file-lines"></i>
+        DETALHES DA DESPESA
+    </h1>
+    
+    <div class="expense-detail-grid">
+        <!-- Card de Informações Básicas -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-circle-info"></i>
+                Informações Básicas
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-user"></i>
+                        Usuário
+                    </span>
+                    <span class="expense-info-value">{{user.first_name}} {{user.last_name}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Categoria</span>
+                    <span class="expense-info-value">
+                        <span class="expense-badge">{{expense.category}}</span>
+                    </span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Fornecedor</span>
+                    <span class="expense-info-value">{{expense.supply}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">N° Nota Fiscal</span>
+                    <span class="expense-info-value">{{expense.nf|default:"Não informado"}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Localização -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-location-dot"></i>
+                Localização
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Cidade</span>
+                    <span class="expense-info-value">{{expense.city|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Estado</span>
+                    <span class="expense-info-value">{{expense.state_uf|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Data</span>
+                    <span class="expense-info-value">{{expense.date|date:"d/m/Y H:i"|default:"Não informada"}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Valores -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+                Valores
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Quantidade</span>
+                    <span class="expense-info-value expense-value-highlight">{{expense.amount|default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Valor Total</span>
+                    <span class="expense-info-value expense-value-highlight">
+                        {% if expense.value %}
+                            R$ {{expense.value}}
+                        {% else %}
+                            Não informado
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Descrição -->
+        {% if expense.description %}
+        <div class="expense-description-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-note-sticky"></i>
+                Descriminação da Despesa
+            </h2>
+            <p class="expense-description-text expense-info-value">{{expense.description}}</p>
+        </div>
+        {% endif %}
+
+        <!-- Card de Imagem -->
+        <div class="expense-image-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-image"></i>
+                Imagem da Nota Fiscal
+            </h2>
+            <div class="expense-image-wrapper">
+                {% if expense.picture %}
+                <a href="{{expense.picture.url}}">
+                    <img src="{{expense.picture.url}}" alt="Imagem da nota fiscal de {{expense.supply}}">
+                </a>
+                    {% else %}
+                    <p class="expense-no-image">Nenhuma imagem anexada</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
