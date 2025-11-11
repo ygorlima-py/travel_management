@@ -113,5 +113,20 @@
             </div>
         </div>
     </div>
+
+    <div class="contact-links">
+        <a class='btn btn-link' href="#">ATUALIZAR</a>
+    
+        <form action="#" method='POST'>
+            {% csrf_token %}
+
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button class="btn btn-link btn-delete" type='submit'>CONFIRMA?</button>            
+            {% else %}
+                <button class="btn btn-link btn-delete" type='submit'>DELETAR</button>            
+            {% endif %}
+        </form>
+    </div>
 </div>
 {% endblock content %}

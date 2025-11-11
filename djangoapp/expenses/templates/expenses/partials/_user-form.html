@@ -31,8 +31,12 @@
     
     <div class="form-content">
         <div class="form-group">
-            <button class="btn" type='submit'>CADASTRAR-SE</button>
+            <button class="btn" type='submit'>
+                {% if form.instance and form.instance.pk %}
+                    ATUALIZAR DADOS
+                {% else %}
+                    CADASTRAR-SE
+                {% endif %}
+            </button>
         </div>
     </div>
-
-</form>
