@@ -3,10 +3,11 @@ from expenses.form import ExpenseForm
 from expenses.models import Expenses
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 
 # @login_required(login_url='expense:login')
-def create(request):
+def create_expense(request):
     form_action = reverse('expense:create')
 
     if request.method == 'POST':
@@ -22,7 +23,7 @@ def create(request):
 
         if form.is_valid():        
             expense = form.save(commit=False) # Grarante que eu não salve na base de dados ainda
-            expense.owner = request.user # Informo para expense.owner que esse contato pertence a esse usuário
+            expense.owner_expenses = request.user # Informo para expense.owner que esse contato pertence a esse usuário
             expense.save()
             return redirect('expense:create')
 
@@ -42,3 +43,54 @@ def create(request):
         context, 
         )
 
+def expense_update(request, expense_id):
+    expense = get_object_or_404(Expenses, pk=expense_id)
+    
+    if request.method == "POST":
+        form = ExpenseForm(request.POST, request.FILES, instance=expense)
+        if form.is_valid():
+            updated_expense = form.save(commit=False)
+            updated_expense.owner_expenses = request.user
+            updated_expense.save()
+            messages.success(request, "Despesa atualizada")
+            return redirect('expense:expense', expense_id=expense.pk)
+        
+    else:
+        form = ExpenseForm(instance=expense)
+    
+    context = {
+        'form': form,
+        'expense':expense,
+        'is_update': True,
+    }
+
+    return render(
+        request,
+        'expenses/pages/create_expense.html',
+        context,      
+    )
+
+
+def expense_delete(request, expense_id):
+    # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
+    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
+
+    print('Despesa', expense)
+
+    confirmation = request.POST.get('confirmation', 'no')
+    print('confirmation', confirmation)
+
+
+    if confirmation == 'yes':
+        expense.delete()
+        return redirect('expense:index')
+
+    return render(
+        request,
+        'expenses/pages/expense.html',
+        {
+            'expense': expense,
+            'confirmation': confirmation,
+            'user': expense.owner_expenses,
+        }
+    )

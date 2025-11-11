@@ -17,7 +17,7 @@ class ExpenseForm(forms.ModelForm):
         required=False,
     )
 
-    date = forms.DateField(
+    date = forms.DateTimeField(
         required=True,
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         input_formats=['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S'],
@@ -37,6 +37,12 @@ class ExpenseForm(forms.ModelForm):
             'description',
             'picture',
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
+        if self.instance and self.instance.pk and self.instance.date :
+            self.initial['date'] = self.instance.date.strftime('%Y-%m-%dT%H:%M')
 
     def clean(self):
         cleaned_data = super().clean()
@@ -58,6 +64,8 @@ class ExpenseForm(forms.ModelForm):
             self.add_error('state_uf', 'O estado é obrigatório.')
         if not city:
             self.add_error('city', 'A cidade é obrigatória.')
+        if not date:
+            self.add_error('city', 'A data é obrigatória.')
         if not amount:
             self.add_error('amount', 'A quantidade é obrigatória.')
         if not value:
@@ -162,7 +170,8 @@ class RegisterForm(UserCreationForm):
             )    
         return user
     
-class RegisterUpdateForm(forms.ModelForm):
+# Form to update user
+class UpdateFormUser(forms.ModelForm):
     
     first_name = forms.CharField(
         required=True,
@@ -304,3 +313,6 @@ class RegisterUpdateForm(forms.ModelForm):
                     ValidationError(errors)
                 )
         return password1
+    
+        
+            

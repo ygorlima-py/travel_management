@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
-from expenses.form import RegisterForm, RegisterUpdateForm
+from expenses.form import RegisterForm, UpdateFormUser
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
@@ -28,10 +28,10 @@ def register(request):
     )
 
 def user_update(request):
-    form = RegisterUpdateForm(instance=request.user)
+    form = UpdateFormUser(instance=request.user)
 
     if request.method == 'POST':
-        form = RegisterUpdateForm(
+        form = UpdateFormUser(
             data=request.POST,
             instance=request.user,
         )

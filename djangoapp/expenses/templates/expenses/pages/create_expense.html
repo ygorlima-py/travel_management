@@ -2,10 +2,17 @@
 
 {% block content %}
     <div class="form-wrapper">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-cart-shopping"></i>
-            CADASTRAR DESPESA
-        </h2>
+        {% if not is_update %}
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-cart-shopping"></i>
+                CADASTRAR DESPESA
+            </h2>
+        {% else %}
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-cart-shopping"></i>
+                ATUALIZAR DESPESA
+            </h2>
+        {% endif %}
 
         <form action="{{form_action}}" method="post" enctype="multipart/form-data">     
             

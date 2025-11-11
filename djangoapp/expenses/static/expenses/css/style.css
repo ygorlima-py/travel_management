@@ -371,8 +371,8 @@ caption {
     box-shadow: 0 0 5px var(--link-dark-color);
 }
 
-.image-content {
-    margin: auto;
+.image-content img {
+    margin: 0 auto; 
     border-radius: 10px;
 }
 

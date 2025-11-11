@@ -65,7 +65,6 @@ class Expenses(models.Model):
                 max_length=9,
                 blank=True,
                 null=True,
-                unique=True
                 )
     
     date = models.DateTimeField(
