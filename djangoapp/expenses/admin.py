@@ -6,6 +6,11 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = 'name',
     ordering = '-id',
 
+@admin.register(models.Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = 'name',
+    ordering = '-id',
+
 @admin.register(models.State)
 class StateAdmin(admin.ModelAdmin):
     list_display = 'name', 'uf_name'
@@ -16,12 +21,12 @@ class ExpensesAdmin(admin.ModelAdmin):
     list_display= (
                 'id', 'category','supply',
                 'state_uf','city','nf', 
-                'date', 'amount', 'value',
+                'date', 'amount', 'value','status',
                 )
     ordering = '-id',
     list_display_links = 'id',
     list_filter = 'category', 'owner_expenses',
-    readonly_fields = 'owner_expenses',
+    readonly_fields = 'owner_expenses', 'status',
 
 @admin.register(models.UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):

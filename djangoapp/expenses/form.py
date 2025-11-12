@@ -65,7 +65,7 @@ class ExpenseForm(forms.ModelForm):
         if not city:
             self.add_error('city', 'A cidade é obrigatória.')
         if not date:
-            self.add_error('city', 'A data é obrigatória.')
+            self.add_error('date', 'A data é obrigatória.')
         if not amount:
             self.add_error('amount', 'A quantidade é obrigatória.')
         if not value:

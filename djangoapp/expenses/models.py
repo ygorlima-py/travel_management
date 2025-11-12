@@ -11,6 +11,16 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class Status(models.Model):
+    class Meta:
+        verbose_name = 'Status'
+        verbose_name_plural = 'Status'
+        
+    name = models.CharField(max_length=20)
+
+    def __str__(self) -> str:
+        return self.name
+
 class State(models.Model):
     class Meta:
         verbose_name = 'Estado'
@@ -103,8 +113,19 @@ class Expenses(models.Model):
                                 related_name='expenses_owner'
                                 )
     
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
 
-    
+    def save(self, *args, **kwargs):
+        if not self.status:
+            from expenses.models import Status
+            self.status = Status.objects.get(name='PENDENTE')
+        super().save(*args, **kwargs)
+        
     def __str__(self) -> str:
         return self.supply # type: ignore
 
@@ -141,3 +162,4 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f'Profile: {self.user.username}'
+
