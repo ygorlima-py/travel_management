@@ -7,6 +7,10 @@
         DETALHES DA DESPESA
     </h1>
     <div class="contact-links">
+        <a class='btn btn-link btn-aprovated' href="{% url "expense:expense_update" expense.id %}">APROVAR</a>
+        
+        <a class='btn btn-link btn-delete' href="{% url "expense:expense_update" expense.id %}">RECUSAR</a>
+        
         <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">ATUALIZAR</a>
     
         <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>

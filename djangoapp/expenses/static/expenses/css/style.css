@@ -467,6 +467,11 @@ caption {
     background: tomato;
 }
 
+.btn-aprovated {
+    background: rgb(73, 150, 10);
+}
+
+
 .btn:hover {
     filter: brightness(90%);
 }
@@ -684,6 +689,9 @@ img {
     color: white;
     padding: 10px 15px;
     border: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
 }
 
 .openbtn:hover {
