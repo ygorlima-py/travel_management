@@ -1,7 +1,19 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-<main class='content'>
+<main id='index' class='content'>
+    <div class="search">
+        <form action="#" method="GET">
+            <input 
+            type="search" 
+            class="search-input"
+            placeholder='Search'
+            id='search'
+            name='q'
+            value=" "
+            >
+        </form>
+    </div>
     {% if page_obj %}
     <div class='responsive-table'>
         <table class='contacts-table'>

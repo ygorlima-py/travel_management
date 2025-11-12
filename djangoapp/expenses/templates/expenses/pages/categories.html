@@ -1,0 +1,23 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-user"></i>
+        Categorias
+    </h1>
+    
+    <div>
+        <div class="expense-info-card expense-info-grid">
+            {% for category in categories %}
+            <a href="#">
+                <div class="expense-info-item">
+                <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="expense-info-value">{{category.name}}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

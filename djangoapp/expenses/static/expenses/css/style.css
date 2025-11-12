@@ -27,8 +27,8 @@
     --transition-slow: 1s;
     --default-border-radius: 4px;
     --min-border-bradius: 8px;
-    --med-border-box:10px;
-    --big-border-box:12px;
+    --med-border-box: 10px;
+    --big-border-box: 12px;
 }
 
 *,
@@ -65,7 +65,7 @@ caption {
 }
 
 .header {
-    background-image: url(https://img.freepik.com/free-photo/liquid-marbling-paint-texture-background-fluid-painting-abstract-texture-intensive-color-mix-wallpaper_1258-91035.jpg?t=st=1762854933~exp=1762858533~hmac=d336ce7e901d177eb05010cb4b2b764c6f0b03a336b75711d4b2fd33a257af45&w=1480);
+    background-color: var(--link-dark-color);
     padding: var(--spacing-min);
     box-shadow: 0 5px 10px 2px var(--clr-dark-shadow-20);
     z-index: 1;
@@ -93,15 +93,129 @@ caption {
     filter: brightness(70%);
 }
 
-.menu {
-    margin: var(--spacing-min);
+.sidebar {
+    margin: 0;
+    padding: 0;
+    width: 0;
+    background: linear-gradient(180deg, var(--link-dark-color) 0%, rgba(0, 83, 134, 0.9) 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px var(--clr-dark-shadow-20);
+    z-index: 100;
+    transition: transform var(--transition-medium) ease;
 }
 
-.menu-list {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    flex-flow: row wrap;
+.sidebar a {
+    display: block;
+    color: var(--clr-white);
+    /* padding: var(--spacing-min); */
+    margin: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: var(--default-border-radius);
+    font-weight: 500;
+    font-size: var(--small-font-size);
+    transition: all var(--transition-fast) ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar a:first-child {
+    margin-top: var(--spacing-med);
+}
+
+.sidebar a.active {
+    background-color: var(--clr-white);
+    color: var(--link-dark-color);
+    border-left: 3px solid var(--clr-white);
+    font-weight: 600;
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left: 3px solid var(--clr-white);
+    transform: translateX(5px);
+}
+
+.sidebar a i {
+    margin-right: 0.8rem;
+    width: 20px;
+    text-align: center;
+}
+
+/* Responsividade */
+@media screen and (max-width: 900px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    body:has(.sidebar) .content {
+        margin-left: 220px;
+    }
+
+    body:has(.sidebar) .expense-detail-container {
+        margin-left: 220px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        /* overflow-x: auto;
+        overflow-y: hidden; */
+        box-shadow: 0 2px 10px var(--clr-dark-shadow-20);
+    }
+
+    .sidebar a {
+        flex: 1;
+        margin: 0.5rem;
+        text-align: center;
+        white-space: nowrap;
+        min-width: max-content;
+    }
+    
+    .openbtn {
+        display: none;
+    }
+
+    .closebtn {
+        display: none;
+    }
+
+    .sidebar a:first-child {
+        margin-top: 0.5rem;
+    }
+
+    .sidebar a i {
+        display: block;
+        margin: 0 auto 0.4rem;
+    }
+
+    body:has(.sidebar) .content {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body:has(.sidebar) .expense-detail-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sidebar {
+        flex-wrap: wrap;
+    }
+
+    .sidebar a {
+        font-size: var(--smaller-font-size);
+        padding: 1rem;
+    }
 }
 
 .menu-link {
@@ -124,6 +238,7 @@ caption {
     background: var(--clr-white);
     box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
     border-radius: var(--default-border-radius);
+    transition: margin-left var(--transition-medium) ease;
 }
 
 .responsive-table {
@@ -191,15 +306,6 @@ caption {
         max-width: 80%;
         margin: calc(var(--spacing-min) * 2) auto;
     }
-}
-
-.title-center {
-    margin: 1rem 0;
-    text-align: center;
-}
-
-.single-contact p {
-    margin: 1rem 0;
 }
 
 .pagination {
@@ -273,7 +379,7 @@ caption {
 .form-wrapper {
     max-width: 60rem;
     margin: var(--spacing-min) auto;
-     background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
+    background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
     box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
     border-radius: var(--med-border-box);
     padding: var(--spacing-big);
@@ -372,7 +478,7 @@ caption {
 }
 
 .image-content img {
-    margin: 0 auto; 
+    margin: 0 auto;
     border-radius: 10px;
 }
 
@@ -387,7 +493,11 @@ img {
     max-width: 110rem;
     margin: 0 auto;
     padding: var(--spacing-med);
+    transition: margin-left var(--transition-medium) ease;
 }
+
+/* Empurrar container de detalhes quando sidebar está visível */
+
 
 .expense-detail-title {
     font-size: var(--big-font-size);
@@ -565,4 +675,17 @@ img {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+.openbtn {
+    font-size: 15px;
+    cursor: pointer;
+    background-color: var(--link-dark-color);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+}
+
+.openbtn:hover {
+    background-color: #444;
 }

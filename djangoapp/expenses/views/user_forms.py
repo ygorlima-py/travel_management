@@ -15,18 +15,21 @@ def register(request):
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            user = form.save()
+            auth.login(request, user)
             messages.success(request, 'Usuário Cadastrado com sucesso')
-            return redirect('expense:profile', username=request.user.username)
+            return redirect('expense:profile', username=user.username)
 
     return render(
         request,
         'expenses/pages/register.html',
         {
             'form':form,
+            'is_register': True,
         }
     )
 
+@login_required(login_url='expense:login')
 def user_update(request):
     form = UpdateFormUser(instance=request.user)
 
@@ -48,3 +51,34 @@ def user_update(request):
             'form':form,
         }
     )
+
+""" Rota para o usuário logar """
+def login_view(request):
+    form = AuthenticationForm(request)
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid(): # Retorna booleano verificando se os dados digitados são validos
+            user = form.get_user() # Seleciona no banco o usuário 
+            auth.login(request, user) # Faz a autentificação logando o usuário
+            messages.success(request,'Você está logado') # Menssagem de sucesso do usuário logado
+            return redirect('expense:index') # Redireciona para a pgina index home
+        
+        else:
+            messages.error(request, 'Login Invalido')
+
+
+    return render(
+        request,
+        'expenses/pages/login.html',
+        {
+            'form':form,
+            'is_login': True,
+        }
+    )
+
+@login_required(login_url='expense:login')
+def logout_view(request):
+    auth.logout(request)
+    return redirect('expense:login')

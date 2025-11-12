@@ -1,7 +1,9 @@
 from django.http import Http404
 from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='expense:login')
 def profile(request, username):
     user = User.objects.filter(username=username).first()
     

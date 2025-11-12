@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.db.models import Q
 from django.core.paginator import Paginator
-from expenses.models import Expenses
+from expenses.models import Expenses, Category
 
 # Create your views here.
+
+@login_required(login_url='expense:login')
 def index(request):
     expenses = Expenses.objects.order_by('-id')
     paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
@@ -22,6 +25,7 @@ def index(request):
         context=context,
     )
 
+@login_required(login_url='expense:login')
 def expense(request, expense_id):
     single_expense = Expenses.objects.filter(pk=expense_id).first()
     
@@ -35,5 +39,22 @@ def expense(request, expense_id):
     return render (
         request=request,
         template_name='expenses/pages/expense.html',
+        context=context,
+    )
+
+
+def categories(request):
+    categories = Category.objects.order_by('-id')
+    
+    if categories is None:
+        raise Http404()
+    
+    context = {
+        'categories': categories,
+    }
+
+    return render (
+        request=request,
+        template_name='expenses/pages/categories.html',
         context=context,
     )

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 
-# @login_required(login_url='expense:login')
+@login_required(login_url='expense:login')
 def create_expense(request):
     form_action = reverse('expense:create')
 
@@ -43,6 +43,7 @@ def create_expense(request):
         context, 
         )
 
+@login_required(login_url='expense:login')
 def expense_update(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id)
     
@@ -70,7 +71,7 @@ def expense_update(request, expense_id):
         context,      
     )
 
-
+@login_required(login_url='expense:login')
 def expense_delete(request, expense_id):
     # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
     expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)

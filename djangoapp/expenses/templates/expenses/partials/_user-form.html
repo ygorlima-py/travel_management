@@ -32,7 +32,11 @@
     <div class="form-content">
         <div class="form-group">
             <button class="btn" type='submit'>
-                {% if form.instance and form.instance.pk %}
+                {% if is_login %}
+                    ENTRAR
+                {% elif is_register %}
+                    CADASTRAR-SE
+                {% elif form.instance and form.instance.pk %}
                     ATUALIZAR DESPESA
                 {% else %}
                     CADASTRAR DESPESA

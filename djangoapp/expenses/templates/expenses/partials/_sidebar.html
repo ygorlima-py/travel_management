@@ -1,0 +1,111 @@
+<nav id="mySidepanel" class="sidebar">
+    {% if user.is_authenticated %}
+        <a href="javascript:void(0)" id='close' class="menu-link" onclick="closeNav()">
+            <i class="fa-solid fa-circle-xmark"></i>
+            Fechar Menu
+        </a>
+        <a href="{% url "expense:index" %}" class="menu-link">
+            <i class="fa-solid fa-house"></i>
+                Home
+        </a>
+        <a href="{% url "expense:create" %}" class="menu-link">
+            <i class="fa-solid fa-cart-shopping"></i>
+                    Criar Despesa
+        </a>
+        <a href="#" class="menu-link">
+            <i class="fa-solid fa-chart-pie"></i>
+                    Dashbords
+        </a>
+        <a href="{% url "expense:profile" user.username %}" class="menu-link">
+            <i class="fa-solid fa-user"></i>
+                    Meu Perfil
+        </a>
+        <a href="{% url "expense:logout" %}" class="menu-link">
+            <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+        </a>
+    {% else %}
+        <a href="{% url "expense:register" %}" class="menu-link">
+                    Cadastrar
+        </a>
+        <a href="{% url "expense:login" %}" class="menu-link">
+                    Login
+        </a>
+    {% endif %}
+</nav>
+<button class="openbtn" onclick="openNav()">&#9776; Abrir Menu</button>
+
+<script>
+        /* Set the width of the sidebar to 250px (show it) */
+    function openNav() {
+        const sidebar =document.getElementById("mySidepanel");
+        const mainContent = document.getElementById("index");
+        const closeBtn = document.getElementById("close");
+        const openbtn = document.querySelector(".openbtn");
+        
+
+    
+        if (window.innerWidth <= 768) {
+            
+            sidebar.style.width = "100%";
+            sidebar.style.height = "auto";
+            sidebar.style.position = "relative";
+            sidebar.style.display = "flex";
+            sidebar.style.flexDirection = "row";
+            sidebar.style.boxShadow = "0 2px 10px rgba(0, 0, 0, 0.2)";
+            closeBtn.style.display = "none";
+            
+            // Não empurra o conteúdo em mobile
+            if (mainContent) {
+                mainContent.style.marginLeft = "auto";
+            }
+        } else {
+            // Comportamento para desktop - barra lateral
+            sidebar.style.width = "200px";
+            sidebar.style.height = "100%";
+            sidebar.style.position = "fixed";
+            sidebar.style.display = "block";
+            sidebar.style.flexDirection = "";
+            
+            // Push content in
+            if (mainContent) {
+                mainContent.style.marginLeft = "200px";
+            }
+        }
+    }
+
+    
+    function closeNav() {
+        const sidebar = document.getElementById("mySidepanel");
+        const mainContent = document.getElementById("index");
+        const openbtn = document.querySelector(".openbtn");
+        const closeBtn = document.getElementById("close");
+
+        sidebar.style.width = "0";
+        
+        if (mainContent) {
+            mainContent.style.marginLeft = "auto";
+        }
+        
+        // Resetar others styles
+        sidebar.style.display = "";
+        sidebar.style.flexDirection = "";
+        sidebar.style.position = "";
+        sidebar.style.height = "";
+
+        if (window.innerWidth <= 768) {     
+            openBtn.style.display = "block";
+
+        }
+    }
+
+    /* Ajustar ao redimensionar a janela */
+    window.addEventListener('resize', function() {
+        const sidebar = document.getElementById("mySidepanel");
+        
+        // Se a sidebar está aberta (width diferente de 0)
+        if (sidebar.style.width && sidebar.style.width !== "0" && sidebar.style.width !== "0px") {
+            openNav(); // Reaplicar os estilos corretos para o novo tamanho
+        }
+    });
+</script>
