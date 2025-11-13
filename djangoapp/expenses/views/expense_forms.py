@@ -53,6 +53,10 @@ def expense_update(request, expense_id):
             updated_expense = form.save(commit=False)
             updated_expense.owner_expenses = request.user
             updated_expense.save()
+
+            expense.status_id = 4 #type: ignore
+            expense.save(update_fields=['status_id'])
+            
             messages.success(request, "Despesa atualizada")
             return redirect('expense:expense', expense_id=expense.pk)
         

@@ -44,3 +44,12 @@ class AlertRecusedAdmin(admin.ModelAdmin):
     ordering = '-id',
     list_display_links = 'id',
 
+@admin.register(models.Cycle)
+class CycleAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'name', 'initial_date', 
+        'end_date', 'initial_km', 'end_km',
+        'is_open', 'owner',)
+    ordering = '-id',
+    list_display_links = 'id',
+

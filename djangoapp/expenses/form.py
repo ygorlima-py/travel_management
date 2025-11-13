@@ -319,7 +319,8 @@ class AlertRecusedForm(forms.ModelForm):
     message = forms.CharField(
         widget=forms.Textarea,
         min_length=1,
-        help_text='Máximo de 40 caractere'
+        help_text='Máximo de 40 caractere',
+        label='*Obrigatório'
         )
     
     class Meta:

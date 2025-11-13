@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+# from expenses.models import Status
 
 class Category(models.Model):
     class Meta:
@@ -38,6 +39,42 @@ class State(models.Model):
     
     def __str__(self) -> str:
         return f'{self.name}-{self.uf_name}'
+
+class Cycle(models.Model):
+    class Meta:
+        verbose_name = 'Ciclo'
+
+    name = models.CharField(
+                    max_length=40,
+                    blank=False,
+                    null=False,
+                    )
+    initial_date = models.DateField(
+                blank=False,
+                null=False, 
+    )
+    end_date = models.DateField(
+                blank=False,
+                null=False,
+    )
+    initial_km = models.IntegerField(
+                blank=True,
+                null=True,
+    )
+    end_km = models.IntegerField(
+                blank=True,
+                null=True,
+    )
+    is_open = models.BooleanField(
+                    default=True,
+    )
+    owner = models.ForeignKey(
+            User,
+            on_delete=models.PROTECT,
+    )
+
+    def __str__(self) -> str:
+        return self.name
 
 class Expenses(models.Model):
     class Meta:
@@ -120,9 +157,15 @@ class Expenses(models.Model):
         blank=True,
     )
 
+    cycle = models.ForeignKey(
+        Cycle,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+
     def save(self, *args, **kwargs):
-        if not self.status:
-            from expenses.models import Status
+        if not self.status:            
             self.status = Status.objects.get(name='PENDENTE')
         super().save(*args, **kwargs)
         
@@ -160,6 +203,24 @@ class UserProfile(models.Model):
                             null=True,
                             )
     
+    bank = models.CharField(
+                max_length=50,
+                blank=True,
+                null=True,
+    )
+
+    agency = models.CharField(
+                    max_length=10,
+                    blank=True,
+                    null=True,
+    )
+
+    acount = models.CharField(
+                    max_length=15,
+                    blank=True,
+                    null=True,
+    )
+
     def __str__(self):
         return f'Profile: {self.user.username}'
 
@@ -185,4 +246,8 @@ class AlertRecused(models.Model):
     def __str__(self) -> str:
         return self.message # type: ignore
     
+
+    
+
+
 
