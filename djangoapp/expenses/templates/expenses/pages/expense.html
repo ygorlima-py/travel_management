@@ -7,9 +7,9 @@
         DETALHES DA DESPESA
     </h1>
     <div class="contact-links">
-        <a class='btn btn-link btn-approved' href="{% url "expense:expense_update" expense.id %}">APROVAR</a>
+        <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">APROVAR</a>
         
-        <a class='btn btn-link btn-delete' href="{% url "expense:expense_update" expense.id %}">RECUSAR</a>
+        <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">RECUSAR</a>
         
         <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">ATUALIZAR</a>
     

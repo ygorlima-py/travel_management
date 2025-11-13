@@ -8,6 +8,8 @@ urlpatterns = [
     path('expense/<int:expense_id>/detail', views.expense, name='expense' ),
     path('expense/<int:expense_id>/update', views.expense_update, name='expense_update' ),#type:ignore
     path('expense/<int:expense_id>/delete', views.expense_delete, name='expense_delete' ),#type:ignore
+    path('expense/<int:expense_id>/approved/', views.expense_approved, name='approved'), #type:ignore
+    path('expense/<int:expense_id>/recused/', views.expense_recused, name='recused'), #type:ignore
     path('expense/create/', views.create_expense, name='create'),
     path('expense/categories/', views.categories, name='categories'),
     
