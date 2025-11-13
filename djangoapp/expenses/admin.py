@@ -26,7 +26,7 @@ class ExpensesAdmin(admin.ModelAdmin):
     ordering = '-id',
     list_display_links = 'id',
     list_filter = 'category', 'owner_expenses',
-    readonly_fields = 'owner_expenses', 'status',
+    readonly_fields = 'owner_expenses',
 
 @admin.register(models.UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):

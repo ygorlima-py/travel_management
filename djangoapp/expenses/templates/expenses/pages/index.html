@@ -31,7 +31,7 @@
                     <th class='table-header'>Fornecedor</th>
                     <th class='table-header'>Cidade</th>
                     <th class='table-header'>Estado</th>
-                    <th class='table-header'>N° Nota Fiscal</th>
+                    <th class='table-header'>Status</th>
                     <th class='table-header'>Data</th>
                     <th class='table-header'>Quantidade</th>
                     <th class='table-header'>Valor Total</th>
@@ -64,7 +64,19 @@
                     </td>
 
                     <td class="table-cel">
-                        {{expense.nf}}
+                    {% if expense.status.name == "PENDENTE" %}
+                        <span class="icon-status-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </span>
+                    {% elif expense.status.name == "APROVADO" %}
+                        <span class="icon-status-approved">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </span>
+                    {% else %}
+                        <span class="icon-status-recused">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </span>
+                    {% endif %}
                     </td>
                     
                     <td class="table-cel">
@@ -82,7 +94,6 @@
                 {% endfor %}
             </tbody>
         </table>
-
     </div>
 {% else %}
     <div class="single-contact">

@@ -467,7 +467,7 @@ caption {
     background: tomato;
 }
 
-.btn-aprovated {
+.btn-approved {
     background: rgb(73, 150, 10);
 }
 
@@ -671,6 +671,43 @@ img {
 }
 
 .expense-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: var(--link-dark-color);
+    color: var(--clr-white);
+    border-radius: 20px;
+    font-size: var(--smaller-font-size);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.expense-pending {
+    background: rgb(250, 180, 30);
+}
+
+
+.expense-approved {
+    background: rgb(73, 150, 10);
+}
+
+.expense-recused {
+    background: tomato;
+}
+
+.icon-status-pending {
+    color: rgb(250, 180, 30);
+}
+
+.icon-status-approved {
+    color: rgb(73, 150, 10);
+}
+
+.icon-status-recused {
+    color:  tomato;
+}
+
+.expense-aproved {
     display: inline-block;
     padding: 0.4rem 1rem;
     background: var(--link-dark-color);

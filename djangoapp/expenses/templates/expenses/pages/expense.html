@@ -7,7 +7,7 @@
         DETALHES DA DESPESA
     </h1>
     <div class="contact-links">
-        <a class='btn btn-link btn-aprovated' href="{% url "expense:expense_update" expense.id %}">APROVAR</a>
+        <a class='btn btn-link btn-approved' href="{% url "expense:expense_update" expense.id %}">APROVAR</a>
         
         <a class='btn btn-link btn-delete' href="{% url "expense:expense_update" expense.id %}">RECUSAR</a>
         
@@ -100,6 +100,49 @@
                         {% endif %}
                     </span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Card de Verificação -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-wallet"></i>
+                Autorização de Reembolso
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-clock"></i>
+                        Status
+                    </span>
+                    {% if expense.status.name == "PENDENTE" %}
+                        <span class="expense-badge expense-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            {{expense.status.name}}
+                        </span>
+                    {% elif expense.status.name == "APROVADO" %}
+                        <span class="expense-badge expense-approved">
+                            <i class="fa-regular fa-circle-check"></i>
+                            {{expense.status.name}}
+                        </span>
+                    {% else %}
+                        <span class="expense-badge expense-recused">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                            {{expense.status.name}}
+                        </span>
+                    {% endif %}
+                </div>
+                    
+                {% if expense.status.name == "RECUSADO" %}
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Motivo
+                    </span>
+                    <span class="expense-info-value">Valor muito acima do permitido</span>
+                </div>
+                {% endif %}
+
             </div>
         </div>
 
