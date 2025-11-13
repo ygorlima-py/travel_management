@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django import forms
-from expenses.models import Expenses, UserProfile, State 
+from expenses.models import Expenses, UserProfile, State, AlertRecused
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
@@ -313,6 +313,21 @@ class UpdateFormUser(forms.ModelForm):
                     ValidationError(errors)
                 )
         return password1
+
+# form to alert    
+class AlertRecusedForm(forms.ModelForm):
+    message = forms.CharField(
+        widget=forms.Textarea,
+        min_length=1,
+        help_text='Máximo de 40 caractere'
+        )
     
-        
+    class Meta:
+        model = AlertRecused
+        fields = ('message',)
+        widgets = {
+            'message': forms.Textarea(attrs={'maxlength': 40, 'rows': 3})
+            }
+    
+    
             

@@ -163,3 +163,26 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'Profile: {self.user.username}'
 
+class AlertRecused(models.Model):
+    class Meta:
+        verbose_name = 'Alerta de Recusa'
+        verbose_name_plural = 'Alertas de Recusa'
+
+    message = models.CharField(
+        max_length=40,
+        blank=True,
+        null=True,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    expense = models.ForeignKey(
+        Expenses,
+        on_delete=models.CASCADE,
+        related_name='alerts_recused',
+    )
+
+    def __str__(self) -> str:
+        return self.message # type: ignore
+    
+

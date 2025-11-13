@@ -28,12 +28,14 @@ def index(request):
 @login_required(login_url='expense:login')
 def expense(request, expense_id):
     single_expense = Expenses.objects.filter(pk=expense_id).first()
+    last_alert = single_expense.alerts_recused.last() # Pega o ultimo alerta # type:ignore
     
     if single_expense is None:
         raise Http404()
     
     context = {
         'expense': single_expense,
+        'alert': last_alert,
     }
 
     return render (

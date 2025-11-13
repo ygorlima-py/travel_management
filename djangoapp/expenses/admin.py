@@ -38,3 +38,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_display_links = 'id',
     # readonly_fields = 'user',
 
+@admin.register(models.AlertRecused)
+class AlertRecusedAdmin(admin.ModelAdmin):
+    list_display = 'id', 'message', 'created_at', 'expense',
+    ordering = '-id',
+    list_display_links = 'id',
+
