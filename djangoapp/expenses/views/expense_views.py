@@ -61,23 +61,6 @@ def expense_approved(request, expense_id):
     if created == False:
         return redirect("expense:index")
     
-def expense_recused(request, expense_id):
-
-    # Source - https://stackoverflow.com/a
-    # Posted by Platinum Azure, modified by community. See post 'Timeline' for change history
-    # Retrieved 2025-11-13, License - CC BY-SA 4.0
-    obj, created = Expenses.objects.update_or_create(
-        pk=expense_id,
-        defaults={'status_id': 6},
-    )
-
-    if obj is None:
-        raise Http404()
-    
-    if created == False:
-        return redirect("expense:index")
-
-
 def categories(request):
     categories = Category.objects.order_by('-id')
     
