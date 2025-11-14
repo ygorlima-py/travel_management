@@ -350,7 +350,11 @@ class UpdateFormUser(forms.ModelForm):
 # form to alert    
 class AlertRecusedForm(forms.ModelForm):
     message = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(attrs={
+                'maxlength': 40,
+                'rows': 1,
+                'cols': 10,
+                }),
         min_length=1,
         help_text='Máximo de 40 caractere',
         label='*Obrigatório'
@@ -359,9 +363,7 @@ class AlertRecusedForm(forms.ModelForm):
     class Meta:
         model = AlertRecused
         fields = ('message',)
-        widgets = {
-            'message': forms.Textarea(attrs={'maxlength': 40, 'rows': 3})
-            }
+    
     
     
             

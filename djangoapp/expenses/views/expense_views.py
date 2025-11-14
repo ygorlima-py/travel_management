@@ -10,7 +10,7 @@ from expenses.models import Expenses, Category
 @login_required(login_url='expense:login')
 def index(request):
     expenses = Expenses.objects.order_by('-id')
-    paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
+    paginator = Paginator(expenses, 3)  # Show 25 contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
