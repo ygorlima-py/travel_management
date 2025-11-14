@@ -66,7 +66,7 @@ def expense_update(request, expense_id):
     context = {
         'form': form,
         'expense':expense,
-        'is_update': True,
+        'is_expense_update': True,
     }
 
     return render(

@@ -49,6 +49,7 @@ def user_update(request):
         'expenses/pages/update_user.html',
         {
             'form':form,
+            'is_user_update': True,
         }
     )
 

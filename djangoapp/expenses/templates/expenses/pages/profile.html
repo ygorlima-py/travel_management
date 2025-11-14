@@ -50,7 +50,7 @@
 
         <div class="expense-info-card">
             <h2 class="expense-info-title">
-            <i class="fa-solid fa-circle-info"></i>
+            <i class="fa-solid fa-wallet"></i>
                 Informações Bancárias
             </h2>
             <div class="expense-info-grid">
@@ -76,6 +76,13 @@
                         Número da Conta
                     </span>
                     <span class="expense-info-value">{{user.profile.account | default:"Não cadastrado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                    
+                        Tipo de Conta
+                    </span>
+                    <span class="expense-info-value">{{user.profile.account_type | default:"Não cadastrado"}}</span>
                 </div>
             </div>
         </div>
@@ -107,10 +114,14 @@
         <!-- Card de Valores -->
         <div class="expense-info-card">
             <h2 class="expense-info-title">
-            <i class="fa-solid fa-car"></i>
-                Informações do Veículo
+            <i class="fa-regular fa-building"></i>
+                Informações corporativas
             </h2>
             <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Centro de Custo</span>
+                    <span class="expense-info-value expense-value-highlight">{{user.profile.cost_center | default:"Não informado"}}</span>
+                </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">Número da Frota</span>
                     <span class="expense-info-value expense-value-highlight">{{user.profile.fleet_number | default:"Não informado"}}</span>

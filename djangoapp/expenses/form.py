@@ -227,6 +227,12 @@ class UpdateFormUser(forms.ModelForm):
         label='Cidade',
     )
 
+    cost_center = forms.CharField(
+        required=False,
+        max_length=25,
+        label='Centro de Custo',
+    )
+
     fleet_number = forms.CharField(
         required=False,
         max_length=50,
@@ -256,6 +262,12 @@ class UpdateFormUser(forms.ModelForm):
                 widget = forms.TextInput(attrs={'placeholder': 'ex: 12345-6'}),
     )
 
+    account_type = forms.ChoiceField(
+        choices= [('', '---------')] + UserProfile.ACCOUNT_CHOICES,
+        required=False,
+        label='Tipo de conta',
+        help_text='Selecione o tipo de conta'
+    )
 
     class Meta:
         model = User
@@ -298,7 +310,12 @@ class UpdateFormUser(forms.ModelForm):
         profile.phone = cleaned_data.get('phone')
         profile.state_uf = cleaned_data.get('state_uf')
         profile.city = cleaned_data.get('city')
+        profile.cost_center = cleaned_data.get('cost_center')
         profile.fleet_number = cleaned_data.get('fleet_number')
+        profile.bank = cleaned_data.get('bank')
+        profile.agency = cleaned_data.get('agency')
+        profile.account = cleaned_data.get('account')
+        profile.account_type = cleaned_data.get('account_type')
         
         if commit:
             profile.save()

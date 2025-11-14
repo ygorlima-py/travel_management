@@ -174,6 +174,12 @@ class Expenses(models.Model):
         return self.supply # type: ignore
 
 class UserProfile(models.Model):
+    ACCOUNT_CHOICES = [
+        ('Conta corrente', 'Conta corrente'),
+        ('Conta poupança', 'Conta poupança'),
+        ('Conta salário', 'Conta salário'),
+    ]
+
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -198,6 +204,13 @@ class UserProfile(models.Model):
                             blank=True,
                             null=True,
                             )
+    
+    cost_center = models.CharField(
+                        max_length=25,
+                        blank=True,
+                        null=True,
+    )
+
     fleet_number = models.CharField(
                             max_length=20,
                             blank=True,
@@ -222,6 +235,15 @@ class UserProfile(models.Model):
                     null=True,
     )
 
+    account_type = models.CharField(
+                    max_length=15,
+                    blank=True,
+                    null=True,
+                    choices=ACCOUNT_CHOICES,
+                    default='',
+    )
+
+    
     def __str__(self):
         return f'Profile: {self.user.username}' # type:ignore
 

@@ -36,8 +36,11 @@
                     ENTRAR
                 {% elif is_register %}
                     CADASTRAR-SE
+                {% elif is_user_update %}
+                    ATUALIZAR PERFIL
                 {% elif form.instance and form.instance.pk %}
                     ATUALIZAR DESPESA
+                
                 {% else %}
                     CADASTRAR DESPESA
                 {% endif %}
