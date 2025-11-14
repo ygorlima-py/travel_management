@@ -8,9 +8,13 @@
             <i class="fa-solid fa-house"></i>
                 Home
         </a>
+        <a href="{% url "expense:cycles" user.username %}" class="menu-link">
+            <i class="fa-solid fa-arrows-spin"></i>
+                    Meus ciclos
+        </a>
         <a href="{% url "expense:create" %}" class="menu-link">
             <i class="fa-solid fa-cart-shopping"></i>
-                    Criar Despesa
+                    Adicionar despesa
         </a>
         <a href="#" class="menu-link">
             <i class="fa-solid fa-chart-pie"></i>

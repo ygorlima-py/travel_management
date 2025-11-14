@@ -194,7 +194,9 @@ class UpdateFormUser(forms.ModelForm):
     email = forms.EmailField(
         required=True,
         label='*E-mail',
-        help_text='Obrigatório'
+        help_text='Obrigatório',
+        widget=forms.EmailInput(attrs={'placeholder': 'exemplo@dominio.com'}),
+        
     )
 
     username = forms.CharField(
@@ -209,6 +211,7 @@ class UpdateFormUser(forms.ModelForm):
         required=False,
         max_length=15,
         label='Celular',
+        widget=forms.TextInput(attrs={'placeholder': '(00) 00000-0000'}),
     )
 
     state_uf = forms.ModelChoiceField(
@@ -230,12 +233,39 @@ class UpdateFormUser(forms.ModelForm):
         label='Numero da Frota',
     )
 
-    class Meta:
-        model = User 
-        fields = (
-            'first_name', 'last_name', 'email',
-            'username',
+    bank = forms.CharField(
+                    max_length=50,
+                    required=False,
+                    label="Banco",
+                    help_text='Digite o nome do se banco',
+                    widget = forms.TextInput(attrs={'placeholder': 'ex: Banco do Brasil'}),
         )
+
+    agency = forms.CharField(
+                    max_length=10,
+                    required=False,
+                    label="Agência",
+                    help_text='Digite o número da agência com o digito separado pelo hifém',
+                    widget=forms.TextInput(attrs={'placeholder': 'ex: 1234'}),
+    )
+
+    account = forms.CharField(
+                required=False,
+                label="Número da conta",
+                help_text='Digite o número da conta com o digito separado pelo hifém',
+                widget = forms.TextInput(attrs={'placeholder': 'ex: 12345-6'}),
+    )
+
+
+    class Meta:
+        model = User
+        fields = (
+        'first_name', 
+        'last_name',
+        'email',
+        'username'
+        )
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -247,6 +277,9 @@ class UpdateFormUser(forms.ModelForm):
             self.fields['state_uf'].initial = profile.state_uf
             self.fields['city'].initial = profile.city
             self.fields['fleet_number'].initial = profile.fleet_number
+            self.fields['bank'].initial = profile.bank
+            self.fields['agency'].initial = profile.agency
+            self.fields['account'].initial = profile.account
 
 
 

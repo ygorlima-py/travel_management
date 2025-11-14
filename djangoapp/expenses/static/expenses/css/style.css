@@ -221,6 +221,8 @@ caption {
 .menu-link {
     display: block;
     padding: var(--spacing-min);
+    padding-right: 0.6rem;
+    padding-left: 0.6rem;
     color: var(--link-light-color);
     text-decoration: none;
     transition: background-color var(--transition-fast) ease-in-out;
@@ -733,4 +735,8 @@ img {
 
 .openbtn:hover {
     background-color: #444;
+}
+
+.remove-text-decoration {
+    text-decoration: none;
 }

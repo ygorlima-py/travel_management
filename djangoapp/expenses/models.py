@@ -71,6 +71,7 @@ class Cycle(models.Model):
     owner = models.ForeignKey(
             User,
             on_delete=models.PROTECT,
+            related_name='cycles_owner'
     )
 
     def __str__(self) -> str:
@@ -215,14 +216,14 @@ class UserProfile(models.Model):
                     null=True,
     )
 
-    acount = models.CharField(
+    account = models.CharField(
                     max_length=15,
                     blank=True,
                     null=True,
     )
 
     def __str__(self):
-        return f'Profile: {self.user.username}'
+        return f'Profile: {self.user.username}' # type:ignore
 
 class AlertRecused(models.Model):
     class Meta:

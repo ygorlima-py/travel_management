@@ -8,7 +8,8 @@
     </h1>
     
     <div class="expense-detail-grid">
-        <!-- Card de Informações Básicas -->
+
+        <!-- Card de Informações Bancárias -->
         <div class="expense-info-card">
             <h2 class="expense-info-title">
             <i class="fa-solid fa-circle-info"></i>
@@ -43,6 +44,38 @@
                         Usuário
                     </span>
                     <span class="expense-info-value">{{user.username}}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-circle-info"></i>
+                Informações Bancárias
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-building-columns"></i>
+                        Banco
+                    </span>
+                    <span class="expense-info-value">{{user.profile.bank | default:"Não cadastrado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                    <i class="fa-solid fa-building"></i>
+                        Agência
+                    </span>
+                    <span class="expense-info-value">
+                        <span class="expense-info-value">{{user.profile.agency | default:"Não cadastrado"}}</span>
+                    </span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                        Número da Conta
+                    </span>
+                    <span class="expense-info-value">{{user.profile.account | default:"Não cadastrado"}}</span>
                 </div>
             </div>
         </div>

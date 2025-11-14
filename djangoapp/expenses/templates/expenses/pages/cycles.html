@@ -1,0 +1,71 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-arrows-spin"></i>
+        MEUS CICLOS
+    </h1>
+    <div class="contact-links">
+        <a class='btn btn-link' href="{% url "expense:user_update" %}">ADICIONAR CICLO</a>
+    </div>
+    
+    <div class="expense-detail-grid">
+
+        <!-- Card de Informações Bancárias -->
+        {% if cycles %}
+        {% for cycle in cycles %}
+        <a  class='remove-text-decoration'  href="#">
+            <div class="expense-info-card">
+                <h2 class="expense-info-title">
+                    {{cycle.name}}
+                </h2>
+                <div class="expense-info-grid">
+                    <div class="expense-info-item">
+                        <span class="expense-info-label">
+                            <i class="fa-solid fa-calendar"></i>
+                            Data Inicial
+                        </span>
+                        <span class="expense-info-value">{{cycle.initial_date}}</span>
+                    </div>
+                    <div class="expense-info-item">
+                        <span class="expense-info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                            Data Final
+                        </span>
+                        <span class="expense-info-value">
+                            <span class="expense-info-value">{{cycle.end_date}}</span>
+                        </span>
+                    </div>
+                    <div class="expense-info-item">
+                        <span class="expense-info-label">
+                            <i class="fa-solid fa-user"></i>
+                            Criado por:
+                        </span>
+                        <span class="expense-info-value">{{user.first_name}} {{user.last_name}}</span>
+                    </div>
+                    <div class="expense-info-item">
+                        <span class="expense-info-label">
+                            <i class="fa-solid fa-clock"></i>
+                            Status
+                        </span>
+                        {% if cycle.is_open %}
+                            <span class="expense-info-value">Aberto</span>
+                        {% else %}
+                            <span class="expense-info-value">Fechado</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+        {% else %}
+        <div class="single-contact">
+            <h1 class="single-cont act-name">
+                Nenhum ciclo criado
+            </h1>
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}
