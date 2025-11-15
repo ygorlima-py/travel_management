@@ -8,12 +8,21 @@
     </h1>
     <div class="contact-links">
         {% if expense.status.name != "APROVADO" %}
-            <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">APROVAR</a>
+            <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">
+                <i class="fa-regular fa-circle-check"></i>
+                APROVAR
+            </a>
         {% endif %}
         {% if expense.status.name != "RECUSADO" %}
-            <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">RECUSAR</a>
+            <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">
+                <i class="fa-regular fa-circle-xmark"></i>
+                RECUSAR
+            </a>
         {% endif %}
-        <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">ATUALIZAR</a>
+        <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">
+            <i class="fa-solid fa-pen-to-square"></i>
+            ATUALIZAR
+        </a>
     
         <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>
             {% csrf_token %}
@@ -22,7 +31,10 @@
                 <input type="hidden" name="confirmation" value="yes">
                 <button class="btn btn-link btn-delete" type='submit'>CONFIRMA A EXCLUSÃO ?</button>            
             {% else %}
-                <button class="btn btn-link btn-delete" type='submit'>DELETAR</button>            
+                <button class="btn btn-link btn-delete" type='submit'>
+                    <i class="fa-solid fa-trash"></i>
+                    DELETAR
+                </button>            
             {% endif %}
         </form>
     </div>

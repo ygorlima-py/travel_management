@@ -19,7 +19,8 @@ urlpatterns = [
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),
 
-    path('ciclos/<str:username>', views.cycles, name='cycles'), #type:ignore
+    path('ciclos/', views.cycles, name='cycles'), #type:ignore
+    path('ciclo/<int:cycle_id>/detail', views.cycle, name='cycle'), #type:ignore
 
     
 ]

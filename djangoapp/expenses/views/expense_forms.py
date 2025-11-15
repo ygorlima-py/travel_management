@@ -122,7 +122,7 @@ def recused(request, expense_id):
             message.expense = expense # Informo para expense.owner que esse contato pertence a esse usuário
             message.save()
 
-            expense.status_id = 6 #type: ignore
+            expense.status_id = '6' #type: ignore
             expense.save(update_fields=['status_id'])
 
             return redirect('expense:index')

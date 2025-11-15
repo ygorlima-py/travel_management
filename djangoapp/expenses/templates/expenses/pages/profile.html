@@ -6,7 +6,12 @@
         <i class="fa-solid fa-user"></i>
         PERFIL DO USUÁRIO
     </h1>
-    
+    <div class="contact-links">
+        <a class='btn btn-link ' href="{% url "expense:index" %}">
+                <i class="fa-solid fa-arrow-left"></i>
+                VOLTAR
+        </a>
+    </div>
     <div class="expense-detail-grid">
 
         <!-- Card de Informações Bancárias -->
@@ -18,6 +23,7 @@
             <div class="expense-info-grid">
                 <div class="expense-info-item">
                     <span class="expense-info-label">
+                    <i class="fa-solid fa-person"></i>
                         Nome completo
                     </span>
                     <span class="expense-info-value">{{user.first_name}} {{user.last_name}}</span>
@@ -72,14 +78,14 @@
                 </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">
-                    <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
                         Número da Conta
                     </span>
                     <span class="expense-info-value">{{user.profile.account | default:"Não cadastrado"}}</span>
                 </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">
-                    
+                        <i class="fa-solid fa-money-bill-transfer"></i>
                         Tipo de Conta
                     </span>
                     <span class="expense-info-value">{{user.profile.account_type | default:"Não cadastrado"}}</span>
@@ -114,16 +120,22 @@
         <!-- Card de Valores -->
         <div class="expense-info-card">
             <h2 class="expense-info-title">
-            <i class="fa-regular fa-building"></i>
+            <i class="fa-solid fa-briefcase"></i>
                 Informações corporativas
             </h2>
             <div class="expense-info-grid">
                 <div class="expense-info-item">
-                    <span class="expense-info-label">Centro de Custo</span>
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-sitemap"></i>
+                        Centro de Custo
+                    </span>
                     <span class="expense-info-value expense-value-highlight">{{user.profile.cost_center | default:"Não informado"}}</span>
                 </div>
                 <div class="expense-info-item">
-                    <span class="expense-info-label">Número da Frota</span>
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-car"></i>
+                        Número da Frota
+                    </span>
                     <span class="expense-info-value expense-value-highlight">{{user.profile.fleet_number | default:"Não informado"}}</span>
                 </div>
             </div>
@@ -131,7 +143,10 @@
     </div>
 
     <div class="contact-links">
-        <a class='btn btn-link' href="{% url "expense:user_update" %}">ATUALIZAR PERFIL</a>
+        <a class='btn btn-link' href="{% url "expense:user_update" %}">
+            <i class="fa-solid fa-pen-to-square"></i>
+            ATUALIZAR PERFIL
+        </a>
     </div>
 
 </div>

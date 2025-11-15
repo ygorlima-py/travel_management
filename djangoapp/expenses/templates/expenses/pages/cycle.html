@@ -1,0 +1,256 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-arrows-spin"></i>
+        {{cycle.name}}
+    </h1>
+
+    <div class="contact-links">
+        <a class='btn btn-link ' href="{% url "expense:cycles" %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+        <a class='btn btn-link' href="#">
+            <i class="fa-solid fa-pen-to-square"></i>
+            ATUALIZAR
+        </a>
+    </div>
+    
+
+    <div class="expense-detail-grid">
+
+        <!-- Card de Informações Básicas -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-circle-info"></i>
+                Informações do Ciclo
+            </h2>
+            <div class="expense-info-grid">
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-user"></i>
+                        Criado por:
+                    </span>
+                    <span class="expense-info-value">{{user.first_name}} {{user.last_name}}</span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-clock"></i>
+                        Status
+                    </span>
+                    <span class="expense-info-value">
+                        {% if cycle.is_open %}
+                            <span class="expense-badge expense-approved">
+                                <i class="fa-solid fa-unlock"></i>
+                                Aberto
+                            </span>
+                        {% else %}  
+                            <span class="expense-badge expense-recused">
+                                <i class="fa-solid fa-lock"></i>
+                                Fechado
+                            </span>
+                        {% endif %}
+                    </span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                        Data Inicial
+                    </span>
+                    <span class="expense-info-value">{{cycle.initial_date}}</span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                        Data Final
+                    </span>
+                    <span class="expense-info-value">{{cycle.end_date}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de informações da frota -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-car"></i>
+                Informações da Frota
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge"></i>
+                        Km inicial
+                    </span>
+                    <span class="expense-info-value">{{cycle.initial_km | default:"-"}} km</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge"></i>
+                        Km final
+                    </span>
+                    <span class="expense-info-value">{{cycle.end_km | default:"-"}} Km</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-road"></i>
+                        Km percorridos
+                    </span>
+                    <span class="expense-info-value">{{calculation.distance | default:"-"}} Km</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-car"></i>
+                        N° da Frota
+                    </span>
+                    <span class="expense-info-value">{{user.profile.fleet_number}}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Valores -->
+ 
+        <div class="expense-description-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-hand-holding-dollar"></i>    
+                Valores
+            </h2>
+            <div class="expense-info-grid">
+                {% if calculation.total_fuel %}
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gas-pump"></i>
+                        TOTAL ABASTECIDO
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">{{calculation.total_fuel}} Litros</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge-simple"></i>
+                        CONSUMO
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">{{calculation.fuel_consumption}} Km/L</span>
+                </div>
+                {% endif %}
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">QUANTIDADE TOTAL DE DESPESAS</span>
+                    <span class="expense-info-value expense-value-highlight">{{calculation.amount_expenses}}</span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-regular fa-circle-check"></i>
+                        QUANTIDADE DE DESPESAS APROVADAS
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">{{calculation.amount_expenses_approved}}</span>
+                </div>
+                
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        VALOR TOTAL
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">R$ {{calculation.total_value}}</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% if expenses %}
+    <div class='responsive-table content'>
+        <table class='contacts-table'>
+            <caption>
+                <h2 class="expense-detail-title expense-info-title">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    TODAS AS DESPESAS REALIZADAS NESTE CICLO
+                </h2>
+            </caption>
+            <thead>
+                <tr class='table-row table-row-header'>
+                    <th class='table-header'>ID</th>
+                    <th class='table-header'>Categoria</th>
+                    <th class='table-header'>Fornecedor</th>
+                    <th class='table-header'>Cidade</th>
+                    <th class='table-header'>Estado</th>
+                    <th class='table-header'>Status</th>
+                    <th class='table-header'>Data</th>
+                    <th class='table-header'>Quantidade</th>
+                    <th class='table-header'>Valor Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for expense in expenses %} 
+                <tr class='table-row'>
+                    <td class="table-cel">
+                        <a class='table-link' href="{% url "expense:expense" expense.id %}">
+                            {{expense.id}}
+                        </a>
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.category}}
+                    </td>
+                    
+                    <td class="table-cel">      
+                        {{expense.supply}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.city}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.state_uf.uf_name}}
+                    </td>
+
+                    <td class="table-cel">
+                    {% if expense.status.name == "PENDENTE" %}
+                        <span class="icon-status-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </span>
+                    {% elif expense.status.name == "APROVADO" %}
+                        <span class="icon-status-approved">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </span>
+                    {% else %}
+                        <span class="icon-status-recused">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </span>
+                    {% endif %}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.date}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.amount}}
+                    </td>
+
+                    <td class="table-cel">
+                        R$ {{expense.value}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class='not-found content'>
+        <h1 class="single-cont act-name">
+            Nenhuma despesa neste ciclo
+        </h1>
+    </div>
+{% endif %}
+<main>
+
+</div>
+{% endblock content %}

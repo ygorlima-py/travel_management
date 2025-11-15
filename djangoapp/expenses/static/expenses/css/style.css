@@ -302,8 +302,14 @@ caption {
     color: var(--clr-black);
 }
 
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 @media (min-width: 600px) {
-    .single-contact {
+    .not-found {
         display: flex;
         max-width: 80%;
         margin: calc(var(--spacing-min) * 2) auto;
@@ -504,8 +510,6 @@ img {
 }
 
 /* Empurrar container de detalhes quando sidebar está visível */
-
-
 .expense-detail-title {
     font-size: var(--big-font-size);
     color: var(--clr-black);
@@ -577,10 +581,9 @@ img {
 }
 
 .expense-info-label {
-    font-size: var(--smaller-font-size);
+    font-size: var(--small-font-size);
     color: var(--link-dark-color);
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.5px;
     display: block;
     margin-bottom: 0.4rem;
@@ -740,3 +743,4 @@ img {
 .remove-text-decoration {
     text-decoration: none;
 }
+

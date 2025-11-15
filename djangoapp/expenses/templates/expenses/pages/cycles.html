@@ -7,7 +7,14 @@
         MEUS CICLOS
     </h1>
     <div class="contact-links">
-        <a class='btn btn-link' href="{% url "expense:user_update" %}">ADICIONAR CICLO</a>
+        <a class='btn btn-link ' href="{% url "expense:index" %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+        <a class='btn btn-link btn-approved' href="{% url "expense:user_update" %}">
+            <i class="fa-solid fa-plus"></i>
+            ADICIONAR CICLO
+        </a>
     </div>
     
     <div class="expense-detail-grid">
@@ -15,9 +22,10 @@
         <!-- Card de Informações Bancárias -->
         {% if cycles %}
         {% for cycle in cycles %}
-        <a  class='remove-text-decoration'  href="#">
+        <a  class='remove-text-decoration'  href="{% url "expense:cycle" cycle.id %}">
             <div class="expense-info-card">
                 <h2 class="expense-info-title">
+                    <i class="fa-solid fa-arrows-spin"></i>
                     {{cycle.name}}
                 </h2>
                 <div class="expense-info-grid">
@@ -50,9 +58,15 @@
                             Status
                         </span>
                         {% if cycle.is_open %}
-                            <span class="expense-info-value">Aberto</span>
-                        {% else %}
-                            <span class="expense-info-value">Fechado</span>
+                            <span class="expense-badge expense-approved">
+                                <i class="fa-solid fa-unlock"></i>
+                                Aberto
+                            </span>
+                        {% else %}  
+                            <span class="expense-badge expense-recused">
+                                <i class="fa-solid fa-lock"></i>
+                                Fechado
+                            </span>
                         {% endif %}
                     </div>
                 </div>
