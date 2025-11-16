@@ -4,11 +4,12 @@ from expenses.models import Expenses
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from utils.conditions import Conditions #type: ignore
 
 @login_required(login_url='expense:login')
 def create_expense(request):
     form_action = reverse('expense:create')
+
 
     if request.method == 'POST':
         
@@ -19,11 +20,15 @@ def create_expense(request):
             form_action=form_action,
         )
 
-        print(context)
-
         if form.is_valid():        
             expense = form.save(commit=False) # Grarante que eu não salve na base de dados ainda
             expense.owner_expenses = request.user # Informo para expense.owner que esse contato pertence a esse usuário
+            condition = Conditions(expense)
+            cycle_id = condition.verify()
+
+            if cycle_id is not None:
+                expense.cycle_id = cycle_id
+                
             expense.save()
             return redirect('expense:create')
 
@@ -52,6 +57,12 @@ def expense_update(request, expense_id):
         if form.is_valid():
             updated_expense = form.save(commit=False)
             updated_expense.owner_expenses = request.user
+
+            condition = Conditions(expense)
+            cycle_id = condition.verify()
+            if cycle_id is not None:
+                updated_expense.cycle_id = cycle_id
+
             updated_expense.save()
 
             expense.status_id = 4 #type: ignore

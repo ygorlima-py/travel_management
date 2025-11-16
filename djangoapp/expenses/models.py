@@ -68,6 +68,11 @@ class Cycle(models.Model):
     is_open = models.BooleanField(
                     default=True,
     )
+    save_expense_auto = models.BooleanField(
+                blank=True,
+                null=True,
+                default=True
+    )
     owner = models.ForeignKey(
             User,
             on_delete=models.PROTECT,
@@ -163,6 +168,7 @@ class Expenses(models.Model):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+        related_name = 'expenses',
     )
 
     def save(self, *args, **kwargs):

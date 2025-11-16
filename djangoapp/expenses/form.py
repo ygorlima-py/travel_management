@@ -1,13 +1,83 @@
 from django.core.exceptions import ValidationError
 from django import forms
-from expenses.models import Expenses, UserProfile, State, AlertRecused
+from expenses.models import Expenses, UserProfile, State, AlertRecused, Cycle, Category
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
+from utils.validation import Validation # type: ignore
 
 
-# Form to register expenses
+# Form to create expense
 class ExpenseForm(forms.ModelForm):
+
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=True,
+        label='* Categoria',
+        help_text='Selecione a categoria a qual a despesa pertence',
+    )
+
+    supply = forms.CharField(
+        required=True,
+        label='* Fornecedor da despesa',
+        help_text='Adicione o nome ou razão social do fornecedor da despesa',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Exemplo: Restaurante Bom Sabor'
+        })
+    )
+
+    state_uf = forms.ModelChoiceField(
+        queryset=State.objects.all(),
+        required=True,
+        label='* Selecione o estado',
+        help_text='Selecione o estado que a despesa foi realizada',
+    )
+
+    city = forms.CharField(
+        required=True,
+        label='* Cidade',
+        help_text='Digite o nome da cidade que a despesa foi realizada',
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Exemplo: Ribeirão Preto'
+        }),
+    )
+
+    nf = forms.CharField(
+        required=False,
+        label='Numero da Nota Fiscal',
+        help_text='Digite o numero da nota fiscal, caso não possua, ignore esse campo'
+    )
+
+    amount = forms.FloatField(
+        required=True,
+        label='* Quantidade',
+        help_text='Digite a quantidade que foi consumida nesta despesa'
+    )
+
+    value = forms.DecimalField(
+        required=True,
+        label='* Valor da despesa',
+        help_text='Digite o valor total desta despesa'
+    )
+
+    description = forms.CharField(
+        required=True,
+        label='Descrição da Despesa',
+        help_text="Adicione a descrição da despesa",
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Exemplo 2 diarias de hospedagem',
+            'rows': 4,
+            'cols': 10,
+        })
+    )
+
+    date = forms.DateTimeField(
+        required=True,
+        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        input_formats=['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S'],
+        label='* Data da despesa',
+        help_text='Adicione a data da despesa',
+        )
     picture = forms.ImageField(
         widget=forms.FileInput(
             attrs={
@@ -15,13 +85,10 @@ class ExpenseForm(forms.ModelForm):
             }
         ),
         required=False,
+        label="Adicione a foto da nota fiscal ou comprovante da despesa"
     )
 
-    date = forms.DateTimeField(
-        required=True,
-        widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        input_formats=['%Y-%m-%dT%H:%M', '%Y-%m-%dT%H:%M:%S'],
-        )
+
     
     class Meta:
         model = Expenses
@@ -364,7 +431,7 @@ class UpdateFormUser(forms.ModelForm):
                 )
         return password1
 
-# form to alert    
+# Form to alert    
 class AlertRecusedForm(forms.ModelForm):
     message = forms.CharField(
         widget=forms.Textarea(attrs={
@@ -381,6 +448,100 @@ class AlertRecusedForm(forms.ModelForm):
         model = AlertRecused
         fields = ('message',)
     
+# Form to create cycle
+class CreateCycle(forms.ModelForm):
     
-    
-            
+    name = forms.CharField(
+                max_length=50,
+                required=True,
+                label='Nome do Ciclo',
+                widget=forms.TextInput(
+                    attrs={
+                        'placeholder': 'Ex: Setembro',
+                    }
+                )
+    )
+    initial_date = forms.DateField(
+                required=True,
+                label='Defina a data Inicial do ciclo',
+                widget=forms.DateInput(
+                    attrs={
+                        'placeholder': 'Ex: 01/09/2025',
+                        'type': 'date',
+                    }
+                ),
+    )
+    end_date = forms.DateField(
+                required=True,
+                label='Data final do seu ciclo',
+                widget=forms.DateInput(
+                    attrs={
+                        'placeholder': 'Ex: 30/09/2025',
+                        'type': 'date',
+                    }
+                ),
+    )
+    initial_km = forms.IntegerField(
+                required=False,
+                label='Coloque o Km inicial do veículo neste cíclo',
+                widget=forms.NumberInput(
+                attrs={
+                    "placeholder": "Ex: 45500",
+                }
+            ),
+    )
+    end_km = forms.IntegerField(
+                required=False,
+                label='Coloque o Km final do veículo neste cíclo',
+                widget=forms.NumberInput(
+                attrs={
+                    "placeholder": "Ex: 50500",
+                }
+            )
+    )
+
+    save_expense_auto = forms.BooleanField(
+            required=False,
+            widget=forms.CheckboxInput(
+                attrs={
+                    'class': 'custom-chackbox',
+                }
+            ),
+            label="Mover todas as despesas incluidas neste periodo para o ciclo",
+            help_text="Selecionando esta opção todas as despesas feitas no " \
+            "periodo selecionado serão salvas automaticamente neste ciclo"
+    )
+
+    class Meta:
+        model = Cycle
+        fields = (
+            'name',
+            'initial_date',
+            'end_date',
+            'initial_km',
+            'end_km',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)      
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        initial_date = cleaned_data.get('initial_date')
+        end_date = cleaned_data.get('end_date')
+        initial_km = cleaned_data.get('initial_km')
+        end_km = cleaned_data.get('end_km')
+
+        validator = Validation(
+            initial_date,
+            end_date,
+            initial_km,
+            end_km,
+            )
+
+        if validator.validate_date:
+            raise forms.ValidationError(validator.validate_date)
+        
+        if validator.validate_km:
+            raise forms.ValidationError(validator.validate_km)

@@ -37,9 +37,10 @@ class Calculation:
     
     def _total_value(self):
         total_value = self.expenses.aggregate(total=Sum('value'))
+        if total_value['total'] is None:
+            return 0
         return total_value['total']
-    
-    
+
     def all(self):
         return dict(
             distance=self.distance,
@@ -49,3 +50,6 @@ class Calculation:
             amount_expenses_approved=self.amount_expenses_approved,
             total_value=self.total_value,
         )
+    
+
+

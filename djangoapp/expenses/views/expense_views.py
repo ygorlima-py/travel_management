@@ -44,9 +44,8 @@ def expense(request, expense_id):
         context=context,
     )
 
-
+@login_required(login_url='expense:login') #type:ignore
 def expense_approved(request, expense_id):
-
     # Source - https://stackoverflow.com/a
     # Posted by Platinum Azure, modified by community. See post 'Timeline' for change history
     # Retrieved 2025-11-13, License - CC BY-SA 4.0

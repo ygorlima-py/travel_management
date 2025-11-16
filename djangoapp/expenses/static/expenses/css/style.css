@@ -444,6 +444,57 @@ caption {
     font-size: var(--smaller-font-size);
 }
 
+/* Container do campo checkbox */
+.form-group:has(.custom-checkbox) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-min);
+    flex-direction: row-reverse; /* Label à direita do checkbox */
+}
+
+/* Label do checkbox */
+.form-group:has(.custom-checkbox) label {
+    margin: 0;
+    cursor: pointer;
+    font-size: var(--font-size-medium);
+}
+
+/* Checkbox personalizado (opcional - visual moderno) */
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--clr-gray-light-mid);
+    border-radius: var(--spacing-min);
+    background-color: var(--clr-white);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition-fast) ease;
+}
+
+.custom-checkbox:checked {
+    background-color: var(--clr-primary);
+    border-color: var(--clr-primary);
+}
+
+.custom-checkbox:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.custom-checkbox:hover {
+    border-color: var(--clr-primary);
+    box-shadow: 0 0 5px var(--clr-primary-light);
+}
+
 .btn-link {
     font-size: var(--small-font-size);
     text-decoration: none;
