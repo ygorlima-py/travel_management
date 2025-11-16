@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from expenses.form import CreateCycle
+from django.contrib import messages
+from expenses.form import CreateCycle, Cycle
 
 @login_required(login_url='expense:login')
 def create_cycle(request):
@@ -37,3 +38,58 @@ def create_cycle(request):
         'expenses/pages/create_cycle.html',
         context, 
         )
+
+@login_required(login_url='expense:login')
+def cycle_update(request, cycle_id):
+    cycle = get_object_or_404(Cycle, pk=cycle_id)
+    
+    if request.method == "POST":
+        form = CreateCycle(request.POST, instance=cycle)
+        if form.is_valid():
+            update_cycle = form.save(commit=False)
+            update_cycle.owner_id = request.user.id
+            update_cycle.save()
+
+            messages.success(request, "Ciclo atualizado")
+            return redirect('expense:cycle_update', cycle_id=cycle.pk)
+        
+    else:
+        form = CreateCycle(
+            instance=cycle,
+            initial={
+                'initial_date': cycle.initial_date.strftime('%Y-%m-%d'),
+                'end_date': cycle.end_date.strftime('%Y-%m-%d'),
+            })
+    
+    context = {
+        'form': form,
+        'cycle':cycle,
+        'is_cycle_update': True,
+    }
+
+    return render(
+        request,
+        'expenses/pages/create_cycle.html',
+        context,      
+    )
+
+@login_required(login_url='expense:login')
+def cycle_delete(request, cycle_id):
+    # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
+    cycle = get_object_or_404(Cycle, pk=cycle_id, owner_id=request.user)
+    
+    confirmation = request.POST.get('confirmation', 'no')
+
+    if confirmation == 'yes':
+        cycle.delete()
+        return redirect('expense:cycles')
+
+    return render(
+        request,
+        'expenses/pages/cycle.html',
+        {
+            'cycle': cycle,
+            'confirmation': confirmation,
+            'user': cycle.owner,
+        }
+    )

@@ -345,7 +345,6 @@ class UpdateFormUser(forms.ModelForm):
         'username'
         )
 
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -359,8 +358,6 @@ class UpdateFormUser(forms.ModelForm):
             self.fields['bank'].initial = profile.bank
             self.fields['agency'].initial = profile.agency
             self.fields['account'].initial = profile.account
-
-
 
     def save(self, commit=True):
         cleaned_data = self.cleaned_data

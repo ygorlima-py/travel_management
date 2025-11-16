@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from utils.conditions import Conditions #type: ignore
+from django.http import Http404
 
 @login_required(login_url='expense:login')
 def create_expense(request):
@@ -111,6 +112,22 @@ def expense_delete(request, expense_id):
         }
     )
 
+@login_required(login_url='expense:login') #type:ignore
+def expense_approved(request, expense_id):
+    # Source - https://stackoverflow.com/a
+    # Posted by Platinum Azure, modified by community. See post 'Timeline' for change history
+    # Retrieved 2025-11-13, License - CC BY-SA 4.0
+    obj, created = Expenses.objects.update_or_create(
+        pk=expense_id,
+        defaults={'status_id': 5},
+    )
+
+    if obj is None:
+        raise Http404()
+    
+    if created == False:
+        return redirect("expense:index")
+    
 @login_required(login_url='expense:login')
 def recused(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id)

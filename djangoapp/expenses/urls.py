@@ -24,5 +24,7 @@ urlpatterns = [
     path('ciclos/create/', views.create_cycle, name='create_cycle'),
     path('ciclos/<int:cycle_id>/close/', views.close_cycle, name='close_cycle'),
     path('ciclos/<int:cycle_id>/open/', views.open_cycle, name='open_cycle'),
+    path('ciclos/<int:cycle_id>/update/', views.cycle_update, name='cycle_update'),
+    path('ciclos/<int:cycle_id>/delete/', views.cycle_delete, name='cycle_delete'),
     
 ]

@@ -12,18 +12,18 @@
             <i class="fa-solid fa-arrow-left"></i>
             VOLTAR
         </a>
-        <a class='btn btn-link' href="#">
+        <a class='btn btn-link' href="{% url "expense:cycle_update" cycle.id %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR
         </a>
         {% if cycle.is_open %}
             <a class='btn btn-link btn-delete' href="{% url "expense:close_cycle" cycle.id %}">
-                <i class="fa-regular fa-circle-xmark"></i>
+                <i class="fa-solid fa-lock"></i>
                 FECHAR CICLO
             </a>
         {% else %}
             <a class='btn btn-link btn-approved' href="{% url "expense:open_cycle" cycle.id %}">
-                <i class="fa-regular fa-circle-check"></i>
+                <i class="fa-solid fa-unlock"></i>
                 ABRIR CICLO
             </a>
         {% endif %}
@@ -262,6 +262,39 @@
     </div>
 {% endif %}
 <main>
+      <form action="{% url "expense:cycle_delete" cycle.id %}" method='POST'>
+            {% csrf_token %}
 
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button 
+                id='delete'
+                class="btn btn-link btn-delete"
+                type='submit'>
+                    CONFIRMA A EXCLUSÃO ?
+                </button>            
+            {% else %}
+                <button 
+                class="btn btn-link btn-delete"
+                onclick='backToDeleteButton()'>
+                    <i class="fa-solid fa-trash"></i>
+                    DELETAR CICLO
+                </button>            
+            {% endif %}
+        </form>
 </div>
+
+<script>
+    
+    window.addEventListener('DOMContentLoaded', function (){
+    {% if confirmation == 'no' %}
+        const button = document.getElementById('delete');
+        
+        if (button) {
+            button.scrollIntoView({behavior: 'smooth', block: 'center'})
+        }
+    {% endif %} 
+    });
+
+</script>
 {% endblock content %}
