@@ -1,8 +1,8 @@
 from django.urls import path
-from expenses import views
+from api import views
 
 app_name = 'api'
 
 urlpatterns = [
-    path()
+    path('expenses/', views.ExpenseListView.as_view(), name='expense-list'),
 ]

@@ -15,18 +15,27 @@
     </div>
     
     <div class="expense-detail-grid">
-        <a  class='remove-text-decoration'  href="#">
             <div class="expense-info-card">
                 <h2 class="expense-info-title">
                     <i class="fa-solid fa-arrows-spin"></i>
-                    GRAFICO 1
+                    CATEGORIAS
                 </h2>
 
-                <div class="expense-info-grid">
-                    
+                <div>
+                    <canvas id="chart-bars" style="max-height: 250px;"></canvas>
                 </div>
             </div>
-        </a>
+
+            <div class="expense-info-card">
+                <h2 class="expense-info-title">
+                    <i class="fa-solid fa-arrows-spin"></i>
+                    GRAFICO 2
+                </h2>
+
+                <div>
+                    <canvas id="chart-pie" style="max-height: 250px;"></canvas>
+                </div>
+            </div>
 
     </div>
 {% endblock content %}

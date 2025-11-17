@@ -18,7 +18,8 @@ class Calculation:
     
     def _total_fuel(self):
         total_fuel = self.expenses.filter(category__name='COMBUSTÍVEIS').aggregate(total=Sum('amount'))
-        return total_fuel['total']
+        roun_total = total_fuel['total']
+        return round(roun_total, 2)
     
     def _fuel_consumption(self):
         total_fuel = self.total_fuel
