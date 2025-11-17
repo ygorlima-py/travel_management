@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.db.models import Q
 from django.core.paginator import Paginator
-from expenses.models import Expenses, Category
+from expenses.models import Expenses
 
 # Create your views here.
 
@@ -44,18 +44,11 @@ def expense(request, expense_id):
         context=context,
     )
     
-def categories(request):
-    categories = Category.objects.order_by('-id')
-    
-    if categories is None:
-        raise Http404()
-    
-    context = {
-        'categories': categories,
-    }
+@login_required(login_url='expense:login')
+
+def dashbords(request):
 
     return render (
         request=request,
-        template_name='expenses/pages/categories.html',
-        context=context,
+        template_name='expenses/pages/dashbords.html',
     )

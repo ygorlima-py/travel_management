@@ -1,0 +1,32 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-arrows-spin"></i>
+        DASHBORDS
+    </h1>
+
+    <div class="contact-links">
+        <a class='btn btn-link ' href="{% url "expense:index" %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+    </div>
+    
+    <div class="expense-detail-grid">
+        <a  class='remove-text-decoration'  href="#">
+            <div class="expense-info-card">
+                <h2 class="expense-info-title">
+                    <i class="fa-solid fa-arrows-spin"></i>
+                    GRAFICO 1
+                </h2>
+
+                <div class="expense-info-grid">
+                    
+                </div>
+            </div>
+        </a>
+
+    </div>
+{% endblock content %}

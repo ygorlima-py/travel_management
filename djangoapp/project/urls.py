@@ -19,10 +19,9 @@ from django.urls import path, include
 from django.conf import settings # Para importar coisas do settings
 from django.conf.urls.static import static
 
-app_name = 'expense'
-
 urlpatterns = [
     path('', include('expenses.urls')),
+    # path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
 
