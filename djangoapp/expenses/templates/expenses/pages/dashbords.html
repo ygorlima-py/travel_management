@@ -15,27 +15,77 @@
     </div>
     
     <div class="expense-detail-grid">
-            <div class="expense-info-card">
-                <h2 class="expense-info-title">
-                    <i class="fa-solid fa-arrows-spin"></i>
-                    CATEGORIAS
-                </h2>
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CUSTO X CATEGORIA
+            </h2>
 
-                <div>
-                    <canvas id="chart-bars" style="max-height: 250px;"></canvas>
-                </div>
+            <div>
+                <canvas id="chart-pie" style="max-height: 250px;"></canvas>
             </div>
+        </div>
 
-            <div class="expense-info-card">
-                <h2 class="expense-info-title">
-                    <i class="fa-solid fa-arrows-spin"></i>
-                    GRAFICO 2
-                </h2>
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CUSTO X CICLO
+            </h2>
 
-                <div>
-                    <canvas id="chart-pie" style="max-height: 250px;"></canvas>
-                </div>
+            <div>
+                <canvas id="custo-x-ciclo" style="max-height: 250px;"></canvas>
             </div>
+        </div>
+
+        <div class="expense-description-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                EVOLUÇÃO DOS CUSTOS X MÊS
+            </h2>
+            <div>
+                <canvas id="chart-line" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CUSTO MÉDIO POR DIA X CICLO
+            </h2>
+            <div>
+                <canvas id="custo-dia-x-ciclo" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CONSULMO MÉDIO DE COMBUSTÍVEL
+            </h2>
+            <div>
+                <canvas id="consumo-x-ciclo" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CUSTO MÉDIO/LITRO DE COMBUSTÍVEL
+            </h2>
+            <div>
+                <canvas id="" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                CUSTO/KM
+            </h2>
+            <div>
+                <canvas id="" style="max-height: 250px;"></canvas>
+            </div>
+        </div>
 
     </div>
 {% endblock content %}

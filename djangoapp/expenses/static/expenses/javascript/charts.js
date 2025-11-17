@@ -24,6 +24,11 @@ async function fetchChartData(url) {
     }
 }
 
+// Tranfform unity to Real Brazilian
+const currency = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+})
 
 // In this function, a bar chart is created
 async function createChart(id, type, url) {
@@ -36,59 +41,42 @@ async function createChart(id, type, url) {
         const config = {
             type: type,
             data: {
-                labels: data.xValues,
+                labels: data.chart_by_category.xValues,
                 datasets: [{
-                    backgroundColor: data.barColors,
-                    data: data.yValues
+                    backgroundColor: data.chart_by_category.barColors,
+                    data: data.chart_by_category.yValues
                 }]
             },
+
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: { 
+                        display: true,
+                        position: 'right',
+                    },
                     title: {
                         display: true,
-                        text: data.chartName,
+                        text: data.chart_by_category.chartName,
                         font: { size: 16 }
                     }
                 },
-
                 scales: {
                     x: {
+                        display: false,
                         grid: {
-                            display: false,
+                            display: true,
                             drawBorder: false
                         }
                     },
                     y: {
+                        display: false,
                         grid: {
-                            display: false,
-                            // drawBorder: false
-                        }
+                            display: true,
+                            drawBorder: true
+                        },
+                        ticks: {
+                        callback: (value) => currency.format(value)
                     }
-                }
-            }
-        }
-        new Chart(ctx, config);
-    }
-
-    else if (type == "scatter") {
-        const config = {
-            type: type,
-            data: {
-                datasets: [{
-                    pointRadius: 4,
-                    pointBackgroundColor: "rgba(255, 0, 0, 1)",
-                    backgroundColor: "rgba(0, 8, 255, 1)",
-                    data: data
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: "House Prices vs. Size",
-                        font: { size: 16 }
                     }
                 }
             }
@@ -101,25 +89,43 @@ async function createChart(id, type, url) {
         const config = {
             type: type,
             data: {
-                labels: data.xValues,
+                labels: data.chart_by_month.xValues,
                 datasets: [{
                     fill: false,
                     lineTension: 0,
                     backgroundColor: "rgba(0,0,255,1.0)",
                     borderColor: "rgba(0,0,255,0.1)",
-                    data: data.yValues
+                    data: data.chart_by_month.yValues
                 }]
             },
-            options: {
-                
+            options: {       
                 plugins: {
                     legend: { display: false },
                     title: {
                         display: true,
-                        text: "House Prices vs. Size",
+                        text: data.chart_by_month.chartName,
                         font: { size: 16 }
                     }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            callback: (value) => currency.format(value)
+                        }
+                    }
                 }
+
+
             }
         }
         new Chart(ctx, config);
@@ -131,6 +137,8 @@ async function createChart(id, type, url) {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await createChart('chart-bars', 'bar', '/api/expenses/')
-    await createChart('chart-pie', 'pie', '/api/expenses/')
+    await createChart('chart-pie', 'pie', '/api/expenses/'),
+    await createChart('custo-x-ciclo', 'bar', '/api/expenses/'),
+    await createChart('chart-line', 'line', '/api/expenses/')
+    await createChart('custo-dia-x-ciclo', 'bar', '/api/expenses/')
 })

@@ -17,9 +17,11 @@ class Calculation:
         return end_km - initial_km
     
     def _total_fuel(self):
-        total_fuel = self.expenses.filter(category__name='COMBUSTÍVEIS').aggregate(total=Sum('amount'))
-        roun_total = total_fuel['total']
-        return round(roun_total, 2)
+        total_fuel = self.expenses.filter(category__name='COMBUSTÍVEL').aggregate(total=Sum('amount'))
+        round_total = total_fuel['total']
+        if round_total is None:
+            return None
+        return round(round_total, 2)
     
     def _fuel_consumption(self):
         total_fuel = self.total_fuel

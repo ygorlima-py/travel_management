@@ -70,7 +70,7 @@ def expense_update(request, expense_id):
             expense.save(update_fields=['status_id'])
             
             messages.success(request, "Despesa atualizada")
-            return redirect('expense:expense', expense_id=expense.pk)
+            return redirect('expense:index')
         
     else:
         form = ExpenseForm(instance=expense)
