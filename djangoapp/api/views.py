@@ -1,6 +1,6 @@
 from rest_framework.views import APIView #type:ignore
 from expenses.models import Expenses
-from api.serializers import ExpenseCategorySerializers, ExpenseMonthSerializers
+from api.serializers import ExpenseCategorySerializers, ExpenseMonthSerializers, ExpenseCycleSerializers
 from django.db.models import Sum
 from rest_framework.response import Response  #type:ignore
 from rest_framework.permissions import AllowAny  #type:ignore
@@ -50,12 +50,34 @@ class ExpenseListView(APIView):
         }
 
         return response_data
+    
+    def _get_chart_by_cicle(self):
+        queryset = (
+            Expenses.objects
+            .filter(cycle__isnull=False)
+            .values('cycle__name')
+            .annotate(total=Sum('value'))
+            .order_by('-total')
+            )
+        
+        serializer = ExpenseCycleSerializers(queryset, many=True)
+        data = serializer.data
+
+        response_data = {
+            'xValues': [item['cycle'] for item in data],
+            'yValues': [item['total'] for item in data],
+            'barColors': ["red", "green", "blue", "orange", "brown"],
+            'chartName': 'Custo total (R$) X Ciclo',
+        }
+
+        return response_data
 
     def get(self, request):
         
         data_json = dict(
             chart_by_category=self._get_chart_by_category(),
             chart_by_month=self._get_chart_by_date(),
+            get_chart_by_cycle=self._get_chart_by_cicle(),
         )
 
         return Response(data_json)
