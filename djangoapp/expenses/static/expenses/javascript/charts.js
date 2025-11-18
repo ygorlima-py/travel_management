@@ -1,11 +1,13 @@
-// Here we make the request to fetch the data
+import { createChartPie } from './chartPie.js'
+import { createChartBar } from './chartBar.js'
+import { createChartLine } from './chartLine.js'
+
 async function fetchChartData(url) {
     try {
         const response = await fetch(url);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
-
         }
 
         const data = await response.json();
@@ -24,121 +26,49 @@ async function fetchChartData(url) {
     }
 }
 
-// Tranfform unity to Real Brazilian
-const currency = new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-})
-
-// In this function, a bar chart is created
-async function createChart(id, type, url) {
-
-    const data = await fetchChartData(url)
-
-    const ctx = document.getElementById(id);
-
-    if (type == 'bar' || type == 'pie' || type == 'doughnut') {
-        const config = {
-            type: type,
-            data: {
-                labels: data.chart_by_category.xValues,
-                datasets: [{
-                    backgroundColor: data.chart_by_category.barColors,
-                    data: data.chart_by_category.yValues
-                }]
-            },
-
-            options: {
-                plugins: {
-                    legend: { 
-                        display: true,
-                        position: 'right',
-                    },
-                    title: {
-                        display: true,
-                        text: data.chart_by_category.chartName,
-                        font: { size: 16 }
-                    }
-                },
-                scales: {
-                    x: {
-                        display: false,
-                        grid: {
-                            display: true,
-                            drawBorder: false
-                        }
-                    },
-                    y: {
-                        display: false,
-                        grid: {
-                            display: true,
-                            drawBorder: true
-                        },
-                        ticks: {
-                        callback: (value) => currency.format(value)
-                    }
-                    }
-                }
-            }
-        }
-        new Chart(ctx, config);
-    }
-
-    else if (type == "line") {
-    
-        const config = {
-            type: type,
-            data: {
-                labels: data.chart_by_month.xValues,
-                datasets: [{
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: "rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)",
-                    data: data.chart_by_month.yValues
-                }]
-            },
-            options: {       
-                plugins: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: data.chart_by_month.chartName,
-                        font: { size: 16 }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false,
-                            drawBorder: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            display: false,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            callback: (value) => currency.format(value)
-                        }
-                    }
-                }
-
-
-            }
-        }
-        new Chart(ctx, config);
-    }
-
-
-}
-
-
-
 document.addEventListener('DOMContentLoaded', async () => {
-    await createChart('chart-pie', 'pie', '/api/expenses/'),
-    await createChart('custo-x-ciclo', 'bar', '/api/expenses/'),
-    await createChart('chart-line', 'line', '/api/expenses/')
-    await createChart('custo-dia-x-ciclo', 'bar', '/api/expenses/')
+    const data = await fetchChartData('/api/expenses')
+
+    const chart_by_category = {
+        'data': data.chart_by_category,
+        'id': "chart-category"
+    }
+
+    const chart_by_cycle = {
+        'data': data.chart_by_cycle,
+        'id': "chart-cycle"
+    }
+
+    const chart_by_month = {
+        'data': data.chart_by_month,
+        'id': "chart-month",
+    }
+
+    const chart_average_by_day = {
+        'data': data.chart_average_by_day,
+        'id': "chart-avg-day",
+    }
+
+    const chart_average_fuel = {
+        'data': data.chart_average_fuel,
+        'id': "chart-avg-fuel",
+    }
+
+    const chart_average_cost_fuel = {
+        'data': data.chart_average_cost_fuel,
+        'id': "chart-avg-cost-fuel",
+    }
+
+    const chart_average_cost_km = {
+        'data': data.chart_average_cost_km,
+        'id': "chart-avg-cost-km",
+    }
+
+    createChartPie(chart_by_category.id, chart_by_category.data);
+    createChartBar(chart_by_cycle.id, chart_by_cycle.data, true);
+    createChartLine(chart_by_month.id, chart_by_month.data, true);
+    createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
+    createChartBar(chart_average_fuel.id, chart_average_fuel.data, false);
+    createChartBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
+    createChartBar(chart_average_cost_km.id, chart_average_cost_km.data, true);
 })

@@ -9,8 +9,8 @@ services:
         - 8000:8000
         volumes:
         - ./djangoapp:/djangoapp
-        - static_volume:/data/web/static/
-        - media_volume:/data/web/media/
+        - ./data/web/static:/data/web/static/
+        - ./data/web/media:/data/web/media/
         env_file:
         - ./dotenv_files/.env
         depends_on:
@@ -24,7 +24,3 @@ services:
         - ./dotenv_files/.env
         ports:
         - "5432:5432"
-
-volumes:
-  static_volume:
-  media_volume:
