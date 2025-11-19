@@ -74,7 +74,7 @@ class Cycle(models.Model):
                 default=True
     )
     owner = models.ForeignKey(
-            User,
+            settings.AUTH_USER_MODEL,
             on_delete=models.PROTECT,
             related_name='cycles_owner'
     )
@@ -149,7 +149,8 @@ class Expenses(models.Model):
                 upload_to='pictures/%Y/%m/',
                 help_text='Adicione a imagem da nota fiscal')
     
-    owner_expenses = models.ForeignKey(User, 
+    owner_expenses = models.ForeignKey(
+                                settings.AUTH_USER_MODEL, 
                                 on_delete=models.SET_NULL,
                                 blank=True,
                                 null=True,
@@ -187,7 +188,7 @@ class UserProfile(models.Model):
     ]
 
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='profile'
         )
