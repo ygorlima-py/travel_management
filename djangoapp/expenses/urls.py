@@ -13,7 +13,7 @@ urlpatterns = [
     path('expense/create/', views.create_expense, name='create'),
     
     path('user/register/', views.register, name='register'),
-    path('user/profile/<str:username>', views.profile, name='profile'), #type:ignore
+    path('user/profile/<str:username>/', views.profile, name='profile'), #type:ignore
     path('user/update/', views.user_update, name='user_update'),
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),

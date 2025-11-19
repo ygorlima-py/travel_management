@@ -1,7 +1,10 @@
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from expenses.models import Expenses
+from utils.reports import GenerateReports
+from datetime import datetime
 
 @login_required(login_url='expense:login')
 def profile(request, username):
@@ -23,11 +26,34 @@ def profile(request, username):
 
 @login_required(login_url='expense:login')
 def reports(request):
+    
     if request.method == 'POST':
         initial_date = request.POST.get('initial_date')
         end_date = request.POST.get('end_date')
+        user = request.user
 
-        print(initial_date, end_date)
+        if not initial_date or not end_date:
+            return redirect('expense:reports')
+
+        initial = datetime.strptime(initial_date, "%Y-%m-%d")
+        end = datetime.strptime(end_date, "%Y-%m-%d")
+
+        queryset = (
+            Expenses.objects
+            .filter(owner_expenses_id=user.id)
+            .filter(date__date__range=(initial, end))
+        )
+
+        excel_file = GenerateReports(queryset=queryset).generate_excel()
+
+        response = HttpResponse(
+            excel_file.getvalue(),
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+
+        response["Content-Disposition"] = 'attachment; filename="relatorio_despesas.xlsx"' 
+    
+        return response
 
     context = {
         'help_text_initial': 'Selecione a data inicial do periodo que deseja extrair o relatório',
