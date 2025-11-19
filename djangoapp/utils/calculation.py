@@ -14,6 +14,11 @@ class Calculation:
     def _distance(self):
         initial_km = self.cycle.initial_km
         end_km = self.cycle.end_km
+        if initial_km is None:
+            return None
+        if end_km is None:
+            return None
+        
         return end_km - initial_km
     
     def _total_fuel(self):
@@ -25,7 +30,10 @@ class Calculation:
     
     def _fuel_consumption(self):
         total_fuel = self.total_fuel
-        if total_fuel is None:
+
+        if total_fuel  is None:
+            return None
+        if self.distance is None:
             return None
         else:
             fuel_consumption = self.distance / total_fuel
