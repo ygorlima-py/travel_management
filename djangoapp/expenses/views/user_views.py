@@ -19,3 +19,22 @@ def profile(request, username):
         template_name='expenses/pages/profile.html',
         context=context,
     )
+
+
+@login_required(login_url='expense:login')
+def reports(request):
+    if request.method == 'POST':
+        initial_date = request.POST.get('initial_date')
+        end_date = request.POST.get('end_date')
+
+        print(initial_date, end_date)
+
+    context = {
+        'help_text_initial': 'Selecione a data inicial do periodo que deseja extrair o relatório',
+        'help_text_end': 'Selecione a data final do periodo que deseja extrair o relatório'
+    }
+    return render (
+        request=request,
+        template_name='expenses/pages/reports.html',
+        context=context
+    )

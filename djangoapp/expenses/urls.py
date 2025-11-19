@@ -17,6 +17,7 @@ urlpatterns = [
     path('user/update/', views.user_update, name='user_update'),
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),
+    path('user/reports/', views.reports, name='reports'),
 
     path('ciclos/', views.cycles, name='cycles'), #type:ignore
     path('ciclo/<int:cycle_id>/detail', views.cycle, name='cycle'), #type:ignore
@@ -26,7 +27,7 @@ urlpatterns = [
     path('ciclos/<int:cycle_id>/update/', views.cycle_update, name='cycle_update'),
     path('ciclos/<int:cycle_id>/delete/', views.cycle_delete, name='cycle_delete'),
 
-    path('dashbords/', views.dashbords, name='dashbords')
+    path('dashbords/', views.dashbords, name='dashbords'),
     
 ]
 

@@ -1,0 +1,35 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+    <div class='space-container'>
+        
+    </div>
+    <div class="form-wrapper">   
+            <h2 class="expense-detail-title expense-info-title">
+            <i class="fa-solid fa-file-lines"></i>
+                RELATÓRIOS
+            </h2>
+            
+        <form action="" method="post" enctype="multipart/form-data">     
+            {% csrf_token %}  
+            <div class="form-content padding-forms">
+                <div class="form-group">              
+                    <label for="data">Data Inicial:</label>
+                    <input class="center-text" type='date' name='initial_date'></input>
+                    <small>{{help_text_initial}}</small>
+                </div>
+                <div class="form-group">              
+                    <label for="data">Data Final:</label>
+                    <input class="center-text" type='date' name='end_date'></input>
+                    <small>{{help_text_end}}</small>
+                </div>
+            </div>
+            
+            <div class="form-content padding-forms">
+                <div class="form-group">
+                    <button class="btn" type='submit'>EXTRAIR RELATÓRIO</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
