@@ -57,8 +57,12 @@ def cycle_update(request, cycle_id):
         form = CreateCycle(
             instance=cycle,
             initial={
+                'name': cycle.name,
                 'initial_date': cycle.initial_date.strftime('%Y-%m-%d'),
                 'end_date': cycle.end_date.strftime('%Y-%m-%d'),
+                'initial_km': cycle.initial_km,
+                'end_km': cycle.end_km,
+                'save_expense_auto': cycle.save_expense_auto,
             })
     
     context = {
