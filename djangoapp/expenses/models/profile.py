@@ -35,6 +35,7 @@ class UserProfile(models.Model):
                 on_delete=models.SET_NULL,
                 blank=True,
                 null=True,
+                related_name='members',
     )
 
     city = models.CharField(
@@ -43,11 +44,6 @@ class UserProfile(models.Model):
                             null=True,
                             )
     
-    cost_center = models.CharField(
-                        max_length=25,
-                        blank=True,
-                        null=True,
-    )
 
     fleet_number = models.CharField(
                             max_length=20,

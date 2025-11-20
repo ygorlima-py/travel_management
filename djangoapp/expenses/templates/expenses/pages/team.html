@@ -33,12 +33,12 @@
     <div class="expense-detail-grid">
 
         <!-- Card de Informações Básicas -->
-        <div class="expense-info-card">
+        <div class="expense-description-card">
             <h2 class="expense-info-title">
-            <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-circle-info"></i>
                 Informações da Equipe
             </h2>
-            <div class="expense-info-grid">
+            <div class="grid-three-columns">
 
                 <div class="expense-info-item">
                     <span class="expense-info-label">
@@ -48,21 +48,20 @@
                     <span class="expense-info-value">{{team.enterprise}}</span>
                 </div>
 
-
                 <div class="expense-info-item">
                     <span class="expense-info-label">
                         <i class="fa-solid fa-calendar"></i>
                         Gestor Responsável
                     </span>
-                    <span class="expense-info-value">{{team.team_manager.name}}</span>
+                    <span class="expense-info-value">{{team.team_manager.first_name}}</span>
                 </div>
-
+            
                 <div class="expense-info-item">
-                        <span class="expense-info-label">
-                            <i class="fa-solid fa-calendar"></i>
-                            Data de Criação:
-                        </span>
-                        <span class="expense-info-value">{{team.created_at}}</span>
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge"></i>
+                        Centro de Custo
+                    </span>
+                    <span class="expense-info-value">{{team.cost_center}}</span>
                 </div>
                 
                 <div class="expense-info-item">
@@ -84,84 +83,36 @@
                         {% endif %}
                     </span>
                 </div>
-
             </div>
         </div>
 
-        <!-- Card de informações da frota -->
-        <div class="expense-info-card">
-            <h2 class="expense-info-title">
-                <i class="fa-solid fa-car"></i>
-                Informações Complementares
-            </h2>
-
-            <div class="expense-info-grid">
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-gauge"></i>
-                        Centro de Custo
-                    </span>
-                    <span class="expense-info-value">1234</span>
-                </div>
-
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-gauge"></i>
-                        Quantidade de Membros
-                    </span>
-                    <span class="expense-info-value">3</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card de Valores -->
         <div class="expense-description-card">
             <h2 class="expense-info-title">
-                <i class="fa-solid fa-hand-holding-dollar"></i>    
-                Valores
+                <i class="fa-solid fa-note-sticky"></i>
+                Membros da Equipe
             </h2>
-            <div class="expense-info-grid">
-                {% if calculation.total_fuel %}
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-gas-pump"></i>
-                        TOTAL ABASTECIDO NOS ULTIMOS 30 DIAS
-                    </span>
-                    <span class="expense-info-value expense-value-highlight">600 Litros</span>
-                </div>
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-gauge-simple"></i>
-                        CONSUMO MÉDIO NOS ULTIMOS 30 DIAS
-                    </span>
-                    <span class="expense-info-value expense-value-highlight">10,30Km/L</span>
-                </div>
-                {% endif %}
-
-                <div class="expense-info-item">
-                    <span class="expense-info-label">QUANTIDADE TOTAL DE DESPESAS NOS ULTIMOS 30 DIAS</span>
-                    <span class="expense-info-value expense-value-highlight">173</span>
-                </div>
-
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-regular fa-circle-check"></i>
-                        QUANTIDADE DE DESPESAS APROVADAS NOS ULTIMOS 30 DIAS
-                    </span>
-                    <span class="expense-info-value expense-value-highlight">125</span>
-                </div>
+            <div class="grid-three-columns">
                 
-                <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-dollar-sign"></i>
-                        VALOR TOTAL DOS ULTIMOS 30 DIAS
-                    </span>
-                    <span class="expense-info-value expense-value-highlight">R$ 35200,30</span>
+                {% for member in members %}
+                <div class="expense-info-item center-text user-member">
+                    <a class="remove-text-decoration" href="{% url "expense:profile" member.user.username %}">
+                        <span class="expense-info-label">
+                            <i class="fa-solid fa-user fa-2x"></i>
+                        </span>
+                        <span class="expense-info-value">
+                            {{member.user.first_name}} {{member.user.last_name}}
+                        </span>
+                    </a>
                 </div>
+
+                {% empty %}
+                    <p>Nenhum membro na equipe
+                {% endfor %}
             </div>
-        </div>
+        </div>     
     </div>
 
+    
     {% if expenses %}
     <div class='responsive-table content'>
         <table class='contacts-table'>
@@ -242,6 +193,7 @@
             </tbody>
         </table>
     </div>
+
 {% else %}
     <div class='not-found content'>
         <h1 class="single-cont act-name">

@@ -22,7 +22,15 @@ def teams(request):
 
 @login_required(login_url='expense:login')
 def team(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)   
+    team = (
+        get_object_or_404(
+            Team.objects
+            .select_related('enterprise', 'team_manager'), pk=team_id
+            )
+        )
+
+    members = team.members.select_related('user')
+    
     expenses = Expenses.objects.filter(
         owner_expenses=request.user,
         )
@@ -32,7 +40,7 @@ def team(request, team_id):
     context = {
         'team': team,
         'expenses': expenses,
-        # 'calculation': calculation,
+        'members': members,
     }
 
     return render (
