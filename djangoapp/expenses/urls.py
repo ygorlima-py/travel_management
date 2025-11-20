@@ -30,6 +30,8 @@ urlpatterns = [
     path('dashbords/', views.dashbords, name='dashbords'),
 
     path('equipes/', views.teams, name='teams'), #type:ignore
+    path('equipe/<int:team_id>/', views.team, name='team'), #type:ignore
+
     
 ]
 

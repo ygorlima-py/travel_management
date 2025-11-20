@@ -58,14 +58,6 @@
                 </div>
 
                 <div class="expense-info-item">
-                    <span class="expense-info-label">
-                        <i class="fa-solid fa-calendar"></i>
-                        Data Final
-                    </span>
-                    <span class="expense-info-value">{{cycle.end_date}}</span>
-                </div>
-
-                <div class="expense-info-item">
                         <span class="expense-info-label">
                             <i class="fa-solid fa-calendar"></i>
                             Data de Criação:
@@ -102,6 +94,7 @@
                 <i class="fa-solid fa-car"></i>
                 Informações Complementares
             </h2>
+
             <div class="expense-info-grid">
                 <div class="expense-info-item">
                     <span class="expense-info-label">
@@ -110,6 +103,7 @@
                     </span>
                     <span class="expense-info-value">1234</span>
                 </div>
+
                 <div class="expense-info-item">
                     <span class="expense-info-label">
                         <i class="fa-solid fa-gauge"></i>
@@ -256,7 +250,7 @@
     </div>
 {% endif %}
 <main>
-      <form action="{% url "expense:cycle_delete" cycle.id %}" method='POST'>
+      <form action="" method='POST'>
             {% csrf_token %}
 
             {% if confirmation == 'no' %}
@@ -272,7 +266,7 @@
                 class="btn btn-link btn-delete"
                 onclick='backToDeleteButton()'>
                     <i class="fa-solid fa-trash"></i>
-                    DELETAR CICLO
+                    DELETAR EQUIPE
                 </button>            
             {% endif %}
         </form>

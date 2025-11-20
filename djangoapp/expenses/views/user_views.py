@@ -1,5 +1,5 @@
 from django.http import Http404, HttpResponse
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from expenses.models import Expenses
@@ -8,7 +8,8 @@ from datetime import datetime
 
 @login_required(login_url='expense:login')
 def profile(request, username):
-    user = User.objects.filter(username=username).first() 
+    User = get_user_model()
+    user = User.objects.filter(username=username).first()
     
     if user is None:
         raise Http404("Perfil não encontrado")

@@ -23,6 +23,12 @@ class Team(models.Model):
                     blank=True,
     )
 
+    cost_center = models.CharField(
+                        max_length=25,
+                        blank=True,
+                        null=True,
+    )
+
     is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)

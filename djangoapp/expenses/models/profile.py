@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from .state import State   
+from .team import Team
 
 
 class UserProfile(models.Model):
@@ -29,6 +30,13 @@ class UserProfile(models.Model):
                     null=True,
                     )
     
+    team = models.ForeignKey(
+                Team,
+                on_delete=models.SET_NULL,
+                blank=True,
+                null=True,
+    )
+
     city = models.CharField(
                             max_length=50,
                             blank=True,
