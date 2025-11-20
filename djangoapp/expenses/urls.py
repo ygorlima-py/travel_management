@@ -28,6 +28,8 @@ urlpatterns = [
     path('ciclos/<int:cycle_id>/delete/', views.cycle_delete, name='cycle_delete'),
 
     path('dashbords/', views.dashbords, name='dashbords'),
+
+    path('equipes/', views.teams, name='teams'), #type:ignore
     
 ]
 

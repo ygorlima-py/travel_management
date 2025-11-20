@@ -73,3 +73,5 @@ def open_cycle(request, cycle_id):
     
     if created == False:
         return redirect("expense:cycles")
+    
+    

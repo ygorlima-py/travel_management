@@ -3,8 +3,8 @@
 {% block content %}
 <div class="expense-detail-container">
     <h1 class="expense-detail-title expense-info-title">
-        <i class="fa-solid fa-arrows-spin"></i>
-        MEUS CICLOS
+        <i class="fa-solid fa-people-group"></i>
+            MINHAS EQUIPES
     </h1>
     <div class="contact-links">
         <a class='btn btn-link ' href="{% url "expense:index" %}">
@@ -13,58 +13,59 @@
         </a>
         <a class='btn btn-link btn-approved' href="{% url "expense:create_cycle" %}">
             <i class="fa-solid fa-plus"></i>
-            ADICIONAR CICLO
+            ADICIONAR EQUIPE
         </a>
     </div>
     
     <div class="expense-detail-grid">
 
-        {% if cycles %}
-        {% for cycle in cycles %}
-        <a  class='remove-text-decoration'  href="{% url "expense:cycle" cycle.id %}">
+        <!-- Card de Informações Bancárias -->
+        {% if teams %}
+        {% for team in teams %}
+        <a  class='remove-text-decoration'  href="#">
             <div class="expense-info-card">
                 <h2 class="expense-info-title">
-                    <i class="fa-solid fa-arrows-spin"></i>
-                    {{cycle.name}}
+                    <i class="fa-solid fa-people-group"></i>
+                    {{team.name}}
                 </h2>
                 <div class="expense-info-grid">
                     <div class="expense-info-item">
                         <span class="expense-info-label">
                             <i class="fa-solid fa-calendar"></i>
-                            Data Inicial
+                            Empresa:
                         </span>
-                        <span class="expense-info-value">{{cycle.initial_date}}</span>
+                        <span class="expense-info-value">{{team.enterprise.name}}</span>
                     </div>
                     <div class="expense-info-item">
                         <span class="expense-info-label">
-                        <i class="fa-solid fa-calendar"></i>
-                            Data Final
+                        <i class="fa-solid fa-user-tie"></i>
+                            Gestor Responsável
                         </span>
                         <span class="expense-info-value">
-                            <span class="expense-info-value">{{cycle.end_date}}</span>
+                            <span class="expense-info-value">{{team.team_manager.first_name}}</span>
                         </span>
                     </div>
                     <div class="expense-info-item">
                         <span class="expense-info-label">
-                            <i class="fa-solid fa-user"></i>
-                            Criado por:
+                            <i class="fa-solid fa-calendar"></i>
+                            Data de Criação:
                         </span>
-                        <span class="expense-info-value">{{user.first_name}} {{user.last_name}}</span>
+                        <span class="expense-info-value">{{team.created_at}}</span>
                     </div>
                     <div class="expense-info-item">
                         <span class="expense-info-label">
                             <i class="fa-solid fa-clock"></i>
                             Status
                         </span>
-                        {% if cycle.is_open %}
+                        {% if team.is_active %}
                             <span class="expense-badge expense-approved">
-                                <i class="fa-solid fa-unlock"></i>
-                                Aberto
+                                <i class="fa-regular fa-circle-check"></i>
+                                Ativo
                             </span>
                         {% else %}  
                             <span class="expense-badge expense-recused">
-                                <i class="fa-solid fa-lock"></i>
-                                Fechado
+                                <i class="fa-regular fa-circle-xmark"></i>
+                                Inativo
                             </span>
                         {% endif %}
                     </div>
@@ -76,7 +77,7 @@
         {% else %}
         <div class="single-contact">
             <h1 class="single-cont act-name">
-                Nenhum ciclo criado
+                Você não possui equipes
             </h1>
         </div>
         {% endif %}

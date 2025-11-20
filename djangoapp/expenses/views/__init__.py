@@ -4,3 +4,5 @@ from .user_forms import *
 from .user_views import *
 from .cycle_views import *
 from .cycle_forms import *
+from .team_views import *
+# from .team_forms import *
