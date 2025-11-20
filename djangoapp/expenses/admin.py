@@ -54,3 +54,45 @@ class CycleAdmin(admin.ModelAdmin):
     ordering = '-id',
     list_display_links = 'id',
 
+@admin.register(models.Plan)
+class PlanAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'name','price','description',
+        'max_users', 'max_team', 'status', 
+        'created_at', 'updated_at',
+    )
+
+    ordering = '-created_at',
+    list_display_links = 'name',
+
+@admin.register(models.EnterPrise)
+class EnterpriseAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'name', 'cnpj', 'owner',
+        'created_at', 'updated_at', 'plan_type',
+        'is_active',
+    )
+
+    ordering = '-created_at',
+    list_display_links = 'name',
+
+@admin.register(models.Role)
+class RolesAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'name', 'description',
+        'hierarchy', 'is_active', 'created_at',
+        'updated_at',
+    )
+
+    ordering = '-created_at',
+    list_display_links = 'name',
+
+@admin.register(models.Team)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = (
+        'name', 'enterprise', 'team_manager',
+        'is_active', 'created_at', 'updated_at',
+        )
+    
+    ordering = '-created_at',
+    list_display_links = 'name',

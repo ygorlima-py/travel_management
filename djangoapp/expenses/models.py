@@ -340,7 +340,7 @@ class EnterPrise(models.Model):
     def __str__(self) -> str:
         return self.name
 
-class Roles(models.Model):
+class Role(models.Model):
     name = models.CharField(
                     max_length=100,
                     null=True,

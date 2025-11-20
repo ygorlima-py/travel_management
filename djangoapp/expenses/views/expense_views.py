@@ -45,7 +45,6 @@ def expense(request, expense_id):
     )
     
 @login_required(login_url='expense:login')
-
 def dashbords(request):
 
     context = dict(
