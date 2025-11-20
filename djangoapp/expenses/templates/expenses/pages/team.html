@@ -1,0 +1,294 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<div class="expense-detail-container">
+    <h1 class="expense-detail-title expense-info-title">
+        <i class="fa-solid fa-arrows-spin"></i>
+        {{team.name}}
+    </h1>
+
+    <div class="contact-links">
+        <a class='btn btn-link ' href="{% url "expense:teams" %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+        <a class='btn btn-link' href="#">
+            <i class="fa-solid fa-pen-to-square"></i>
+            ATUALIZAR
+        </a>
+        {% if team.is_active %}
+            <a class='btn btn-link btn-delete' href="#">
+                <i class="fa-solid fa-lock"></i>
+                DESATIVAR EQUIPE
+            </a>
+        {% else %}
+            <a class='btn btn-link btn-approved' href="#">
+                <i class="fa-solid fa-unlock"></i>
+                ATIVAR EQUIPE
+            </a>
+        {% endif %}
+    </div>
+    
+
+    <div class="expense-detail-grid">
+
+        <!-- Card de Informações Básicas -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+            <i class="fa-solid fa-circle-info"></i>
+                Informações da Equipe
+            </h2>
+            <div class="expense-info-grid">
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-user"></i>
+                        Empresa:
+                    </span>
+                    <span class="expense-info-value">{{team.enterprise}}</span>
+                </div>
+
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                        Gestor Responsável
+                    </span>
+                    <span class="expense-info-value">{{team.team_manager.name}}</span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-calendar"></i>
+                        Data Final
+                    </span>
+                    <span class="expense-info-value">{{cycle.end_date}}</span>
+                </div>
+
+                <div class="expense-info-item">
+                        <span class="expense-info-label">
+                            <i class="fa-solid fa-calendar"></i>
+                            Data de Criação:
+                        </span>
+                        <span class="expense-info-value">{{team.created_at}}</span>
+                </div>
+                
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-clock"></i>
+                        Status
+                    </span>
+                    <span class="expense-info-value">
+                        {% if team.is_active %}
+                            <span class="expense-badge expense-approved">
+                                <i class="fa-solid fa-unlock"></i>
+                                Ativa
+                            </span>
+                        {% else %}  
+                            <span class="expense-badge expense-recused">
+                                <i class="fa-solid fa-lock"></i>
+                                Inativa
+                            </span>
+                        {% endif %}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Card de informações da frota -->
+        <div class="expense-info-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-car"></i>
+                Informações Complementares
+            </h2>
+            <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge"></i>
+                        Centro de Custo
+                    </span>
+                    <span class="expense-info-value">1234</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge"></i>
+                        Quantidade de Membros
+                    </span>
+                    <span class="expense-info-value">3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card de Valores -->
+        <div class="expense-description-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-hand-holding-dollar"></i>    
+                Valores
+            </h2>
+            <div class="expense-info-grid">
+                {% if calculation.total_fuel %}
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gas-pump"></i>
+                        TOTAL ABASTECIDO NOS ULTIMOS 30 DIAS
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">600 Litros</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-gauge-simple"></i>
+                        CONSUMO MÉDIO NOS ULTIMOS 30 DIAS
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">10,30Km/L</span>
+                </div>
+                {% endif %}
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">QUANTIDADE TOTAL DE DESPESAS NOS ULTIMOS 30 DIAS</span>
+                    <span class="expense-info-value expense-value-highlight">173</span>
+                </div>
+
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-regular fa-circle-check"></i>
+                        QUANTIDADE DE DESPESAS APROVADAS NOS ULTIMOS 30 DIAS
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">125</span>
+                </div>
+                
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        VALOR TOTAL DOS ULTIMOS 30 DIAS
+                    </span>
+                    <span class="expense-info-value expense-value-highlight">R$ 35200,30</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if expenses %}
+    <div class='responsive-table content'>
+        <table class='contacts-table'>
+            <caption>
+                <h2 class="expense-detail-title expense-info-title">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    TODAS AS DESPESAS DA EQUPE
+                </h2>
+            </caption>
+            <thead>
+                <tr class='table-row table-row-header'>
+                    <th class='table-header'>ID</th>
+                    <th class='table-header'>Categoria</th>
+                    <th class='table-header'>Fornecedor</th>
+                    <th class='table-header'>Cidade</th>
+                    <th class='table-header'>Estado</th>
+                    <th class='table-header'>Status</th>
+                    <th class='table-header'>Data</th>
+                    <th class='table-header'>Quantidade</th>
+                    <th class='table-header'>Valor Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for expense in expenses %} 
+                <tr class='table-row'>
+                    <td class="table-cel">
+                        <a class='table-link' href="{% url "expense:expense" expense.id %}">
+                            {{expense.id}}
+                        </a>
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.category}}
+                    </td>
+                    
+                    <td class="table-cel">      
+                        {{expense.supply}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.city}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.state_uf.uf_name}}
+                    </td>
+
+                    <td class="table-cel">
+                    {% if expense.status.name == "PENDENTE" %}
+                        <span class="icon-status-pending">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </span>
+                    {% elif expense.status.name == "APROVADO" %}
+                        <span class="icon-status-approved">
+                            <i class="fa-regular fa-circle-check"></i>
+                        </span>
+                    {% else %}
+                        <span class="icon-status-recused">
+                            <i class="fa-regular fa-circle-xmark"></i>
+                        </span>
+                    {% endif %}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.date}}
+                    </td>
+                    
+                    <td class="table-cel">
+                        {{expense.amount}}
+                    </td>
+
+                    <td class="table-cel">
+                        R$ {{expense.value}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class='not-found content'>
+        <h1 class="single-cont act-name">
+            Nenhuma despesa neste ciclo
+        </h1>
+    </div>
+{% endif %}
+<main>
+      <form action="{% url "expense:cycle_delete" cycle.id %}" method='POST'>
+            {% csrf_token %}
+
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button 
+                id='delete'
+                class="btn btn-link btn-delete"
+                type='submit'>
+                    CONFIRMA A EXCLUSÃO ?
+                </button>            
+            {% else %}
+                <button 
+                class="btn btn-link btn-delete"
+                onclick='backToDeleteButton()'>
+                    <i class="fa-solid fa-trash"></i>
+                    DELETAR CICLO
+                </button>            
+            {% endif %}
+        </form>
+</div>
+
+<script>
+    
+    window.addEventListener('DOMContentLoaded', function (){
+    {% if confirmation == 'no' %}
+        const button = document.getElementById('delete');
+        
+        if (button) {
+            button.scrollIntoView({behavior: 'smooth', block: 'center'})
+        }
+    {% endif %} 
+    });
+
+</script>
+{% endblock content %}
