@@ -3,7 +3,7 @@
 {% block content %}
 <div class="expense-detail-container">
     <h1 class="expense-detail-title expense-info-title">
-        <i class="fa-solid fa-arrows-spin"></i>
+        <i class="fa-solid fa-people-group"></i>
         {{team.name}}
     </h1>
 
@@ -38,11 +38,11 @@
                 <i class="fa-solid fa-circle-info"></i>
                 Informações da Equipe
             </h2>
-            <div class="grid-three-columns">
+            <div class="grid-three-columns center-text">
 
                 <div class="expense-info-item">
                     <span class="expense-info-label">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-building"></i>
                         Empresa:
                     </span>
                     <span class="expense-info-value">{{team.enterprise}}</span>
@@ -50,7 +50,7 @@
 
                 <div class="expense-info-item">
                     <span class="expense-info-label">
-                        <i class="fa-solid fa-calendar"></i>
+                        <i class="fa-solid fa-user-tie"></i>
                         Gestor Responsável
                     </span>
                     <span class="expense-info-value">{{team.team_manager.first_name}}</span>
@@ -58,7 +58,7 @@
             
                 <div class="expense-info-item">
                     <span class="expense-info-label">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-sitemap"></i>
                         Centro de Custo
                     </span>
                     <span class="expense-info-value">{{team.cost_center}}</span>
@@ -88,7 +88,7 @@
 
         <div class="expense-description-card">
             <h2 class="expense-info-title">
-                <i class="fa-solid fa-note-sticky"></i>
+            <i class="fa-solid fa-people-group"></i>            
                 Membros da Equipe
             </h2>
             <div class="grid-three-columns">
@@ -113,7 +113,7 @@
     </div>
 
     
-    {% if expenses %}
+    {% if page_obj %}
     <div class='responsive-table content'>
         <table class='contacts-table'>
             <caption>
@@ -137,7 +137,7 @@
             </thead>
 
             <tbody>
-            {% for expense in expenses %} 
+            {% for expense in page_obj %} 
                 <tr class='table-row'>
                     <td class="table-cel">
                         <a class='table-link' href="{% url "expense:expense" expense.id %}">
@@ -192,8 +192,8 @@
                 {% endfor %}
             </tbody>
         </table>
+    {% include "expenses/partials/_pagination.html" %}
     </div>
-
 {% else %}
     <div class='not-found content'>
         <h1 class="single-cont act-name">
@@ -201,6 +201,7 @@
         </h1>
     </div>
 {% endif %}
+
 <main>
       <form action="" method='POST'>
             {% csrf_token %}

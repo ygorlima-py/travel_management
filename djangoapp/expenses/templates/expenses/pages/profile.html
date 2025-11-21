@@ -142,12 +142,21 @@
         </div>
     </div>
 
+    {% if request.user == user %}
     <div class="contact-links">
         <a class='btn btn-link' href="{% url "expense:user_update" %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR PERFIL
         </a>
     </div>
+    {% else %}
+    <div class="contact-links">
+        <a class='btn btn-link btn-approved' href="{% url "expense:index" %}">
+            <i class="fa-solid fa-cart-shopping"></i>
+            VER DESPESAS DO USUÁRIO
+        </a>
+    </div>
+    {% endif %}
 
 </div>
 {% endblock content %}
