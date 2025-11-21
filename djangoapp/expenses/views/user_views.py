@@ -65,3 +65,12 @@ def reports(request):
         template_name='expenses/pages/reports.html',
         context=context
     )
+
+@login_required(login_url='expense:login')
+def chose_register(request):
+
+    
+    return render (
+        request=request,
+        template_name='expenses/pages/chose_register.html',
+    )

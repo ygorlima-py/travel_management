@@ -4,6 +4,7 @@ from expenses import views
 app_name = 'expense'
 
 urlpatterns = [
+    # Expenses URLs
     path('', views.index, name='index' ),
     path('expense/<int:expense_id>/detail', views.expense, name='expense' ),
     path('expense/<int:expense_id>/update', views.expense_update, name='expense_update' ),#type:ignore
@@ -12,13 +13,19 @@ urlpatterns = [
     path('expense/<int:expense_id>/recused/', views.recused, name='recused'), #type:ignore
     path('expense/create/', views.create_expense, name='create'),
     
+    # User URLs
     path('user/register/', views.register, name='register'),
     path('user/profile/<str:username>/', views.profile, name='profile'), #type:ignore
     path('user/update/', views.user_update, name='user_update'),
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),
     path('user/reports/', views.reports, name='reports'),
+    path('user/chose/', views.chose_register, name='chose'),
 
+    # Enterprise URLs
+    path('enterprise/register/', views.register_enterprise, name='register_enterprise'),
+    
+    # Cycles URLs
     path('ciclos/', views.cycles, name='cycles'), #type:ignore
     path('ciclo/<int:cycle_id>/detail', views.cycle, name='cycle'), #type:ignore
     path('ciclos/create/', views.create_cycle, name='create_cycle'),
@@ -27,8 +34,10 @@ urlpatterns = [
     path('ciclos/<int:cycle_id>/update/', views.cycle_update, name='cycle_update'),
     path('ciclos/<int:cycle_id>/delete/', views.cycle_delete, name='cycle_delete'),
 
+
     path('dashbords/', views.dashbords, name='dashbords'),
 
+    # Teams URLs
     path('equipes/', views.teams, name='teams'), #type:ignore
     path('equipe/<int:team_id>/', views.team, name='team'), #type:ignore
 

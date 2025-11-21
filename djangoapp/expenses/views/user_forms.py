@@ -18,7 +18,7 @@ def register(request):
             user = form.save()
             auth.login(request, user)
             messages.success(request, 'Usuário Cadastrado com sucesso')
-            return redirect('expense:profile', username=user.username)
+            return redirect('expense:chose')
 
     return render(
         request,

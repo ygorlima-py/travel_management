@@ -816,3 +816,11 @@ img {
 .space-container{
     height: var(--space-container-top);
 }
+
+.chose-detail-card{
+    color: var(--link-dark-color);
+}
+
+.chose-margin-top {
+    margin-top: 100px;
+}

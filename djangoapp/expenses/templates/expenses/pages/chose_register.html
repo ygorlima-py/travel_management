@@ -1,0 +1,39 @@
+{% extends "expenses/base.html" %}
+
+{% block content %}
+<main class="expense-detail-container">
+    
+    <div class="contact-links">
+        <a class='btn btn-link ' href="{% url "expense:register" %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+    </div>
+    
+    <div class="expense-detail-grid chose-margin-top">
+
+        <!-- Card de Informações Bancárias -->
+        <a  class='remove-text-decoration center-text'  href="{% url "expense:register_enterprise" %}">
+            <div class="expense-info-card">
+                <div class='chose-detail-card'>
+                    <i class="fa-solid fa-building fa-10x"></i>
+                    <h1>
+                        CADASTRAR MINHA EMPRESA
+                    </h1>
+                </div>
+            </div>
+        </a>
+        <a  class='remove-text-decoration center-text'  href="#">
+            <div class="expense-info-card">
+                <div class='chose-detail-card'>
+                    <i class="fa-solid fa-user fa-10x"></i>
+                    <h1>
+                        QUERO ME CADASTRAR COMO USUÁRIO
+                    </h1>
+                </div>
+            </div>
+        </a>
+    </div>
+</main>
+
+{% endblock content %}

@@ -58,3 +58,29 @@ class Role(models.Model):
     def __str__(self) -> str:
         return self.name  #type: ignore
     
+
+class UserEnterpriseRole(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='enterprise_roles',
+    )
+
+    enterprise = models.ForeignKey(
+        EnterPrise,
+        on_delete=models.SET_NULL,
+        related_name='permissions',
+        blank=True,
+        null=True
+    )
+
+    role = models.ForeignKey(
+        Role,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self) -> str:
+        return f'{self.user}-{self.role.name}'
+
+
+    
