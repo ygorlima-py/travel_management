@@ -31,6 +31,7 @@
     --big-border-box: 12px;
     --space-container-top: 100px;
     --padding-horizontal-forms: 50px;
+    --margin-top-minimum: 1rem;
 }
 
 *,
@@ -823,4 +824,8 @@ img {
 
 .chose-margin-top {
     margin-top: 100px;
+}
+
+.margin-top-minimum {
+    margin-top: var(--margin-top-minimum);
 }

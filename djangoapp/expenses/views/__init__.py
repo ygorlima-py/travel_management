@@ -5,5 +5,6 @@ from .user_views import *
 from .cycle_views import *
 from .cycle_forms import *
 from .team_views import *
+from .team_forms import *
 from .enterprise_forms import *
 # from .team_forms import *

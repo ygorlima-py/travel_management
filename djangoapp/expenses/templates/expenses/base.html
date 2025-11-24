@@ -4,7 +4,9 @@
     {% include "expenses/partials/_head.html" %}
 </head>
 <body>
-    {% include "expenses/partials/_sidebar.html" %}
+    {% if not is_login %}
+        {% include "expenses/partials/_sidebar.html" %}
+    {% endif %}
     {% block content %}{% endblock content %}  
 </body>
 </html>

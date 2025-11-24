@@ -41,6 +41,7 @@ urlpatterns = [
     # Teams URLs
     path('equipes/', views.teams, name='teams'), #type:ignore
     path('equipe/<int:team_id>/', views.team, name='team'), #type:ignore
+    path('equipes/create_team', views.create_team, name='create_team'), #type:ignore
 
     
 ]
