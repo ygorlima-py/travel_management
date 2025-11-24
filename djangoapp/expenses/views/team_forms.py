@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
-from expenses.form import CreateTeam
-from expenses.models import UserEnterpriseRole
+from expenses.form import CreateTeam, TeamInviteForm # type:ignore
+from expenses.models import UserEnterpriseRole, Team
 
 @login_required(login_url='expense:login')
 def create_team(request):
@@ -51,35 +51,32 @@ def create_team(request):
         )
 
 @login_required(login_url='expense:login')
-def team_update(request, cycle_id):
-    cycle = get_object_or_404(Cycle, pk=cycle_id)
+def team_update(request, team_id):
+    team = get_object_or_404(Team, pk=team_id)
     
     if request.method == "POST":
-        form = CreateCycle(request.POST, instance=cycle)
+        form = CreateTeam(request.POST, instance=team)
         if form.is_valid():
-            update_cycle = form.save(commit=False)
-            update_cycle.owner_id = request.user.id
-            update_cycle.save()
+            update_team = form.save(commit=False)
+            update_team.team_manager = request.user.id
+            update_team.save()
 
-            messages.success(request, "Ciclo atualizado")
-            return redirect('expense:cycle_update', cycle_id=cycle.pk)
+            messages.success(request, "Equipe atualizada")
+            return redirect('expense:team', team_id=team.pk)
         
     else:
-        form = CreateCycle(
-            instance=cycle,
+        form = CreateTeam(
+            instance=team,
             initial={
-                'name': cycle.name,
-                'initial_date': cycle.initial_date.strftime('%Y-%m-%d'),
-                'end_date': cycle.end_date.strftime('%Y-%m-%d'),
-                'initial_km': cycle.initial_km,
-                'end_km': cycle.end_km,
-                'save_expense_auto': cycle.save_expense_auto,
+                'name': team.name,
+                'cost_center': team.cost_center,
+                'enterprise': team.enterprise,
             })
     
     context = {
         'form': form,
-        'cycle':cycle,
-        'is_cycle_update': True,
+        'team':team,
+        'is_form_update': True,
     }
 
     return render(
@@ -88,23 +85,23 @@ def team_update(request, cycle_id):
         context,      
     )
 
-@login_required(login_url='expense:login')
-def cycle_delete(request, cycle_id):
-    # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
-    cycle = get_object_or_404(Cycle, pk=cycle_id, owner_id=request.user)
+# @login_required(login_url='expense:login')
+# def team_delete(request, cycle_id):
+#     # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
+#     cycle = get_object_or_404(Cycle, pk=cycle_id, owner_id=request.user)
     
-    confirmation = request.POST.get('confirmation', 'no')
+#     confirmation = request.POST.get('confirmation', 'no')
 
-    if confirmation == 'yes':
-        cycle.delete()
-        return redirect('expense:cycles')
+#     if confirmation == 'yes':
+#         cycle.delete()
+#         return redirect('expense:cycles')
 
-    return render(
-        request,
-        'expenses/pages/cycle.html',
-        {
-            'cycle': cycle,
-            'confirmation': confirmation,
-            'user': cycle.owner,
-        }
-    )
+#     return render(
+#         request,
+#         'expenses/pages/cycle.html',
+#         {
+#             'cycle': cycle,
+#             'confirmation': confirmation,
+#             'user': cycle.owner,
+#         }
+#     )
