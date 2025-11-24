@@ -96,3 +96,15 @@ class TeamAdmin(admin.ModelAdmin):
     
     ordering = '-created_at',
     list_display_links = 'name',
+
+@admin.register(models.TeamInvite)
+class TeamInviteAdmin(admin.ModelAdmin):
+    list_display = (
+        'team', 'email', 'token',
+        'invited_by', 'created_at', 'expires_at',
+        'accepted'
+        )
+    
+    ordering = '-created_at',
+    list_display_links = 'team',
+
