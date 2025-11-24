@@ -67,7 +67,7 @@ def reports(request):
     )
 
 @login_required(login_url='expense:login')
-def chose_register(request):
+def chose_enterprise_or_user(request):
 
     
     return render (

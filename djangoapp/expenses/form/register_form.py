@@ -35,31 +35,6 @@ class RegisterForm(UserCreationForm):
         'Apenas letas, numeros e simbolos $%&*@'
     )
 
-    phone = forms.CharField(
-        required=False,
-        max_length=15,
-        label='Celular',
-    )
-
-    state_uf = forms.ModelChoiceField(
-        queryset=State.objects.all(),
-        required=False,
-        label='Estado',
-        empty_label='Selecione o  Estado'
-    )
-
-    city = forms.CharField(
-        required=False,
-        max_length=50,
-        label='Cidade',
-    )
-
-    fleet_number = forms.CharField(
-        required=False,
-        max_length=50,
-        label='Numero da Frota',
-    )
-    
     class Meta:
         model = User # Usamos o Objeto User
         fields = (
@@ -97,3 +72,44 @@ class RegisterForm(UserCreationForm):
             )    
         return user
     
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = [
+            'phone', 'state_uf', 'city',
+            'fleet_number','bank', 'agency',
+            'account', 'account_type',
+        ]
+        widgets = {
+            'phone': forms.TextInput(
+                attrs={'placeholder':'(00) 00000-0000'}
+                ),
+            'city': forms.TextInput(
+                attrs={'placeholder':'Digite a sua cidade:'}
+                ),
+            'fleet_number':forms.TextInput(
+                attrs={'placeholder':'Opcional, caso haja controle de frota'}
+                ),
+            'bank':forms.TextInput(
+                attrs={'placeholder':'Nome do Banco'}
+                ),
+            'agency':forms.TextInput(
+                attrs={'placeholder':'Agência'}
+                ),
+            'account':forms.TextInput(
+                attrs={'placeholder':'Conta'}
+                ),
+        }
+
+        labels = {
+            'phone': 'Telefone',
+            'state_uf': 'Estado',
+            'city': 'Cidade',
+            'team': 'Equipe',
+            'fleet_number': 'Número da Frota',
+            'bank': 'Banco',
+            'agency': 'Agência',
+            'account': 'Conta',
+            'account_type': 'Tipo de Conta',
+        }

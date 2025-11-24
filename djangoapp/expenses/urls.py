@@ -15,12 +15,13 @@ urlpatterns = [
     
     # User URLs
     path('user/register/', views.register, name='register'),
+    path('user/complete-profile/', views.complete_profile, name='complete_profile'),
     path('user/profile/<str:username>/', views.profile, name='profile'), #type:ignore
     path('user/update/', views.user_update, name='user_update'),
     path('user/login/', views.login_view, name='login'),
     path('user/logout/', views.logout_view, name='logout'),
     path('user/reports/', views.reports, name='reports'),
-    path('user/chose/', views.chose_register, name='chose'),
+    path('user/chose/', views.chose_enterprise_or_user, name='chose'),
 
     # Enterprise URLs
     path('enterprise/register/', views.register_enterprise, name='register_enterprise'),

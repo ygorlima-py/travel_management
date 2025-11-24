@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages, auth
-from expenses.form import RegisterForm, UpdateFormUser
+from expenses.form import RegisterForm, UpdateFormUser, UserProfileForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib.auth.models import User
-
+from expenses.models import UserProfile
 
 ''' Route for the user to register on the platform '''
 def register(request):
@@ -16,6 +16,9 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
+            
+            UserProfile.objects.get_or_create(user=user)
+
             auth.login(request, user)
             messages.success(request, 'Usuário Cadastrado com sucesso')
             return redirect('expense:chose')
@@ -27,6 +30,33 @@ def register(request):
             'form':form,
             'is_register': True,
         }
+    )
+
+@login_required(login_url='expense:login')
+def complete_profile(request):
+    
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil de usuario preechido com sucesso')
+            return redirect('expense:index')
+        
+    else:
+        form = UserProfileForm(instance=profile)
+    
+    context = dict(
+        form=form,
+        is_profile_complete=True,
+    )
+
+    return render(
+        request,
+        'expenses/pages/complete_profile.html',
+        context=context,
     )
 
 @login_required(login_url='expense:login')

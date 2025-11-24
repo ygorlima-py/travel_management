@@ -58,7 +58,6 @@ class Role(models.Model):
     def __str__(self) -> str:
         return self.name  #type: ignore
     
-
 class UserEnterpriseRole(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
