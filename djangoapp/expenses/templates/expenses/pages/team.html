@@ -16,6 +16,10 @@
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR
         </a>
+        <a class='btn btn-link btn-approved' href="{% url "expense:invite_member" team.pk %}">
+            <i class="fa-solid fa-user-plus"></i>
+            ADICIONAR MEMBRO
+        </a>
         {% if team.is_active %}
             <a class='btn btn-link btn-delete' href="#">
                 <i class="fa-solid fa-lock"></i>
@@ -106,7 +110,7 @@
                 </div>
 
                 {% empty %}
-                    <p>Nenhum membro na equipe
+                    <p>Nenhum membro na equipe</p>
                 {% endfor %}
             </div>
         </div>     

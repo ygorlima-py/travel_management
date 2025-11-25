@@ -17,7 +17,7 @@ class SendInvite:
         url = reverse('expense:accept_invite', args=[token])
         link = f'{settings.SITE_URL}{url}'
 
-        print(link)
+        print(f'minh url: {link}')
         
 
 

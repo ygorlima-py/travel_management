@@ -1,4 +1,3 @@
-from expenses.models import Cycle, Expenses
 
 class Validation:
     def __init__(
@@ -13,7 +12,6 @@ class Validation:
         self.end_date = end_date
         self.initial_km = initial_km
         self.end_km = end_km
-        
         self.validate_date = self._validate_date()
         self.validate_km = self._validate_km()
 
