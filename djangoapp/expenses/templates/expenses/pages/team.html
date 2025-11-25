@@ -100,12 +100,12 @@
                 {% for member in members %}
                 <div class="expense-info-item center-text user-member">
                     <a class="remove-text-decoration" href="{% url "expense:profile" member.user.username %}">
-                        <span class="expense-info-label">
+                        <p class="expense-info-label">
                             <i class="fa-solid fa-user fa-2x"></i>
-                        </span>
-                        <span class="expense-info-value">
+                        </p>
+                        <p class="expense-info-value">
                             {{member.user.first_name}} {{member.user.last_name}}
-                        </span>
+                        </p>
                     </a>
                 </div>
 

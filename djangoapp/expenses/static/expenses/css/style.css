@@ -829,3 +829,6 @@ img {
 .margin-top-minimum {
     margin-top: var(--margin-top-minimum);
 }
+.display-block-inline{
+    display: block;
+}
