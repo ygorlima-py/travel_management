@@ -1,6 +1,7 @@
 from expenses.models import TeamInvite
 from django.urls import reverse
 from django.conf import settings
+from django.core.mail import EmailMessage
 
 class SendInvite:
     def __init__(self, email, team_id) -> None:
@@ -17,7 +18,18 @@ class SendInvite:
         url = reverse('expense:accept_invite', args=[token])
         link = f'{settings.SITE_URL}{url}'
 
-        print(f'minh url: {link}')
+        return link
         
 
+    def send_invite(self):
+        link = self.create_url()
+
+        email = EmailMessage(
+            subject='Você foi convidado para entrar em uma equipe',
+            body=f"Clique no link {link} para entrar na equipe",
+            to=[self.email]
+        )
+        email.send()
+
+        return True
 

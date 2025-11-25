@@ -153,3 +153,20 @@ REST_FRAMEWORK = {
 }
 
 SITE_URL = os.getenv("SITE_URL", 'http://127.0.0.1:8000')
+
+# Settings e-mail
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# DEBUG - REMOVER DEPOIS
+print(f"EMAIL_HOST: {os.getenv('EMAIL_HOST')}")
+print(f"EMAIL_PORT: {os.getenv('EMAIL_PORT')}")
+print(f"EMAIL_HOST_USER: {os.getenv('EMAIL_HOST_USER')}")
+print(f"EMAIL_HOST_PASSWORD: {os.getenv('EMAIL_HOST_PASSWORD')}")
