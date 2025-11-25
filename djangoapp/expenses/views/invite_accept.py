@@ -1,21 +1,53 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404
-from expenses.models import TeamInvite
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import get_user_model
+from expenses.models import TeamInvite, UserEnterpriseRole, Role
 from django.contrib import messages
 
-@login_required(login_url='expense:login')
+User = get_user_model()
+
 def accept_invite(request, token):
     invite = get_object_or_404(TeamInvite, token=token)
-
-    if invite.is_valid():
-        messages.success(request,'Convite Válido')
-        print(invite.email)
-        print(invite.token)
-        print(invite.created_at)
-    else:
+    
+    # Check if invite is valid 
+    if not invite.is_valid():
         messages.error(request,'Convite Inválido')
+        return redirect('expense:login')
+    
+    # Check if user is authenticated
+    if request.user.is_authenticated:
+        
+        # Check if email address user is the same as the email invite
+        if request.user.email != invite.email: 
+            messages.error(request,'Usuário divergente do email de convite')
+            return redirect('expense:login')
 
-    return render(
-        request,
-        'expenses/pages/register.html',
-    )
+        # Add member on the team
+        request.user.profile.team = invite.team
+        request.user.profile.save(update_fields=['team'])
+
+        # Add Enterprise and Role in the User
+        operator_role = Role.objects.get(name='OPERATOR')
+        UserEnterpriseRole.objects.get_or_create(
+            enterprise=invite.team.enterprise,
+            role=operator_role,
+            user=request.user
+        )
+
+        # Mark true to accept invite
+        invite.accepted = True
+        invite.save(update_fields=['accepted'])
+
+        messages.success(request, f'Você entrou na equipe {invite.team.name}')
+        return redirect('expense:index')
+
+    # If user is not logged in but have account
+    if User.objects.filter(email=invite.email).exists():
+        request.session['invite_token'] = str(token)
+        messages.info(request, 'Faça o loggin com sua conta e clique novamente no link')
+        return redirect('expense:login')
+    
+    else:
+        request.session['invite_token'] = str(token)
+        request.session['invite_email'] = invite.email
+        messages.info(request, 'Crie uma conta com esse mesmo email e clique aqui novamente')
+        return redirect('expense:register')
