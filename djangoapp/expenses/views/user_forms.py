@@ -8,11 +8,17 @@ from django.contrib.auth.models import User
 from expenses.models import UserProfile
 
 ''' Route for the user to register on the platform '''
-def register(request):
+def register(request): 
+    invite_email = request.session.get('invite_email')
+    
     form = RegisterForm()
 
+    if invite_email:
+        form.initial['email'] = invite_email
+    
     if request.method == 'POST':
         form = RegisterForm(request.POST)
+        invite_token = request.session.get('invite_token')
 
         if form.is_valid():
             user = form.save()
@@ -21,6 +27,12 @@ def register(request):
 
             auth.login(request, user)
             messages.success(request, 'Usuário Cadastrado com sucesso')
+            
+            if invite_token:
+                del request.session['invite_token']
+                del request.session['invite_email']               
+                return redirect('expense:accept_invite', token=invite_token)           
+            
             return redirect('expense:chose')
 
     return render(
@@ -89,15 +101,24 @@ def login_view(request):
 
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
+        invite_token = request.session.get('invite_token')
 
-        if form.is_valid(): # Retorna booleano verificando se os dados digitados são validos
-            user = form.get_user() # Seleciona no banco o usuário 
-            auth.login(request, user) # Faz a autentificação logando o usuário
-            messages.success(request,'Você está logado') # Menssagem de sucesso do usuário logado
-            return redirect('expense:index') # Redireciona para a pgina index home
+        if form.is_valid(): # Return bool verifying if data digited is valid
+            user = form.get_user() # Select user form
+            auth.login(request, user) # Authentication logging in as user
+            messages.success(request,'Você está logado') # Message success to user log
+            
+            # If user have a team invite
+            if invite_token:
+                del request.session['invite_token'] # delete token of session
+                return redirect('expense:accept_invite', token=invite_token) # Redirect to view with invite token
+            
+            return redirect('expense:index') # Redirect to page home
         
         else:
             messages.error(request, 'Login Invalido')
+
+
 
 
     return render(

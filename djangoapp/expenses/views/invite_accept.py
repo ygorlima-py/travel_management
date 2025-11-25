@@ -46,6 +46,7 @@ def accept_invite(request, token):
         messages.info(request, 'Faça o loggin com sua conta e clique novamente no link')
         return redirect('expense:login')
     
+    # If user dont have account
     else:
         request.session['invite_token'] = str(token)
         request.session['invite_email'] = invite.email

@@ -19,7 +19,7 @@ def invite_member(request, team_id):
             invite.invited_by = request.user
             invite.save()
 
-            SendInvite(invite.email, team_id).create_url()
+            SendInvite(invite.email, team_id).create_url() # Create url in utils
             
             messages.success(request, f'Convite enviado para {invite.email}')
             return redirect('expense:team', team_id=team.pk)
