@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from utils.calculation import Calculation 
+from utils.mixin import PermissionMixin
 
 @login_required(login_url='expense:login')
 def cycles(request):
@@ -23,17 +24,15 @@ def cycles(request):
 @login_required(login_url='expense:login')
 def cycle(request, cycle_id):
     cycle = get_object_or_404(Cycle, id=cycle_id)   
-    expenses = Expenses.objects.filter(
-        owner_expenses=request.user,
-        cycle=cycle
-        )
-    
+    expenses = Expenses.objects.for_user(request.user).filter(cycle=cycle)
+    role = PermissionMixin.get_user_role(request.user)
     calculation = Calculation(cycle, expenses).all()
 
     context = {
         'cycle': cycle,
         'expenses': expenses,
         'calculation': calculation,
+        'role': role,
     }
 
     return render (

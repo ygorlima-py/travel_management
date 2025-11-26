@@ -4,9 +4,9 @@ from django.http import Http404
 from django.db.models import Q
 from django.core.paginator import Paginator
 from expenses.models import Expenses
+from utils.mixin import PermissionMixin
 
 # Create your views here.
-
 @login_required(login_url='expense:login')
 def index(request):
     expenses = Expenses.objects.filter(owner_expenses=request.user).order_by('-id')
@@ -16,7 +16,7 @@ def index(request):
 
     context = {
         'page_obj': page_obj,
-        'site_title': 'Despesas - '
+        'site_title': 'Despesas - ',
     }
 
     return render(
@@ -27,15 +27,17 @@ def index(request):
 
 @login_required(login_url='expense:login')
 def expense(request, expense_id):
-    single_expense = Expenses.objects.filter(pk=expense_id).first()
+    single_expense = Expenses.objects.for_user(request.user).filter(expense=expense_id)
     last_alert = single_expense.alerts_recused.last() # Pega o ultimo alerta # type:ignore
-    
+    role = PermissionMixin.get_user_role(request.user)
+
     if single_expense is None:
         raise Http404()
     
     context = {
         'expense': single_expense,
         'alert': last_alert,
+        'role': role,
     }
 
     return render (
@@ -54,5 +56,5 @@ def dashbords(request):
     return render (
         request=request,
         template_name='expenses/pages/dashbords.html',
-        context=context
+        context=context,
     )

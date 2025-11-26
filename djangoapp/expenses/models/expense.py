@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings 
 from .cycle import Cycle
 from .state import State 
+from utils.queryset import ExpenseQuerySet
 
 class Category(models.Model):
     class Meta:
@@ -24,6 +25,8 @@ class Status(models.Model):
         return self.name
     
 class Expenses(models.Model):
+
+    objects = ExpenseQuerySet.as_manager()
     class Meta:
         verbose_name = 'Despesa'
         verbose_name_plural = 'Despesas'
