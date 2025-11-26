@@ -1,4 +1,4 @@
-from expenses.models import UserEnterpriseRole, Team
+from expenses.models import UserEnterpriseRole
 from django.shortcuts import get_list_or_404
 
 class PermissionMixin:
@@ -55,7 +55,7 @@ class PermissionMixin:
         return None
 
     @staticmethod
-    def can_view_expense(user, expense):
+    def can_view_expense(user, expense) -> bool:
         """
         Verify if user can see expense
         Rules:
@@ -86,9 +86,8 @@ class PermissionMixin:
         # Rule 4: No permission
         return False
             
-
     @staticmethod
-    def can_approve_expense(user, expense):
+    def can_approve_expense(user, expense) -> bool:
         """
         Verify if user can see cycle
         
@@ -121,7 +120,7 @@ class PermissionMixin:
         return False
     
     @staticmethod
-    def can_manage_team(user, team):
+    def can_manage_team(user, team) -> bool:
         """
         Verify if user can manage team (invite members, edit, etc)
 
@@ -143,7 +142,7 @@ class PermissionMixin:
         return False
     
     @staticmethod
-    def can_view_cycle(user, cycle):
+    def can_view_cycle(user, cycle) -> bool:
         """
         Verify if user can see cycle
 

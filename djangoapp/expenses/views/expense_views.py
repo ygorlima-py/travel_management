@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.db.models import Q
@@ -27,12 +27,9 @@ def index(request):
 
 @login_required(login_url='expense:login')
 def expense(request, expense_id):
-    single_expense = Expenses.objects.for_user(request.user).filter(expense=expense_id)
+    single_expense = get_object_or_404(Expenses.objects.for_user(request.user), pk=expense_id)
     last_alert = single_expense.alerts_recused.last() # Pega o ultimo alerta # type:ignore
     role = PermissionMixin.get_user_role(request.user)
-
-    if single_expense is None:
-        raise Http404()
     
     context = {
         'expense': single_expense,

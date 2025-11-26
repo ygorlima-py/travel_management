@@ -13,3 +13,19 @@ class ExpenseQuerySet(models.QuerySet):
             return self.filter(owner_expenses__profile__team__enterprise=user.profile.team.enterprise)
         
         return self.none()
+    
+class CycleQuerySet(models.QuerySet):
+    def for_user(self, user):  
+        team = PermissionMixin.get_user_team(user)
+        enterprise = PermissionMixin.get_user_enterprise(user)
+
+        if PermissionMixin.is_operator(user) or PermissionMixin.is_manager(user):
+            if team:
+                return self.filter(team=team)
+            return self.none()
+        
+        if PermissionMixin.is_company_admin(user) and enterprise:
+            return self.filter(enterprise=enterprise)
+        
+        return self.none()
+    
