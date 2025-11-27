@@ -11,11 +11,8 @@ from django.http import Http404
 def create_expense(request):
     form_action = reverse('expense:create')
 
-
-    if request.method == 'POST':
-        
-        form = ExpenseForm(request.POST, request.FILES)
-        
+    if request.method == 'POST':        
+        form = ExpenseForm(request.POST, request.FILES)        
         context = dict(
             form=form,
             form_action=form_action,

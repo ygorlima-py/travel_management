@@ -1,7 +1,11 @@
 from django.db import models
 from django.conf import settings
+from utils.queryset import CycleQuerySet
 
 class Cycle(models.Model):
+
+    objects = CycleQuerySet.as_manager()
+
     class Meta:
         verbose_name = 'Ciclo'
 
@@ -32,12 +36,12 @@ class Cycle(models.Model):
     save_expense_auto = models.BooleanField(
                 blank=True,
                 null=True,
-                default=True
+                default=True,
     )
     owner = models.ForeignKey(
             settings.AUTH_USER_MODEL,
             on_delete=models.PROTECT,
-            related_name='cycles_owner'
+            related_name='owned_cicles',
     )
 
     def __str__(self) -> str:

@@ -9,7 +9,7 @@ from utils.mixin import PermissionMixin
 # Create your views here.
 @login_required(login_url='expense:login')
 def index(request):
-    expenses = Expenses.objects.filter(owner_expenses=request.user).order_by('-id')
+    expenses = Expenses.objects.for_user(request.user)
     paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)

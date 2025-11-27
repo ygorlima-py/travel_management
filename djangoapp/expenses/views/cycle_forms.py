@@ -41,7 +41,7 @@ def create_cycle(request):
 
 @login_required(login_url='expense:login')
 def cycle_update(request, cycle_id):
-    cycle = get_object_or_404(Cycle, pk=cycle_id)
+    cycle = get_object_or_404(Cycle.objects.for_user(request.user).filter(pk=cycle_id))
     
     if request.method == "POST":
         form = CreateCycle(request.POST, instance=cycle)
@@ -80,7 +80,8 @@ def cycle_update(request, cycle_id):
 @login_required(login_url='expense:login')
 def cycle_delete(request, cycle_id):
     # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
-    cycle = get_object_or_404(Cycle, pk=cycle_id, owner_id=request.user)
+    cycle = get_object_or_404(Cycle.objects.for_user(request.user).filter(pk=cycle_id))
+    
     
     confirmation = request.POST.get('confirmation', 'no')
 

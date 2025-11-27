@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.contrib.auth.models import User
 from expenses.models import Cycle, Expenses
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -7,9 +6,10 @@ from django.shortcuts import get_object_or_404
 from utils.calculation import Calculation 
 from utils.mixin import PermissionMixin
 
+
 @login_required(login_url='expense:login')
 def cycles(request):
-    cycles = Cycle.objects.filter(owner=request.user)
+    cycles = Cycle.objects.for_user(request.user)
         
     context = {
         'cycles': cycles,
@@ -23,8 +23,16 @@ def cycles(request):
 
 @login_required(login_url='expense:login')
 def cycle(request, cycle_id):
-    cycle = get_object_or_404(Cycle, id=cycle_id)   
-    expenses = Expenses.objects.for_user(request.user).filter(cycle=cycle)
+    
+    cycle = get_object_or_404(Cycle.objects.for_user(request.user).filter(pk=cycle_id))
+
+    if PermissionMixin.is_manager(request.user) or PermissionMixin.is_company_admin(request.user):
+        expenses = Expenses.objects.filter(cycle=cycle)
+
+    else:    
+        expenses = Expenses.objects.for_user(request.user).filter(cycle=cycle)
+    
+
     role = PermissionMixin.get_user_role(request.user)
     calculation = Calculation(cycle, expenses).all()
 
@@ -43,35 +51,26 @@ def cycle(request, cycle_id):
 
 def close_cycle(request, cycle_id):
 
-    # Source - https://stackoverflow.com/a
-    # Posted by Platinum Azure, modified by community. See post 'Timeline' for change history
-    # Retrieved 2025-11-13, License - CC BY-SA 4.0
-    obj, created = Cycle.objects.update_or_create(
-        pk=cycle_id,
-        defaults={'is_open': False},
-    )
+    cicle = get_object_or_404(
+        Cycle.objects.for_user(request.user).filter(pk=cycle_id)
+        ) 
 
-    if obj is None:
-        raise Http404()
-    
-    if created == False:
-        return redirect("expense:cycles")
+    if cicle.is_open:
+        cicle.is_open = False
+        cicle.save()
+
+    return redirect("expense:cycles")
     
     
 def open_cycle(request, cycle_id):
-
-    # Source - https://stackoverflow.com/a
-    # Posted by Platinum Azure, modified by community. See post 'Timeline' for change history
-    # Retrieved 2025-11-13, License - CC BY-SA 4.0
-    obj, created = Cycle.objects.update_or_create(
-        pk=cycle_id,
-        defaults={'is_open': True},
-    )
-
-    if obj is None:
-        raise Http404()
+    cicle = get_object_or_404(
+        Cycle.objects.for_user(request.user).filter(pk=cycle_id)
+    ) 
     
-    if created == False:
-        return redirect("expense:cycles")
+    if not cicle.is_open:
+        cicle.is_open = True
+        cicle.save()
+
+    return redirect("expense:cycles")
     
     

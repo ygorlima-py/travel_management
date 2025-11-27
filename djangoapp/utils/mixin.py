@@ -1,4 +1,3 @@
-from expenses.models import UserEnterpriseRole
 from django.shortcuts import get_list_or_404
 
 class PermissionMixin:
@@ -10,6 +9,7 @@ class PermissionMixin:
     @staticmethod
     def is_company_admin(user):
         """Verify if user is COMPANY_ADMIN"""
+        from expenses.models import UserEnterpriseRole
         return UserEnterpriseRole.objects.filter(
             user=user,
             role__name='COMPANY_ADMIN',
@@ -18,6 +18,7 @@ class PermissionMixin:
     @staticmethod
     def is_manager(user):
         """Verify if user is MANAGER"""
+        from expenses.models import UserEnterpriseRole
         return UserEnterpriseRole.objects.filter(
             user=user,
             role__name='MANAGER',
@@ -26,6 +27,7 @@ class PermissionMixin:
     @staticmethod
     def is_operator(user):
         """Verify if user is OPERATOR"""
+        from expenses.models import UserEnterpriseRole
         return UserEnterpriseRole.objects.filter(
             user=user,
             role__name='OPERATOR',
@@ -41,6 +43,7 @@ class PermissionMixin:
     @staticmethod
     def get_user_enterprise(user):
         """Return enterprise of the user or None"""
+        from expenses.models import UserEnterpriseRole
         team = PermissionMixin.get_user_team(user)
         if team:
             return team.enterprise
@@ -49,6 +52,7 @@ class PermissionMixin:
     @staticmethod
     def get_user_role(user):
         """Return role name of the user or None"""
+        from expenses.models import UserEnterpriseRole
         user_role = UserEnterpriseRole.objects.filter(user=user).first()
         if user_role:
             return user_role.role.name

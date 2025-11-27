@@ -19,13 +19,14 @@ class CycleQuerySet(models.QuerySet):
         team = PermissionMixin.get_user_team(user)
         enterprise = PermissionMixin.get_user_enterprise(user)
 
-        if PermissionMixin.is_operator(user) or PermissionMixin.is_manager(user):
-            if team:
-                return self.filter(team=team)
-            return self.none()
-        
+        if PermissionMixin.is_operator(user):
+            return self.filter(owner=user)
+
+        if PermissionMixin.is_manager(user):
+            return self.filter(owner__profile__team=team)
+
         if PermissionMixin.is_company_admin(user) and enterprise:
-            return self.filter(enterprise=enterprise)
+            return self.filter(owner__profile__team__enterprise=enterprise)
         
         return self.none()
     
