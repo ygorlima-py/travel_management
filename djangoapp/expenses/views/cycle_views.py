@@ -52,7 +52,7 @@ def cycle(request, cycle_id):
 def close_cycle(request, cycle_id):
 
     cicle = get_object_or_404(
-        Cycle.objects.for_user(request.user).filter(pk=cycle_id)
+        Cycle.objects.for_user(request.user).filter(pk=cycle_id),
         ) 
 
     if cicle.is_open:
@@ -64,7 +64,7 @@ def close_cycle(request, cycle_id):
     
 def open_cycle(request, cycle_id):
     cicle = get_object_or_404(
-        Cycle.objects.for_user(request.user).filter(pk=cycle_id)
+        Cycle.objects.for_user(request.user).filter(pk=cycle_id),
     ) 
     
     if not cicle.is_open:

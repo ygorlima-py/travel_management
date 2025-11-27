@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from expenses.form import CreateTeam, TeamInviteForm # type:ignore
-from expenses.models import UserEnterpriseRole, Team
+from expenses.models import UserEnterpriseRole, Team, UserProfile
 
 @login_required(login_url='expense:login')
 def create_team(request):
@@ -25,6 +25,10 @@ def create_team(request):
             team.team_manager = request.user # Informo para team_manager que esse time pertence a esse usuário
             team.save()
 
+            profile, created = UserProfile.objects.get_or_create(user=request.user)
+            profile.team = team
+            profile.save()    
+            
             messages.success(request, 'Equipe criada com sucesso')
             return redirect('expense:teams')
         

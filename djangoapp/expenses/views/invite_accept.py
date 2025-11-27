@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
-from expenses.models import TeamInvite, UserEnterpriseRole, Role
+from expenses.models import TeamInvite, UserEnterpriseRole, Role, UserProfile
 from django.contrib import messages
 
 User = get_user_model()
+
 
 def accept_invite(request, token):
     invite = get_object_or_404(TeamInvite, token=token)
@@ -21,9 +22,10 @@ def accept_invite(request, token):
             messages.error(request,'Usuário divergente do email de convite')
             return redirect('expense:login')
 
-        # Add member on the team
-        request.user.profile.team = invite.team
-        request.user.profile.save(update_fields=['team'])
+        # Add member and create profile
+        profile, created = UserProfile.objects.get_or_create(user=request.user)
+        profile.team = invite.team
+        profile.save()
 
         # Add Enterprise and Role in the User
         operator_role = Role.objects.get(name='OPERATOR')

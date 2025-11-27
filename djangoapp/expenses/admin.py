@@ -108,3 +108,11 @@ class TeamInviteAdmin(admin.ModelAdmin):
     ordering = '-created_at',
     list_display_links = 'team',
 
+@admin.register(models.UserEnterpriseRole)
+class UserEnterPriseAdmin(admin.ModelAdmin):
+    list_display = (
+        'enterprise', 'role', 'user',
+    )
+
+    list_display_links = 'enterprise',
+
