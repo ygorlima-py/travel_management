@@ -32,7 +32,7 @@ class ExpenseForm(forms.ModelForm):
         label='* Cidade',
         help_text='Digite o nome da cidade que a despesa foi realizada',
         widget=forms.TextInput(attrs={
-            'placeholder': 'Exemplo: Ribeirão Preto'
+            'placeholder': 'Exemplo: Ribeirão Preto',
         }),
     )
 

@@ -4,5 +4,5 @@ from api import views
 app_name = 'api'
 
 urlpatterns = [
-    path('expenses/', views.ExpenseListView.as_view(), name='expense-list'),
+    path('expenses/', views.DashbordView.as_view(), name='expense-list'),
 ]
