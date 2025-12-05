@@ -56,7 +56,7 @@ class Role(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.name  #type: ignore
+        return f'{self.name} - {self.description}'  #type: ignore
     
 class UserEnterpriseRole(models.Model):
     user = models.ForeignKey(

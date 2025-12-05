@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from .enterprise import EnterPrise
+from .enterprise import EnterPrise, Role
 import uuid
 from datetime import timedelta
 from django.utils import timezone
@@ -68,6 +68,13 @@ class TeamInvite(models.Model):
     expires_at = models.DateTimeField()
 
     accepted = models.BooleanField(default=False)
+
+    role = models.ForeignKey(
+        Role,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         unique_together = ['team', 'email']

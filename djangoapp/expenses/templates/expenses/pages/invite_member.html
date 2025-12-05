@@ -6,6 +6,39 @@
             <i class="fa-solid fa-user-plus"></i>
             CONVIDAR MEMBRO
         </h2>
-        {% include "expenses/partials/_user-form.html" %}
+        <form action="{{form_action}}" method="post">     
+            {% csrf_token %}
+            
+            <div class="form-content">
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
+                    {{form.email}}
+                    {{form.email.errors}}
+                    {% if form.email.help_text %}
+                        <p class="help-text">{{form.email.help_text}}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Role (RadioSelect) -->
+                <div class="form-group">
+                    <label class='bold-color'>{{form.role.label}}</label>
+                    {{form.role}}
+                    {{form.role.errors}}
+                    {% if form.role.help_text %}
+                        <p class="help-text">{{form.role.help_text}}</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="form-content">
+                <div class="form-group">
+                    <button class="btn" type="submit">CONVIDAR MEMBRO</button>
+                </div>
+            </div>
+
+        </form>
     </div>
 {% endblock content %}

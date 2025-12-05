@@ -351,3 +351,5 @@ class DashbordView(APIView):
         projection = (total_month / current_day) * days_month_qtd
         return round(projection, 2)    
 
+    
+

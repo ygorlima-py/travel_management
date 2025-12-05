@@ -71,11 +71,23 @@ class TeamInviteForm(forms.ModelForm):
 
     class Meta:
         model = TeamInvite
-        fields = ['email']
-
+        fields = ['email', 'role']
+        widgets = {
+        'role': forms.RadioSelect(attrs={'class': 'role-radio'}),  
+        }
+        labels = {
+        'role': 'FUNÇÃO DE MEMBRO',
+        }
+    
     def __init__(self, *args, team=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.team = team
+        
+        from expenses.models import Role
+        self.fields['role'].queryset = Role.objects.filter(name__in=['OPERATOR', 'MANAGER'])   
+        self.fields['role'].initial = Role.objects.get(name='OPERATOR').id
+        self.fields['role'].empty_label = None  # ✅ ADICIONAR AQUI
+        self.fields['role'].required = True
 
     def clean_email(self):
         email = self.cleaned_data.get('email').lower().strip() # type:ignore

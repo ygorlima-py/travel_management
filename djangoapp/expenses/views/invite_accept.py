@@ -28,10 +28,10 @@ def accept_invite(request, token):
         profile.save()
 
         # Add Enterprise and Role in the User
-        operator_role = Role.objects.get(name='OPERATOR')
+        role = invite.role
         UserEnterpriseRole.objects.get_or_create(
             enterprise=invite.team.enterprise,
-            role=operator_role,
+            role=role,
             user=request.user
         )
 

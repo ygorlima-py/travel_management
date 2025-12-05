@@ -832,3 +832,47 @@ img {
 .display-block-inline{
     display: block;
 }
+
+.bold-color {
+    font-size: var(--small-font-size);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Container principal do campo role */
+#id_role {
+    display: block;
+}
+
+/* UL gerado pelo RadioSelect */
+#id_role ul {
+    display: flex;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    align-items: flex-start; /* ✅ Alinha no topo */
+}
+
+/* Cada LI (radio + label) */
+#id_role ul li {
+    display: flex;
+    align-items: flex-start; /* ✅ Alinha radio e texto no topo */
+    gap: 8px;
+    min-height: 60px; /* ✅ Garante mesma altura mínima */
+}
+
+/* Input radio */
+#id_role ul li input[type="radio"] {
+    margin-top: 3px; /* ✅ Ajusta fino (alinha com primeira linha do texto) */
+    flex-shrink: 0;
+}
+
+/* Label do radio */
+#id_role ul li label {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1.5;
+    flex: 1;
+}
