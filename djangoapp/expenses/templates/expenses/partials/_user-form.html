@@ -40,41 +40,17 @@
     
     <div class="form-content">
         <div class="form-group">
-           
                 {% if is_login %}        
                     <button class="btn" type='submit'>
                         ENTRAR
                     </button>
                     <a class='btn btn-link btn-approved center-text margin-top-minimum' href="{% url "expense:register"%}">
                         CADASTRAR-SE
-                    </a>
-                
-                {% elif is_register %}
-                    <button class="btn" type='submit'>
-                        CADASTRAR-SE     
-                    </button>                   
-                {% elif is_user_update %}
-                    <button class="btn" type='submit'>
-                        ATUALIZAR PERFIL
-                    </button>      
-                {% elif form.instance and form.instance.pk %}
-                    <button class="btn" type='submit'>
-                        ATUALIZAR DESPESA
-                    </button> 
-                    
-                {% elif form.is_profile_complete %} 
-                    <button class="btn" type='submit'>
-                        CADASTRAR PERFIL
-                    </button>       
-                {% elif is_invite %}
-                    <button class="btn" type='submit'>
-                        CONVIDAR MEMBRO
-                    </button>   
+                    </a> 
                 {% else %}
-                    <button class="btn" type='submit'>
-                        CADASTRAR DESPESA
-                    </button> 
-                {% endif %}
-            
+                <button class="btn" type='submit'>
+                    {{title_page}}
+                </button>                   
+                {% endif %}           
         </div>
     </div>

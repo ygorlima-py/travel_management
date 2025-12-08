@@ -15,7 +15,7 @@ def register_enterprise(request):
         
         context = dict(
             form=form,
-            # form_action=form_action,
+            # form_action=form_action,         
         )
 
         if form.is_valid():        
@@ -42,6 +42,7 @@ def register_enterprise(request):
 
     context = dict(
         form=EnterpriseRegisterForm(),
+        title_page="CADASTRAR EMPRESA",   
     )
 
     return render(

@@ -61,7 +61,7 @@ class DashbordView(APIView):
             'chart_average_by_day': self._get_average_cost_per_day(expenses),
             'chart_average_fuel': self._get_average_fuel(expenses),
             'chart_average_cost_km': self._get_average_cost_km(expenses),
-            'chart_per_member': self.chart_per_member(expenses),
+            'chart_per_member': self._chart_per_member(expenses),
         }
     
     def _get_company_admin_dashbord(self, user):
@@ -281,10 +281,10 @@ class DashbordView(APIView):
         User = get_user_model()
         
         ranking = User.objects.filter(profile__team=team).annotate(
-            total_gasto=Sum('expenses__value')
+            total_gasto=Sum('expenses_owner__value')
         ).order_by('-total_gasto')[:5]
         
-        return [{'username': usuario.username, 'total': float(usuario.total_gasto or 0)} for usuario in ranking]
+        return [{'username': user.username, 'total': float(user.total_gasto or 0)} for user in ranking]
 
     def _chart_per_member(self, queryset):
         data = queryset.values('owner_expenses__username').annotate(total=Sum('value'))

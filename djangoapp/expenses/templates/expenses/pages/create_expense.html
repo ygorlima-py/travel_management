@@ -2,18 +2,10 @@
 
 {% block content %}
     <div class="form-wrapper">
-        {% if not is_expense_update %}
-            <h2 class="expense-detail-title expense-info-title">
-                <i class="fa-solid fa-cart-shopping"></i>
-                CADASTRAR DESPESA
-            </h2>
-        {% else %}
-            <h2 class="expense-detail-title expense-info-title">
-                <i class="fa-solid fa-cart-shopping"></i>
-                ATUALIZAR DESPESA
-            </h2>
-        {% endif %}
-
+        <h2 class="expense-detail-title expense-info-title">
+            <i class="fa-solid fa-cart-shopping"></i>
+            {{title_page}}
+        </h2>
         <form action="{{form_action}}" method="post" enctype="multipart/form-data">     
             
             {% csrf_token %}
@@ -56,7 +48,7 @@
             
             <div class="form-content">
                 <div class="form-group">
-                    <button class="btn" type='submit'>Salvar</button>
+                    <button class="btn" type='submit'>{{title_page}}</button>
                 </div>
             </div>
         

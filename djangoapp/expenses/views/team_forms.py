@@ -35,6 +35,7 @@ def create_team(request):
         context = dict(
             form=form,
             form_action=reverse('expense:create_team'),
+            title_page="CRIAR EQUIPE",
         )
 
         return render(
@@ -43,10 +44,11 @@ def create_team(request):
         context,
         )
 
-    context = dict(
-        form=CreateTeam(user=request.user),
-        form_action=reverse('expense:create_team')
-    )
+    context={
+        'form': CreateTeam(user=request.user),
+        'form_action': reverse('expense:create_team'),
+        'title_page':"CRIAR EQUIPE",
+    }
 
     return render(
         request,
@@ -80,7 +82,7 @@ def team_update(request, team_id):
     context = {
         'form': form,
         'team':team,
-        'is_form_update': True,
+        'title_page': 'ATUALIZAR EQUIPE',
     }
 
     return render(

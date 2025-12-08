@@ -9,11 +9,21 @@ from utils.mixin import PermissionMixin
 
 @login_required(login_url='expense:login')
 def teams(request):
-    enterprise = EnterPrise.objects.filter(owner=request.user).first()
-    teams = Team.objects.filter(enterprise=enterprise)
-    
+    if PermissionMixin.is_company_admin(request.user): 
+        enterprise = EnterPrise.objects.filter(owner=request.user)
+        teams = Team.objects.filter(enterprise=enterprise)
+        create_team = True
+    elif PermissionMixin.is_manager(request.user):
+        team = PermissionMixin.get_user_team(request.user)
+        teams = [team] if team else []
+        create_team = False
+    else:
+        teams = []
+        
+        
     context = {
         'teams': teams,
+        'create_team': create_team,
     }
 
     return render (

@@ -16,7 +16,7 @@ def create_expense(request):
         form = ExpenseForm(request.POST, request.FILES)        
         context = dict(
             form=form,
-            form_action=form_action,
+            form_action=form_action,        
         )
 
         if form.is_valid():        
@@ -38,7 +38,8 @@ def create_expense(request):
         )
 
     context = dict(
-        form=ExpenseForm()
+        form=ExpenseForm(),
+        title_page="CRIAR DESPESA",
     )
 
     return render(
@@ -76,7 +77,7 @@ def expense_update(request, expense_id):
     context = {
         'form': form,
         'expense':expense,
-        'is_expense_update': True,
+        'title_page':"ATUALIZAR DESPESA",
     }
 
     return render(

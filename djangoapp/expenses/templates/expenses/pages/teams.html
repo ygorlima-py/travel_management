@@ -11,10 +11,12 @@
             <i class="fa-solid fa-arrow-left"></i>
             VOLTAR
         </a>
+        {% if create_team %}
         <a class='btn btn-link btn-approved' href="{% url "expense:create_team" %}">
             <i class="fa-solid fa-plus"></i>
             CRIAR EQUIPE
         </a>
+        {% endif %}
     </div>
     
     <div class="expense-detail-grid">

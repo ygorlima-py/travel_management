@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
-from expenses.models import TeamInvite, UserEnterpriseRole, Role, UserProfile
+from expenses.models import TeamInvite, UserEnterpriseRole, Role, UserProfile, Team
 from django.contrib import messages
-
+from utils.mixin import PermissionMixin
 User = get_user_model()
 
 
@@ -38,6 +38,11 @@ def accept_invite(request, token):
         # Mark true to accept invite
         invite.accepted = True
         invite.save(update_fields=['accepted'])
+
+        if role.name == 'MANAGER':
+            team = invite.team
+            team.team_manager = request.user
+            team.save(update_fields=['team_manager'])
 
         messages.success(request, f'Você entrou na equipe {invite.team.name}')
         return redirect('expense:index')

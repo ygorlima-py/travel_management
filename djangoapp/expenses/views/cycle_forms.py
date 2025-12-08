@@ -30,7 +30,8 @@ def create_cycle(request):
         )
 
     context = dict(
-        form=CreateCycle()
+        form=CreateCycle(),
+        title_page="CRIAR CICLO",
     )
 
     return render(
@@ -68,7 +69,7 @@ def cycle_update(request, cycle_id):
     context = {
         'form': form,
         'cycle':cycle,
-        'is_cycle_update': True,
+        'title_page': "ATUALIZAR CICLO",
     }
 
     return render(

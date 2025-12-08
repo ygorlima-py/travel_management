@@ -41,7 +41,7 @@ def invite_member(request, team_id):
         form=TeamInviteForm(team=team_id),
         team=team,
         form_action=reverse('expense:invite_member', args=[team_id]),
-        is_invite=True,
+        title_page='CONVIDAR MEMBRO',
     )
     
     
