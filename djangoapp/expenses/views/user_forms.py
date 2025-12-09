@@ -92,6 +92,7 @@ def user_update(request):
         {
             'form':form,
             'is_user_update': True,
+            'title_page': 'ATUALIZAR DADOS DO USUÁRIO'
         }
     )
 

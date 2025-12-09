@@ -8,10 +8,12 @@
             <i class="fa-solid fa-house"></i>
                 Home
         </a>
+        {% if not operator %}
         <a href="{% url "expense:teams"%}" class="menu-link">
             <i class="fa-solid fa-people-group"></i>
-                    Minhas Equipes
+                Minhas Equipes
         </a>
+        {% endif %}
         <a href="{% url "expense:cycles"%}" class="menu-link">
             <i class="fa-solid fa-arrows-spin"></i>
                     Meus ciclos

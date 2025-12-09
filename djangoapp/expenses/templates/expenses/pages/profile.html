@@ -127,16 +127,30 @@
                 <div class="expense-info-item">
                     <span class="expense-info-label">
                         <i class="fa-solid fa-sitemap"></i>
+                        Empresa
+                    </span>
+                    <span class="expense-info-value">{{user.profile.team.enterprise | default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-sitemap"></i>
+                        Equipe
+                    </span>
+                    <span class="expense-info-value">{{user.profile.team.name | default:"Não informado"}}</span>
+                </div>
+                <div class="expense-info-item">
+                    <span class="expense-info-label">
+                        <i class="fa-solid fa-sitemap"></i>
                         Centro de Custo
                     </span>
-                    <span class="expense-info-value expense-value-highlight">{{user.profile.team.cost_center | default:"Não informado"}}</span>
+                    <span class="expense-info-value">{{user.profile.team.cost_center | default:"Não informado"}}</span>
                 </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">
                         <i class="fa-solid fa-car"></i>
                         Número da Frota
                     </span>
-                    <span class="expense-info-value expense-value-highlight">{{user.profile.fleet_number | default:"Não informado"}}</span>
+                    <span class="expense-info-value">{{user.profile.fleet_number | default:"Não informado"}}</span>
                 </div>
             </div>
         </div>

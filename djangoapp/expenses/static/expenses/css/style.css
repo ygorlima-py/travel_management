@@ -573,8 +573,8 @@ img {
     border-bottom: 3px solid var(--link-dark-color);
     font-weight: 600;
 }
-
 .grid-three-columns,
+.grid-four-columns,
 .expense-detail-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -586,10 +586,13 @@ img {
 
 @media (min-width: 900px) {
     .expense-detail-grid {
-        grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    }
+    .grid-four-columns {
+    grid-template-columns: repeat(4, 1fr);
     }
     .grid-three-columns {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -829,6 +832,11 @@ img {
 .margin-top-minimum {
     margin-top: var(--margin-top-minimum);
 }
+
+.margin-botton-mendium {
+    margin-bottom: var(--spacing-med);
+}
+
 .display-block-inline{
     display: block;
 }

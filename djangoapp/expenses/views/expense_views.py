@@ -52,6 +52,6 @@ def dashbords(request):
 
     return render (
         request=request,
-        template_name='expenses/pages/dashbords.html',
+        template_name='expenses/pages/dashbords_admin.html',
         context=context,
     )

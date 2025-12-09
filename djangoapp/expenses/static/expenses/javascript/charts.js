@@ -1,6 +1,7 @@
 import { createChartPie } from './chartPie.js'
 import { createChartBar } from './chartBar.js'
 import { createChartLine } from './chartLine.js'
+import { atualizarCard } from './cardValue.js'
 
 async function fetchChartData(url) {
     try {
@@ -71,4 +72,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     createChartBar(chart_average_fuel.id, chart_average_fuel.data, false);
     createChartBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
     createChartBar(chart_average_cost_km.id, chart_average_cost_km.data, true);
+    atualizarCard(data);
 })

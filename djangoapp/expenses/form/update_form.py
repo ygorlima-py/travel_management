@@ -62,12 +62,6 @@ class UpdateFormUser(forms.ModelForm):
         label='Cidade',
     )
 
-    cost_center = forms.CharField(
-        required=False,
-        max_length=25,
-        label='Centro de Custo',
-    )
-
     fleet_number = forms.CharField(
         required=False,
         max_length=50,

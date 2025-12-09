@@ -10,7 +10,7 @@ from utils.mixin import PermissionMixin
 @login_required(login_url='expense:login')
 def teams(request):
     if PermissionMixin.is_company_admin(request.user): 
-        enterprise = EnterPrise.objects.filter(owner=request.user)
+        enterprise = EnterPrise.objects.filter(owner=request.user).first()
         teams = Team.objects.filter(enterprise=enterprise)
         create_team = True
     elif PermissionMixin.is_manager(request.user):
