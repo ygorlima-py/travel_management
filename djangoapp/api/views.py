@@ -69,18 +69,18 @@ class DashbordView(APIView):
         expenses = Expenses.objects.filter(owner_expenses__profile__team__enterprise=enterprise)
 
         return {
+            'role': 'COMPANY_ADMIN',
             'total_enterprise': expenses.aggregate(Sum('value'))['value__sum'] or 0,
-            'total_per_team': self._total_per_team(enterprise),
             'total_per_month': self._total_per_month(expenses),
             'team_registers': self._teams_registers(enterprise),
             'projection_month': self._projection_end_month(expenses),
             'chart_by_category': self._chart_category(expenses),
             'chart_by_month': self._get_chart_by_date(expenses),
-            'chart_by_cicle': self._get_chart_by_cicle(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day(expenses),
-            'chart_average_fuel': self._get_average_fuel(expenses),
-            'chart_average_cost_km': self._get_average_cost_km(expenses),
-            'chart_per_tem': self._chart_per_team(enterprise),
+            'chart_average_by_day': self._get_average_cost_per_day_company(expenses),
+            'chart_average_fuel': self._get_average_fuel_per_team(enterprise),
+            'chart_average_cost_fuel_per_team': self._get_average_cost_fuel_per_team(enterprise),
+            'chart_average_cost_km': self._get_average_cost_km_per_team(enterprise),
+            'chart_per_team': self._chart_per_team(enterprise),
         }
 
     """Shared auxiliary methods"""
@@ -194,6 +194,45 @@ class DashbordView(APIView):
             }]
         }
     
+    def _get_average_cost_per_day_company(self, queryset):
+
+        from datetime import datetime, timedelta
+        from calendar import monthrange
+
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=365)
+        
+        data = (queryset
+                .filter(date__gte=start_date, date__lte=end_date)
+                .annotate(month=TruncMonth('date'))
+                .values('month')
+                .annotate(total=Sum('value'))
+                .order_by('month')
+                )
+        
+        result = []
+        for row in data:
+            year = row['month'].year
+            month = row['month'].month
+            days_in_month = monthrange(year, month)[1]  # Retorna (dia_semana, qtd_dias)
+    
+            avg_per_day = row['total'] / days_in_month
+            result.append({
+                'month': row['month'].strftime('%b/%y'),
+                'avg_per_day': round(avg_per_day, 2)
+            })
+
+        return {
+            'labels': [item['month'] for item in result],
+            'datasets': [{
+                'label': 'Custo médio diário da empresa R$',
+                'data': [item['avg_per_day'] for item in result],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
+                'borderWidth': 1,
+            }]
+        }
+    
     def _get_average_fuel(self, queryset):
         data = (queryset
                 .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
@@ -218,6 +257,101 @@ class DashbordView(APIView):
             }]
         }
     
+    def _get_average_fuel_per_team(self, enterprise):
+        """Consumo médio de combustível por equipe (km/L)"""
+        from expenses.models import Team
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        
+        teams = Team.objects.filter(enterprise=enterprise)
+        
+        result = []
+        for team in teams:
+            # Pegar ciclos da equipe
+            data = (Expenses.objects
+                    .filter(
+                        owner_expenses__profile__team=team,
+                        cycle__isnull=False,
+                        category__name='COMBUSTÍVEL',
+                        date__gte=last_twelve_months,
+                    )
+                    .values('cycle__initial_km', 'cycle__end_km', 'amount')
+                    .aggregate(
+                        total_distance=Sum('cycle__end_km') - Sum('cycle__initial_km'),
+                        total_liters=Sum('amount'),
+                    ))
+            
+            total_distance = data['total_distance'] or 0
+            total_liters = data['total_liters'] or 0
+            
+            avg_fuel = total_distance / total_liters if total_liters else 0
+            
+            result.append({
+                'team': team.name,
+                'avg_fuel': round(avg_fuel, 2)
+            })
+
+        return {
+            'labels': [item['team'] for item in result],
+            'datasets': [{
+                'label': 'Consumo médio de combustível por equipe nos últimos 12 meses (km/L)',
+                'data': [item['avg_fuel'] for item in result],
+                'backgroundColor': ['#27AE60'],
+                'borderColor': ['#27AE60'],
+                'borderWidth': 1,
+            }]
+        }
+    
+    def _get_average_cost_fuel_per_team(self, enterprise):
+
+        from expenses.models import Team
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+
+        teams = Team.objects.filter(enterprise=enterprise)
+        
+        result = []
+        for team in teams:
+            # Pegar ciclos da equipe
+            data = (Expenses.objects
+                    .filter(
+                        owner_expenses__profile__team=team,
+                        category__name='COMBUSTÍVEL',
+                        date__gte=last_twelve_months,
+                    )
+                    .values('amount', 'value')
+                    .aggregate(
+                        total_value=Sum('value'),
+                        total_amount=Sum('amount')
+                    ))
+            
+            total_value = data['total_value'] or 0
+            total_amount = data['total_amount'] or 0
+            
+            avg_cost_fuel = float(total_value) / total_amount if total_amount else 0
+            
+            result.append({
+                'team': team.name,
+                'avg_cost_fuel': round(avg_cost_fuel, 2)
+            })
+
+        return {
+            'labels': [item['team'] for item in result],
+            'datasets': [{
+                'label': 'Custo médio por litro de combustível por equipe nos últimos 12 meses (R$/L)',
+                'data': [item['avg_cost_fuel'] for item in result],
+                'backgroundColor': ['#27AE60'],
+                'borderColor': ['#27AE60'],
+                'borderWidth': 1,
+            }]
+        }
+    
     def _get_average_cost_fuel(self, queryset):
         data = (queryset
                 .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
@@ -237,6 +371,54 @@ class DashbordView(APIView):
                 'data': [round(item['avg_cost'], 2) for item in result],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
+                'borderWidth': 1,
+            }]
+        }
+    
+    def _get_average_cost_km_per_team(self, enterprise):
+
+        from expenses.models import Team
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+
+        teams = Team.objects.filter(enterprise=enterprise)
+        
+        result = []
+        for team in teams:
+            # Pegar ciclos da equipe
+            data = (Expenses.objects
+                    .filter(
+                        owner_expenses__profile__team=team,
+                        cycle__isnull=False,
+                        category__name='COMBUSTÍVEL',
+                        date__gte=last_twelve_months,
+                    )
+                    .values('cycle__initial_km', 'cycle__end_km', 'value')
+                    .aggregate(
+                        total_value=Sum('value'),
+                        total_distance=Sum('cycle__end_km') - Sum('cycle__initial_km'),
+                    ))
+            
+            total_value = data['total_value'] or 0
+            total_distance = data['total_distance'] or 0
+            
+            avg_cost_km = float(total_value) / total_distance if total_distance else 0
+            
+            result.append({
+                'team': team.name,
+                'avg_cost_km': round(avg_cost_km, 2)
+            })
+
+        return {
+            'labels': [item['team'] for item in result],
+            'datasets': [{
+                'label': 'Custo médio por km por equipe nos últimos 12 meses (R$/L)',
+                'data': [item['avg_cost_km'] for item in result],
+                'backgroundColor': ['#27AE60'],
+                'borderColor': ['#27AE60'],
                 'borderWidth': 1,
             }]
         }
@@ -300,15 +482,6 @@ class DashbordView(APIView):
         }
 
     """Specific methods of the Admin"""
-    def _total_per_team(self, enterprise):
-        from expenses.models import Team, UserProfile
-        
-        teams = Team.objects.filter(enterprise=enterprise).annotate(
-            total=Sum('members__user__expenses_owner__value')
-        )
-        
-        return [{'team': team.name, 'total': float(team.total or 0)} for team in teams]
-
     def _total_per_month(self, queryset):
         data = (queryset
                 .annotate(month=TruncMonth('date'))
@@ -332,8 +505,10 @@ class DashbordView(APIView):
         return {
             'labels': [team.name for team in teams],
             'datasets': [{
+                'axis': 'y',
                 'label': 'Gasto por equipe R$',
                 'data': [float(team.total or 0) for team in teams],
+                'fill': False,
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
                 'borderWidth': 1,

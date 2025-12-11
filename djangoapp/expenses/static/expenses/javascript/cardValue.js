@@ -1,4 +1,4 @@
-export async function atualizarCard(data) {
+export async function injectionCardValueAdmin(data) {
     const cardTotalEnterprise = document.getElementById('total-enterprise'); 
     const cardTeamRegister = document.getElementById('team-registers');
     const cardProjectionMonth = document.getElementById('projection-month');
