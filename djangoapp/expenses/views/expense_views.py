@@ -45,13 +45,24 @@ def expense(request, expense_id):
     
 @login_required(login_url='expense:login')
 def dashbords(request):
+    
+    if PermissionMixin.is_company_admin(request.user):
 
-    context = dict(
-        is_dashbord=True,
-    )
-
-    return render (
-        request=request,
-        template_name='expenses/pages/dashbords_admin.html',
-        context=context,
-    )
+        context = dict(
+            is_dashbord=True,
+        )
+        return render (
+            request=request,
+            template_name='expenses/pages/dashbords_admin.html',
+            context=context,
+        )
+    
+    elif PermissionMixin.is_manager(request.user):
+        context = dict(
+            is_dashbord=True,
+        )
+        return render (
+            request=request,
+            template_name='expenses/pages/dashbords_manager.html',
+            context=context,
+        )

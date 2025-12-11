@@ -4,7 +4,7 @@
 <div class="expense-detail-container">
     <h1 class="expense-detail-title expense-info-title">
         <i class="fa-solid fa-chart-pie"></i>
-        DASHBORDS DE ADMINISTRADOR
+        DASHBORDS DE GERENTE
     </h1>
 
     <div class="contact-links">
@@ -19,36 +19,41 @@
         <i class="fa-solid fa-database"></i>           
             ANÁLISES
         </h2>
-        <div class="grid-three-columns">
+        <div class="grid-four-columns">
             <div class="expense-info-item center-text user-member">
                 {% comment %} Total cost enterprise {% endcomment %}
                 <p class="expense-info-label">
-                    <i class="fa-solid fa-magnifying-glass-dollar"></i>
-                    Custo total Empresa
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    Valor de despesas pendentes de aprovação
                 </p>
-                <p id='total-enterprise'   class="expense-info-value">
-                
-                </p>  
+                <p id="pending-expenses-value" class="expense-info-value expense-value-highlight"></p>
             </div>
+
             <div class="expense-info-item center-text user-member">
                 {% comment %} Team Registers {% endcomment %}
                 <p class="expense-info-label">
-                    <i class="fa-solid fa-people-group"></i>
-                    Equipes cadastradas
+                    <i class="fa-solid fa-circle-check"></i>
+                    Valor total de despesas aprovadas no mês
                 </p>
-                <p id='team-registers'   class="expense-info-value">
-                
-                </p>  
+                <p id="total-approved-month" class="expense-info-value expense-value-highlight"></p>
             </div>
+
             <div class="expense-info-item center-text user-member">
                 {% comment %} Total cost enterprise {% endcomment %}
                 <p class="expense-info-label">
-                    <i class="fa-solid fa-hands-holding-circle"></i>
-                    Projeção de custo para este mês
+                    <i class="fa-solid fa-hourglass-half"></i>
+                    Despesas esperando aprovação
                 </p>
-                <p id='projection-month'   class="expense-info-value">
-                    
-                </p>  
+                <p id="awaiting-approval" class="expense-info-value expense-value-highlight"></p>
+            </div>
+
+            <div class="expense-info-item center-text user-member">
+                {% comment %} Total cost enterprise {% endcomment %}
+                <p class="expense-info-label">
+                    <i class="fa-solid fa-users"></i>
+                    Quantidade de membros na equipe
+                </p>
+                <p id="team-members" class="expense-info-value expense-value-highlight"></p>
             </div>
         </div>
     </div>     
@@ -68,11 +73,10 @@
         <div class="expense-info-card center-text">
             <h2 class="expense-info-title">
                 <i class="fa-solid fa-chart-pie"></i>
-                Custo x Equpe
+                
             </h2>
-
             <div>
-                <canvas id="chart-team" style="max-height: 250px;"></canvas>
+                <canvas id="chart-per-member" style="max-height: 250px;"></canvas>
             </div>
         </div>
 
@@ -89,7 +93,7 @@
         <div class="expense-info-card center-text">
             <h2 class="expense-info-title">
                 <i class="fa-solid fa-chart-pie"></i>
-                Custo médio diário 
+                    Custo médio diário
             </h2>
             <div>
                 <canvas id="chart-avg-day" style="max-height: 250px;"></canvas>
@@ -99,7 +103,7 @@
         <div class="expense-info-card center-text">
             <h2 class="expense-info-title">
                 <i class="fa-solid fa-chart-pie"></i>
-                Consumo de combustível x Equipe
+                    Consumo de combustível x Membro
             </h2>
             <div>
                 <canvas id="chart-avg-fuel" style="max-height: 250px;"></canvas>

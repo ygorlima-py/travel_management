@@ -1,5 +1,6 @@
 from rest_framework.views import APIView #type:ignore
 from expenses.models import Expenses, Cycle
+from django.contrib.auth import get_user_model
 from api.serializers import ExpenseCategorySerializers, ExpenseMonthSerializers, ExpenseCycleSerializers
 from django.db.models import Sum, Avg, Count
 from rest_framework.response import Response  #type:ignore
@@ -37,7 +38,7 @@ class DashbordView(APIView):
             'chart_by_month': self._get_chart_by_date(expenses),
             'chart_by_cicle': self._get_chart_by_cicle(expenses),
             'chart_average_by_day': self._get_average_cost_per_day(expenses),
-            'chart_average_fuel': self._get_average_fuel(expenses),
+            'chart_average_fuel': self._get_average_fuel_per_member(expenses),
             'chart_average_cost_fuel': self._get_average_cost_fuel(expenses),
             'chart_average_cost_km': self._get_average_cost_km(expenses),
         }
@@ -49,19 +50,20 @@ class DashbordView(APIView):
         expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
 
         return {
+            'role': 'MANAGER',
             'total_pending_team': self._total_by_status(expenses, 'PENDENTE'),
             'total_approved_month': self._total_aproved_month(expenses, 'APROVADO'),
-            'awaiting_approvval': self._awaiting_approval(expenses, user),
-            'current_cicle_manager': self._current_cicle(user),
+            'awaiting_approval': self._awaiting_approval(expenses, user),
             'team_members': self._team_members(team),
-            'ranking_cost': self.ranking_cost(team),
             'chart_by_category': self._chart_category(expenses),
-            'chart_by_month': self._get_chart_by_date(expenses),
-            'chart_by_cicle': self._get_chart_by_cicle(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day(expenses),
-            'chart_average_fuel': self._get_average_fuel(expenses),
-            'chart_average_cost_km': self._get_average_cost_km(expenses),
             'chart_per_member': self._chart_per_member(expenses),
+            'chart_by_month': self._get_chart_by_date(expenses),
+            'chart_average_by_day': self._get_average_cost_per_day_company_manager(expenses, 
+                                                                                label='Custo médio diário da equipe nos ultimos 12 meses R$'
+                                                                                ),
+            'chart_average_fuel': self._get_average_fuel_per_member(expenses),
+            'chart_average_cost_fuel': self._get_average_cost_fuel_per_member(team),
+            'chart_average_cost_km': self._get_average_cost_km_per_member(expenses),
         }
     
     def _get_company_admin_dashbord(self, user):
@@ -76,9 +78,11 @@ class DashbordView(APIView):
             'projection_month': self._projection_end_month(expenses),
             'chart_by_category': self._chart_category(expenses),
             'chart_by_month': self._get_chart_by_date(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day_company(expenses),
+            'chart_average_by_day': self._get_average_cost_per_day_company_manager(expenses,
+                                                                                label='Custo médio diário da empresa dos ultimos 12 meses R$'
+                                                                                ),
             'chart_average_fuel': self._get_average_fuel_per_team(enterprise),
-            'chart_average_cost_fuel_per_team': self._get_average_cost_fuel_per_team(enterprise),
+            'chart_average_cost_fuel': self._get_average_cost_fuel_per_team(enterprise),
             'chart_average_cost_km': self._get_average_cost_km_per_team(enterprise),
             'chart_per_team': self._chart_per_team(enterprise),
         }
@@ -169,11 +173,18 @@ class DashbordView(APIView):
         }
     
     def _get_average_cost_per_day(self, queryset):
+
+        from datetime import datetime, timedelta
+        from calendar import monthrange
+
         data = (queryset
                 .filter(cycle__isnull=False)
                 .values('cycle__name', 'cycle__initial_date', 'cycle__end_date')
                 .annotate(total=Sum('value'))
                 .order_by('-total'))
+        
+        end_date = datetime.now().date()
+        start_date = end_date - timedelta(days=365)
         
         result = []
         for row in data:
@@ -194,7 +205,7 @@ class DashbordView(APIView):
             }]
         }
     
-    def _get_average_cost_per_day_company(self, queryset):
+    def _get_average_cost_per_day_company_manager(self, queryset, label):
 
         from datetime import datetime, timedelta
         from calendar import monthrange
@@ -225,7 +236,7 @@ class DashbordView(APIView):
         return {
             'labels': [item['month'] for item in result],
             'datasets': [{
-                'label': 'Custo médio diário da empresa R$',
+                'label': label,
                 'data': [item['avg_per_day'] for item in result],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
@@ -233,10 +244,20 @@ class DashbordView(APIView):
             }]
         }
     
-    def _get_average_fuel(self, queryset):
+    def _get_average_fuel_per_member(self, queryset):
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        
         data = (queryset
-                .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
-                .values('cycle__name', 'cycle__initial_km', 'cycle__end_km')
+                .filter(
+                    cycle__isnull=False,
+                    category__name='COMBUSTÍVEL',
+                    date__gte=last_twelve_months,
+                    )
+                .values('owner_expenses__username', 'cycle__initial_km', 'cycle__end_km')
                 .annotate(total=Sum('amount'))
                 .order_by('-total'))
         
@@ -244,12 +265,12 @@ class DashbordView(APIView):
         for row in data:
             distance = (row['cycle__end_km'] - row['cycle__initial_km'])
             avg_fuel = distance / row['total'] if row['total'] else 0
-            result.append({'cycle_name': row['cycle__name'], 'avg_fuel': avg_fuel})
+            result.append({'username': row['owner_expenses__username'], 'avg_fuel': avg_fuel})
 
         return {
-            'labels': [item['cycle_name'] for item in result],
+            'labels': [item['username'] for item in result],
             'datasets': [{
-                'label': 'Consumo médio em km/L',
+                'label': 'Consumo médio de combustível por membro nos últimos 12 meses (km/L)',
                 'data': [round(item['avg_fuel'], 2) for item in result],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
@@ -352,6 +373,56 @@ class DashbordView(APIView):
             }]
         }
     
+    def _get_average_cost_fuel_per_member(self, team):
+
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        
+        User = get_user_model()
+        users = User.objects.filter(
+            profile__team=team,
+            expenses_owner__category__name='COMBUSTÍVEL',
+            ).distinct()
+        
+        result = []
+        for user in users:
+            # Pegar ciclos da equipe
+            data = (Expenses.objects
+                    .filter(
+                        owner_expenses=user,
+                        category__name='COMBUSTÍVEL',
+                        date__gte=last_twelve_months,
+                    )
+                    .values('amount', 'value')
+                    .aggregate(
+                        total_value=Sum('value'),
+                        total_amount=Sum('amount')
+                    ))
+            
+            total_value = data['total_value'] or 0
+            total_amount = data['total_amount'] or 0
+            
+            avg_cost_fuel = float(total_value) / total_amount if total_amount else 0
+            
+            result.append({
+                'username': user.username,
+                'avg_cost_fuel': round(avg_cost_fuel, 2)
+            })
+
+        return {
+            'labels': [item['username'] for item in result],
+            'datasets': [{
+                'label': 'Custo médio por litro de combustível por membro nos últimos 12 meses (R$/L)',
+                'data': [item['avg_cost_fuel'] for item in result],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
+                'borderWidth': 1,
+            }]
+        }
+    
     def _get_average_cost_fuel(self, queryset):
         data = (queryset
                 .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
@@ -423,6 +494,30 @@ class DashbordView(APIView):
             }]
         }
     
+    def _get_average_cost_km_per_member(self, queryset):
+        data = (queryset
+                .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
+                .values('owner_expenses__username', 'cycle__initial_km', 'cycle__end_km')
+                .annotate(total_value=Sum('value'))
+                .order_by('total_value'))
+        
+        result = []
+        for row in data:
+            distance = (row['cycle__end_km'] - row['cycle__initial_km'])
+            avg_cost = row['total_value'] / distance if distance else 0
+            result.append({'username': row['owner_expenses__username'], 'avg_cost': avg_cost})
+
+        return {
+            'labels': [item['username'] for item in result],
+            'datasets': [{
+                'label': 'Custo médio por quilômetro por membro nos últimos 12 meses / Km R$',
+                'data': [round(item['avg_cost'], 2) for item in result],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
+                'borderWidth': 1,
+            }]
+        }
+    
     def _get_average_cost_km(self, queryset):
         data = (queryset
                 .filter(cycle__isnull=False, category__name='COMBUSTÍVEL')
@@ -449,7 +544,7 @@ class DashbordView(APIView):
 
     """Specific methods of the manager"""
     def _awaiting_approval(self, queryset, user):
-        status_id = self._get_status_id('APROVADO')
+        status_id = self._get_status_id('PENDENTE')
 
         return queryset.filter(status_id=status_id).exclude(owner_expenses=user).count()
 
@@ -458,23 +553,24 @@ class DashbordView(APIView):
         User = get_user_model()
         return User.objects.filter(profile__team=team).count()
 
-    def ranking_cost(self, team):
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-        
-        ranking = User.objects.filter(profile__team=team).annotate(
-            total_gasto=Sum('expenses_owner__value')
-        ).order_by('-total_gasto')[:5]
-        
-        return [{'username': user.username, 'total': float(user.total_gasto or 0)} for user in ranking]
-
     def _chart_per_member(self, queryset):
-        data = queryset.values('owner_expenses__username').annotate(total=Sum('value'))
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_month = now - timedelta(days=30)
+
+        data = (queryset
+                .filter(date__gte=last_month)
+                .values('owner_expenses__username')
+                .annotate(total=Sum('value'))
+                )
+        
         return {
             'labels': [item['owner_expenses__username'] for item in data],
             'datasets': [{
-                'label': 'Gasto por membro R$',
-                'data': [float(item['total']) for item in data],
+                'label': 'Gasto por membro nos ultimos 30 dias R$',
+                'data': [float(item['total'] or 0) for item in data],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
                 'borderWidth': 1,

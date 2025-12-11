@@ -2,7 +2,7 @@ import { createChartPie } from './chartPie.js'
 import { createChartBar } from './chartBar.js'
 import { createChartLine } from './chartLine.js'
 import { createChartHorizontalBar } from './chartHorizontalBar.js'
-import { injectionCardValueAdmin } from './cardValue.js'
+import { injectionCardValue } from './cardValue.js'
 
 async function fetchChartData(url) {
     try {
@@ -56,14 +56,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         'id': "chart-avg-fuel",
     }
 
-    const chart_average_cost_fuel_per_team = {
-        'data': data.chart_average_cost_fuel_per_team,
-        'id': "chart-avg-cost-fuel-per-team",
+    const chart_average_cost_fuel = {
+        'data': data.chart_average_cost_fuel,
+        'id': "chart-avg-cost-fuel",
     }
 
     const chart_average_cost_km = {
         'data': data.chart_average_cost_km,
         'id': "chart-avg-cost-km",
+    }
+
+    const chart_per_member = {
+        'data': data.chart_per_member,
+        'id': "chart-per-member",
+    }
+
+    const chart_ranking_low_cost = {
+        'data': data.ranking_cost_low,
+        'id': "cost-ranking-low",
     }
 
     function dashbordAdmin(){
@@ -72,12 +82,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         createChartLine(chart_by_month.id, chart_by_month.data, true);
         createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
         createChartHorizontalBar(chart_average_fuel.id, chart_average_fuel.data, false);
-        createChartHorizontalBar(chart_average_cost_fuel_per_team.id, chart_average_cost_fuel_per_team.data, true);
+        createChartHorizontalBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
         createChartHorizontalBar(chart_average_cost_km.id, chart_average_cost_km.data, true);
-        injectionCardValueAdmin(data);
+        injectionCardValue(data);
+    }
+
+    function dashbordManager(){
+        createChartPie(chart_by_category.id, chart_by_category.data);
+        createChartLine(chart_by_month.id, chart_by_month.data, true);
+        createChartHorizontalBar(chart_per_member.id, chart_per_member.data, true);
+        createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
+        createChartHorizontalBar(chart_average_fuel.id, chart_average_fuel.data, false);
+        createChartHorizontalBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
+        createChartHorizontalBar(chart_average_cost_km.id, chart_average_cost_km.data, true);
+        injectionCardValue(data);
     }
 
     if (data.role == "COMPANY_ADMIN") {
         dashbordAdmin()
-    } 
+    }
+    else if (data.role == "MANAGER"){
+        dashbordManager();
+    }
 })
