@@ -1,6 +1,7 @@
 :root {
     --spacing-min: 1.5rem;
     --spacing-med: 2rem;
+    --spacing-med-high: 2.5rem;
     --spacing-big: 3rem;
     --link-dark-color: rgb(0, 83, 134);
     --link-light-color: rgb(156, 217, 255);
@@ -833,8 +834,20 @@ img {
     margin-top: var(--margin-top-minimum);
 }
 
+.margin-top-mendium {
+    margin-top: var(--spacing-med);
+}
+
+.margin-top-big {
+    margin-top: var(--spacing-big);
+}
+
 .margin-botton-mendium {
     margin-bottom: var(--spacing-med);
+}
+
+.margin-botton-med-high {
+    margin-bottom: var(--spacing-med-high);
 }
 
 .display-block-inline{

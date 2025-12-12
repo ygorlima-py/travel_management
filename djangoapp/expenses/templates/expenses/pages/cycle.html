@@ -119,7 +119,7 @@
                         <i class="fa-solid fa-car"></i>
                         N° da Frota
                     </span>
-                    <span class="expense-info-value">{{user.profile.fleet_number}}</span>
+                    <span class="expense-info-value">{{user.profile.fleet_number | default:"Não informado"}}</span>
                 </div>
             </div>
         </div>

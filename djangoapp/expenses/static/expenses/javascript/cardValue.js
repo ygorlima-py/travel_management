@@ -27,4 +27,21 @@ export async function injectionCardValue(data) {
         cardTeamMembers.textContent = teamMembers;
 
         }
+    else if (data.role == "OPERATOR") {
+        const cardTotalPendingValue = document.getElementById('pending-expenses-value'); 
+        const cardTotalApprovedMonth = document.getElementById('total-approved-month');
+        const cardAwaitingApproval = document.getElementById('awaiting-approval');
+        const cardCurrentCicle = document.getElementById('current-cicle')
+
+        const TotalPendingValue = data.total_pending;
+        const TotalApprovedMonth = data.total_approved_month;     
+        const AwaitingApproval = data.awaiting_approval;
+        const currentCicle = data.current_cicle.name;
+
+        cardTotalPendingValue.textContent = `R$ ${TotalPendingValue.toFixed(2).replace('.', ',')}`; 
+        cardTotalApprovedMonth.textContent = `R$ ${TotalApprovedMonth.toFixed(2).replace('.', ',')}`;
+        cardAwaitingApproval.textContent = AwaitingApproval;
+        cardCurrentCicle.textContent = currentCicle;
+
+    }
     }

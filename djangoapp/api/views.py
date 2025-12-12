@@ -31,14 +31,17 @@ class DashbordView(APIView):
         expenses = Expenses.objects.filter(owner_expenses=user)
 
         return {
+            'role': 'OPERATOR',
             'total_pending': self._total_by_status(expenses, 'PENDENTE'),
             'total_approved_month': self._total_aproved_month(expenses, 'APROVADO'),
+            'awaiting_approval': self._awaiting_approval(expenses, user),
             'current_cicle': self._current_cicle(user),
             'chart_by_category': self._chart_category(expenses),
-            'chart_by_month': self._get_chart_by_date(expenses),
             'chart_by_cicle': self._get_chart_by_cicle(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day(expenses),
-            'chart_average_fuel': self._get_average_fuel_per_member(expenses),
+            'chart_by_month': self._get_chart_by_date(expenses),         
+            'chart_average_by_day': self._get_average_cost_per_day(expenses, 
+                                                                label='Custo médio diário nos ultimos 12 meses R$'),
+            'chart_average_fuel': self._get_average_fuel_per_cicle(expenses),
             'chart_average_cost_fuel': self._get_average_cost_fuel(expenses),
             'chart_average_cost_km': self._get_average_cost_km(expenses),
         }
@@ -58,9 +61,9 @@ class DashbordView(APIView):
             'chart_by_category': self._chart_category(expenses),
             'chart_per_member': self._chart_per_member(expenses),
             'chart_by_month': self._get_chart_by_date(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day_company_manager(expenses, 
-                                                                                label='Custo médio diário da equipe nos ultimos 12 meses R$'
-                                                                                ),
+            'chart_average_by_day': self._get_average_cost_per_day(expenses, 
+                                                                    label='Custo médio diário da equipe nos ultimos 12 meses R$'
+                                                                    ),
             'chart_average_fuel': self._get_average_fuel_per_member(expenses),
             'chart_average_cost_fuel': self._get_average_cost_fuel_per_member(team),
             'chart_average_cost_km': self._get_average_cost_km_per_member(expenses),
@@ -78,7 +81,7 @@ class DashbordView(APIView):
             'projection_month': self._projection_end_month(expenses),
             'chart_by_category': self._chart_category(expenses),
             'chart_by_month': self._get_chart_by_date(expenses),
-            'chart_average_by_day': self._get_average_cost_per_day_company_manager(expenses,
+            'chart_average_by_day': self._get_average_cost_per_day(expenses,
                                                                                 label='Custo médio diário da empresa dos ultimos 12 meses R$'
                                                                                 ),
             'chart_average_fuel': self._get_average_fuel_per_team(enterprise),
@@ -109,9 +112,28 @@ class DashbordView(APIView):
         return {'name': cicle.name if cicle else None}
     
     def _chart_category(self, queryset):
-        data = queryset.values('category__name').annotate(total=Sum('value'))
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+
+        data = (queryset
+                .filter(date__gte=last_twelve_months)
+                .values('category__name')
+                .annotate(total=Sum('value'))
+                )
+        total_geral = sum(item['total'] for item in data)
+    
+        labels_formatted = []
+        for item in data:
+            percent = (item['total'] / total_geral * 100) if total_geral else 0
+            # Formato: "COMBUSTÍVEL (45.2%) - R$ 1.250,00"
+            label = f"{item['category__name']} ({percent:.1f}%)"
+            labels_formatted.append(label)
+        
         return {
-            'labels': [item['category__name'] for item in data],
+            'labels': labels_formatted,
             'datasets': [{
                 'data': [float(item['total']) for item in data],
                 'backgroundColor': [
@@ -119,8 +141,12 @@ class DashbordView(APIView):
                     '#1F618D',
                     '#F1C40F',
                     '#27AE60',
-                    '#884EA0', 
+                    '#884EA0',
                     '#D35400',
+                    '#2C3E50',
+                    '#7F8C8D',
+                    '#16A085',
+                    '#2980B9'
                     ],
             }]
         }
@@ -150,9 +176,18 @@ class DashbordView(APIView):
         }
     
     def _get_chart_by_cicle(self, queryset):
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+
         data = (
             queryset
-            .filter(cycle__isnull=False)
+            .filter(
+                cycle__isnull=False,
+                date__gte=last_twelve_months,
+                )
             .values('cycle__name')
             .annotate(total=Sum('value'))
             .order_by('-total')
@@ -164,7 +199,7 @@ class DashbordView(APIView):
         return {
             'labels': [item['cycle'] for item in serialized_data],
             'datasets': [{
-                'label': 'Valor total gasto x Ciclo R$',
+                'label': 'Valor total gasto nos ultimos 12 meses x Ciclo  R$',
                 'data': [item['total'] for item in serialized_data],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
@@ -172,40 +207,7 @@ class DashbordView(APIView):
             }]
         }
     
-    def _get_average_cost_per_day(self, queryset):
-
-        from datetime import datetime, timedelta
-        from calendar import monthrange
-
-        data = (queryset
-                .filter(cycle__isnull=False)
-                .values('cycle__name', 'cycle__initial_date', 'cycle__end_date')
-                .annotate(total=Sum('value'))
-                .order_by('-total'))
-        
-        end_date = datetime.now().date()
-        start_date = end_date - timedelta(days=365)
-        
-        result = []
-        for row in data:
-            initial = row['cycle__initial_date']
-            end = row['cycle__end_date']
-            days = (end - initial).days or 1
-            avg_per_day = row['total'] / days
-            result.append({'cycle_name': row['cycle__name'], 'avg_per_day': avg_per_day})
-
-        return {
-            'labels': [item['cycle_name'] for item in result],
-            'datasets': [{
-                'label': 'Valor médio diário x Ciclo R$',
-                'data': [round(item['avg_per_day'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
-                'borderWidth': 1,
-            }]
-        }
-    
-    def _get_average_cost_per_day_company_manager(self, queryset, label):
+    def _get_average_cost_per_day(self, queryset, label):
 
         from datetime import datetime, timedelta
         from calendar import monthrange
@@ -244,6 +246,40 @@ class DashbordView(APIView):
             }]
         }
     
+    def _get_average_fuel_per_cicle(self, queryset):
+        from django.utils import timezone
+        from datetime import timedelta
+        
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        
+        data = (queryset
+                .filter(
+                    cycle__isnull=False,
+                    category__name='COMBUSTÍVEL',
+                    date__gte=last_twelve_months,
+                    )
+                .values('cycle__name', 'cycle__initial_km', 'cycle__end_km')
+                .annotate(total=Sum('amount'))
+                .order_by('-total'))
+        
+        result = []
+        for row in data:
+            distance = (row['cycle__end_km'] - row['cycle__initial_km'])
+            avg_fuel = distance / row['total'] if row['total'] else 0
+            result.append({'cicle': row['cycle__name'], 'avg_fuel': avg_fuel})
+
+        return {
+            'labels': [item['cicle'] for item in result],
+            'datasets': [{
+                'label': 'Consumo médio de combustível por membro nos últimos 12 meses (km/L)',
+                'data': [round(item['avg_fuel'], 2) for item in result],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
+                'borderWidth': 1,
+            }]
+        }
+    
     def _get_average_fuel_per_member(self, queryset):
         from django.utils import timezone
         from datetime import timedelta
@@ -270,7 +306,7 @@ class DashbordView(APIView):
         return {
             'labels': [item['username'] for item in result],
             'datasets': [{
-                'label': 'Consumo médio de combustível por membro nos últimos 12 meses (km/L)',
+                'label': 'Consumo médio de combustível por ciclo nos últimos 12 meses (km/L)',
                 'data': [round(item['avg_fuel'], 2) for item in result],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
@@ -320,8 +356,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Consumo médio de combustível por equipe nos últimos 12 meses (km/L)',
                 'data': [item['avg_fuel'] for item in result],
-                'backgroundColor': ['#27AE60'],
-                'borderColor': ['#27AE60'],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
                 'borderWidth': 1,
             }]
         }
@@ -367,8 +403,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por litro de combustível por equipe nos últimos 12 meses (R$/L)',
                 'data': [item['avg_cost_fuel'] for item in result],
-                'backgroundColor': ['#27AE60'],
-                'borderColor': ['#27AE60'],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
                 'borderWidth': 1,
             }]
         }
@@ -438,7 +474,7 @@ class DashbordView(APIView):
         return {
             'labels': [item['cycle_name'] for item in result],
             'datasets': [{
-                'label': 'Custo médio de combustível / Litro R$',
+                'label': 'Custo médio de combustível por ciclo nos últimos 12 meses / Litro R$',
                 'data': [round(item['avg_cost'], 2) for item in result],
                 'backgroundColor': ['#1F618D'],
                 'borderColor': ['#1F618D'],
@@ -488,8 +524,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por km por equipe nos últimos 12 meses (R$/L)',
                 'data': [item['avg_cost_km'] for item in result],
-                'backgroundColor': ['#27AE60'],
-                'borderColor': ['#27AE60'],
+                'backgroundColor': ['#1F618D'],
+                'borderColor': ['#1F618D'],
                 'borderWidth': 1,
             }]
         }
@@ -546,7 +582,7 @@ class DashbordView(APIView):
     def _awaiting_approval(self, queryset, user):
         status_id = self._get_status_id('PENDENTE')
 
-        return queryset.filter(status_id=status_id).exclude(owner_expenses=user).count()
+        return queryset.filter(status_id=status_id).count()
 
     def _team_members(self, team):
         from django.contrib.auth import get_user_model

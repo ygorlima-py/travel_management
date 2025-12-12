@@ -41,6 +41,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         'id': "chart-team"
     }
 
+    const chart_by_cicle = {
+        'data': data.chart_by_cicle,
+        'id': "chart-cicle",
+    }
+
     const chart_by_month = {
         'data': data.chart_by_month,
         'id': "chart-month",
@@ -71,13 +76,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         'id': "chart-per-member",
     }
 
-    const chart_ranking_low_cost = {
-        'data': data.ranking_cost_low,
-        'id': "cost-ranking-low",
-    }
+   
+
 
     function dashbordAdmin(){
-        createChartPie(chart_by_category.id, chart_by_category.data);
+        createChartPie(chart_by_category.id, chart_by_category.data, true);
         createChartHorizontalBar(chart_by_team.id, chart_by_team.data, false);
         createChartLine(chart_by_month.id, chart_by_month.data, true);
         createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
@@ -88,9 +91,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function dashbordManager(){
-        createChartPie(chart_by_category.id, chart_by_category.data);
+        createChartPie(chart_by_category.id, chart_by_category.data, true);
         createChartLine(chart_by_month.id, chart_by_month.data, true);
         createChartHorizontalBar(chart_per_member.id, chart_per_member.data, true);
+        createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
+        createChartHorizontalBar(chart_average_fuel.id, chart_average_fuel.data, false);
+        createChartHorizontalBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
+        createChartHorizontalBar(chart_average_cost_km.id, chart_average_cost_km.data, true);
+        injectionCardValue(data);
+    }
+
+    function dashbordOperator(){
+        createChartPie(chart_by_category.id, chart_by_category.data, true);
+        createChartHorizontalBar(chart_by_cicle.id, chart_by_cicle.data, true);
+        createChartLine(chart_by_month.id, chart_by_month.data, true);
         createChartBar(chart_average_by_day.id, chart_average_by_day.data, true);
         createChartHorizontalBar(chart_average_fuel.id, chart_average_fuel.data, false);
         createChartHorizontalBar(chart_average_cost_fuel.id, chart_average_cost_fuel.data, true);
@@ -103,5 +117,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     else if (data.role == "MANAGER"){
         dashbordManager();
+    }
+    else if (data.role == "OPERATOR"){
+        dashbordOperator();
     }
 })

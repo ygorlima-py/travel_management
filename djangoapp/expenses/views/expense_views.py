@@ -66,3 +66,12 @@ def dashbords(request):
             template_name='expenses/pages/dashbords_manager.html',
             context=context,
         )
+    elif PermissionMixin.is_operator(request.user):
+        context = dict(
+            is_dashbord=True,
+        )
+        return render (
+            request=request,
+            template_name='expenses/pages/dashbords_operator.html',
+            context=context,
+        )
