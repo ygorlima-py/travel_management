@@ -40,6 +40,7 @@ def create_expense(request):
     context = dict(
         form=ExpenseForm(),
         title_page="CRIAR DESPESA",
+        is_expense_form=True,
     )
 
     return render(

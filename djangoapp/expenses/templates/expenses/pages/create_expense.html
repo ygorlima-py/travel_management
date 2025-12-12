@@ -1,57 +1,90 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-    <div class="form-wrapper">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-cart-shopping"></i>
-            {{title_page}}
-        </h2>
-        <form action="{{form_action}}" method="post" enctype="multipart/form-data">     
+    <div class='form-flex'>
+        <div id='nf-picture' class="drag-and-drop flex-frame">
+            <span class="display-block-text-center">
+                <i class="fa-solid fa-cloud-arrow-up fa-2x"></i>
+                <p>Arraste a imagem do recibo fiscal aqui<p>
+            </span>
             
-            {% csrf_token %}
-            
-            <div class="form-content">
-                {% for field in form %}
-                <div class="form-group">
+        </div>
+        <div class="form-wrapper flex-frame">
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-cart-shopping"></i>
+                {{title_page}}
+            </h2>
+            <form action="{{form_action}}" method="post" enctype="multipart/form-data">     
+                
+                {% csrf_token %}
+                <input type="file" name="picture" id="picture-input" accept="image/*" style="display: none;">
+
+                <div class="form-content">
+                    {% for field in form %}
+
+                        {% if field.name != 'picture' %}
+                        
+                            {% if field.name == 'state_uf'%}
+                                <div class="form-row-two-columns">
+                            {% endif %}
+
+                            {% if field.name == 'nf'%}
+                                <div class="form-row-two-columns">
+                            {% endif %}
+
+                            {% if field.name == 'amount'%}
+                                <div class="form-row-two-columns">
+                            {% endif %}
+
+
+
+                            <div class="form-group">
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                                {{field}}
+                                {{field.errors}}
+
+                                {% if field.help_text %}
+                                    <p class="help-text">
+                                        {{field.help_text}}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        
+                            {% if field.name == 'city' %}
+                                </div>
+                            {% endif %}
+
+                            {% if field.name == 'date' %}
+                                </div>
+                            {% endif %}
+
+                            {% if field.name == 'value' %}
+                                </div>
+                            {% endif %}
+
+                        {% endif %}
                     
-                    <label for="{{field.id_for_label}}">{{field.label}}</label>
-                    {{field}}
-                    {{field.errors}}
-
-                    {% if field.help_text %}
-                        <p class="help-text">
-                            {{field.help_text}}
-                        </p>
-                    {% endif %}
-
+                    {% endfor %}
                 </div>
 
-                {% if field.name == 'picture' and field.value.url %}
-                    <div class="image-content">
-                        <img src="{{field.value.url}}" alt="">
+                {% if form.non_field_errors %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <div class="message error">
+                            {{form.non_field_errors}}
+                        </div>
+                        
                     </div>
+                </div>
                 {% endif %}
                 
-                {% endfor %}
-            </div>
-
-            {% if form.non_field_errors %}
-            <div class="form-content">
-                <div class="form-group">
-                    <div class="message error">
-                        {{form.non_field_errors}}
+                <div class="form-content">
+                    <div class="form-group">
+                        <button class="btn" type='submit'>{{title_page}}</button>
                     </div>
-                    
                 </div>
-            </div>
-            {% endif %}
             
-            <div class="form-content">
-                <div class="form-group">
-                    <button class="btn" type='submit'>{{title_page}}</button>
-                </div>
-            </div>
-        
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock content %}
