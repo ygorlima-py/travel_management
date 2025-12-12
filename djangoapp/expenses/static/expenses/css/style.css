@@ -925,6 +925,16 @@ img {
     margin-right: calc(var(--spacing-med)*2);
 }
 
+.loggin-flex {
+    display: flex;
+    height: 80rem;
+}
+
+.loggin-flex-frame {
+    flex: 2;
+    background-image: url(https://blog.zignet.com.br/wp-content/uploads/2024/12/checklist-viagem-de-carro.jpg);
+}
+
 .flex-frame {
     flex: 1;
     min-width: 0;

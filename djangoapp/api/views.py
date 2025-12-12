@@ -123,17 +123,9 @@ class DashbordView(APIView):
                 .values('category__name')
                 .annotate(total=Sum('value'))
                 )
-        total_geral = sum(item['total'] for item in data)
-    
-        labels_formatted = []
-        for item in data:
-            percent = (item['total'] / total_geral * 100) if total_geral else 0
-            # Formato: "COMBUSTÍVEL (45.2%) - R$ 1.250,00"
-            label = f"{item['category__name']} ({percent:.1f}%)"
-            labels_formatted.append(label)
         
         return {
-            'labels': labels_formatted,
+            'labels': [item['category__name'] for item in data],
             'datasets': [{
                 'data': [float(item['total']) for item in data],
                 'backgroundColor': [
