@@ -34,13 +34,25 @@ def reports(request):
         initial_date = request.POST.get('initial_date')
         end_date = request.POST.get('end_date')
         user = request.user
+        
+        if PermissionMixin.is_company_admin(user):
+            enterprise = PermissionMixin.get_user_enterprise(user)
+            expenses = Expenses.objects.filter(owner_expenses__profile__team__enterprise=enterprise)
+        
+        elif PermissionMixin.is_manager(user):
+            team = PermissionMixin.get_user_team(user)
+            expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
+
+        else:
+            expenses = Expenses.objects.for_user(user)
 
         if not initial_date or not end_date:
             return redirect('expense:reports')
 
         initial = datetime.strptime(initial_date, "%Y-%m-%d")
         end = datetime.strptime(end_date, "%Y-%m-%d")
-        queryset = Expenses.objects.for_user(user).filter(date__date__range=(initial, end))
+        
+        queryset = expenses.filter(date__date__range=(initial, end))
         excel_file = GenerateReports(queryset=queryset).generate_excel()
         response = HttpResponse(
             excel_file.getvalue(),
