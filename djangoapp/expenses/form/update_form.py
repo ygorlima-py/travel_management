@@ -62,12 +62,6 @@ class UpdateFormUser(forms.ModelForm):
         label='Cidade',
     )
 
-    fleet_number = forms.CharField(
-        required=False,
-        max_length=50,
-        label='Numero da Frota',
-    )
-
     bank = forms.CharField(
                     max_length=50,
                     required=False,
@@ -96,6 +90,13 @@ class UpdateFormUser(forms.ModelForm):
         required=False,
         label='Tipo de conta',
         help_text='Selecione o tipo de conta'
+    )
+
+    fleet_number = forms.CharField(
+        required=False,
+        max_length=50,
+        label='Numero da Frota',
+        help_text="(Opcional).",
     )
 
     class Meta:

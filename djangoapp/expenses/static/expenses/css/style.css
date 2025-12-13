@@ -33,6 +33,9 @@
     --space-container-top: 100px;
     --padding-horizontal-forms: 50px;
     --margin-top-minimum: 1rem;
+    --max-width-form-profile: 65rem;
+    --color-cold-gray-550: #707070;
+    --color-cold-gray-800: #2e2e2e;
 }
 
 *,
@@ -389,8 +392,8 @@ caption {
 }
 
 .form-wrapper {
-    max-width: 80rem;
-    max-height: 85rem;
+    max-width: 50rem;
+    width: 100%;
     margin: 0;
     background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
     box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
@@ -424,7 +427,8 @@ caption {
     display: flex;
     flex-direction: column;
     padding-bottom: var(--spacing-min);
-    font-family: sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif;
+    color: var(--color-cold-gray-);
 }
 
 .errorlist {
@@ -927,17 +931,22 @@ img {
 
 .loggin-flex {
     display: flex;
-    height: 80rem;
+    min-height: 100vh;
 }
 
-.loggin-flex-frame {
+.loggin-flex-frame-image {
     flex: 2;
     background-image: url(https://blog.zignet.com.br/wp-content/uploads/2024/12/checklist-viagem-de-carro.jpg);
 }
 
 .flex-frame {
     flex: 1;
-    min-width: 0;
+}
+
+.flex-frame-login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form-row-two-columns {
@@ -948,9 +957,10 @@ img {
 .form-row-tree-columns {
     display: flex;
     gap: calc(var(--spacing-min));
+    /* flex: 2; */
 }
 
-.form-row-tree-columns{
+.form-group-two-columns{
     flex: 2;
 }
 
@@ -966,6 +976,14 @@ img {
 
 .display-block-text-center {
     display: block;
+    text-align: center;
+}
+
+.max-width-form-profile {
+    max-width: var(--max-width-form-profile);
+}
+
+#id_account_type {
     text-align: center;
 }
 

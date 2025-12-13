@@ -2,29 +2,80 @@
     
     {% csrf_token %}
     
-    <div class="form-content">    
+    <div class="form-content">
+
         {% for field in form %}
-        <div class="form-group"> 
             
-        {% if field.field.widget.input_type == 'checkbox' %}
-            <div>
-                {{field}}
-                <label for="{{field.id_for_label}}">{{field.label}}</label>
-            </div>
-        {% else %}
-            <label for="{{field.id_for_label}}">{{field.label}}</label>
-            {{field}}
-        {% endif %}
-
-            {{field.errors}}
-
-            {% if field.help_text %}
-                <p class="help-text">
-                    {{field.help_text}}
-                </p>
+            {% if field.name == 'first_name'%}
+                <div class="form-row-two-columns">
             {% endif %}
 
-        </div>            
+            {% if field.name == 'email'%}
+                <div class="form-row-two-columns">
+            {% endif %}
+            
+            {% if field.name == 'phone'%}
+                <div class="form-row-tree-columns">
+            {% endif %}
+
+            {% if field.name == 'bank'%}
+                <div class="form-row-two-columns">
+            {% endif %}
+
+            {% if field.name == 'account'%}
+                <div class="form-row-two-columns">
+            {% endif %}
+
+            {% if field.name == 'fleet_number'%}
+                <div class="form-row-tree-columns">
+            {% endif %}
+
+                <div class="form-group">  
+                    
+                {% if field.field.widget.input_type == 'checkbox' %}
+                    <div>
+                        {{field}}
+                        <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    </div>
+                {% else %}
+                    <label for="{{field.id_for_label}}">{{field.label}}</label>
+                    {{field}}
+                {% endif %}
+
+                {{field.errors}}
+
+                {% if field.help_text %}
+                    <p class="help-text">
+                        {{field.help_text}}
+                    </p>
+                {% endif %}
+            </div>
+
+            
+            {% if field.name == 'last_name' %}
+                </div>
+            {% endif %}
+
+            {% if field.name == 'username' %}
+                </div>
+            {% endif %}
+
+            {% if field.name == 'city' %}
+                </div>
+            {% endif %}
+
+            {% if field.name == 'agency' %}
+                </div>
+            {% endif %}
+
+            {% if field.name == 'account_type' %}
+                </div>
+            {% endif %}
+
+            {% if field.name == 'fleet_number' %}
+                </div>
+            {% endif %}
+
         {% endfor %}
     </div>
 

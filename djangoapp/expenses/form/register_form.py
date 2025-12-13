@@ -78,8 +78,8 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
         fields = [
             'phone', 'state_uf', 'city',
-            'fleet_number','bank', 'agency',
-            'account', 'account_type',
+            'bank', 'agency',
+            'account', 'account_type','fleet_number',
         ]
         widgets = {
             'phone': forms.TextInput(
@@ -87,9 +87,6 @@ class UserProfileForm(forms.ModelForm):
                 ),
             'city': forms.TextInput(
                 attrs={'placeholder':'Digite a sua cidade:'}
-                ),
-            'fleet_number':forms.TextInput(
-                attrs={'placeholder':'Opcional, caso haja controle de frota'}
                 ),
             'bank':forms.TextInput(
                 attrs={'placeholder':'Nome do Banco'}
@@ -100,6 +97,9 @@ class UserProfileForm(forms.ModelForm):
             'account':forms.TextInput(
                 attrs={'placeholder':'Conta'}
                 ),
+            'fleet_number':forms.TextInput(
+                attrs={'placeholder':'Opcional, caso haja controle de frota'}
+                ),
         }
 
         labels = {
@@ -107,9 +107,9 @@ class UserProfileForm(forms.ModelForm):
             'state_uf': 'Estado',
             'city': 'Cidade',
             'team': 'Equipe',
-            'fleet_number': 'Número da Frota',
             'bank': 'Banco',
             'agency': 'Agência',
             'account': 'Conta',
             'account_type': 'Tipo de Conta',
+            'fleet_number': 'Número da Frota',
         }

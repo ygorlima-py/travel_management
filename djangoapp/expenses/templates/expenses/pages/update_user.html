@@ -1,11 +1,13 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-    <div class="form-wrapper">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-user-plus"></i>
-            ATUALIZAR USUÁRIO
-        </h2>
-        {% include "expenses/partials/_user-form.html" %}
-    </div>
+    <div class="flex-frame-login-form">
+        <div class="form-wrapper flex-frame max-width-form-profile">
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-user-plus"></i>
+                ATUALIZAR USUÁRIO
+            </h2>
+            {% include "expenses/partials/_user-form.html" %}
+        </div>
+    </div>    
 {% endblock content %}
