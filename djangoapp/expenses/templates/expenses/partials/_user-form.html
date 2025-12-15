@@ -91,13 +91,15 @@
     
     <div class="form-content">
         <div class="form-group">
-                {% if is_login %}        
-                    <button class="btn" type='submit'>
+                {% if is_login %}
+                <div class="padding-forms">        
+                    <button class="btn enter-btn" type='submit'>
                         ENTRAR
                     </button>
                     <a class='btn btn-link btn-approved center-text margin-top-minimum' href="{% url "expense:register"%}">
                         CADASTRAR-SE
                     </a> 
+                </div>
                 {% else %}
                 <button class="btn" type='submit'>
                     {{title_page}}

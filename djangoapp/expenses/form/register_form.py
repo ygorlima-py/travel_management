@@ -98,7 +98,7 @@ class UserProfileForm(forms.ModelForm):
                 attrs={'placeholder':'Conta'}
                 ),
             'fleet_number':forms.TextInput(
-                attrs={'placeholder':'Opcional, caso haja controle de frota'}
+                attrs={'placeholder':'Opcional'}
                 ),
         }
 
@@ -112,4 +112,15 @@ class UserProfileForm(forms.ModelForm):
             'account': 'Conta',
             'account_type': 'Tipo de Conta',
             'fleet_number': 'Número da Frota',
+        }
+
+        help_texts = {
+            'phone': 'Digite seu telefone com DDD (Apenas números)',
+            'state_uf': 'Selecione seu estado',
+            'city': 'Digite o nome da sua cidade',
+            'bank': 'Opcional *',
+            'agency': 'Opcional *',
+            'account': 'Opcional *',
+            'account_type': 'Opcional *',
+            'fleet_number': 'Opcional *'
         }

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib.auth.models import User
-from expenses.models import UserProfile
+from expenses.models import UserProfile, UserEnterpriseRole, Role
 
 ''' Route for the user to register on the platform '''
 def register(request): 
@@ -41,6 +41,7 @@ def register(request):
         {
             'form':form,
             'is_register': True,
+            'title_page': 'CADASTRAR'
         }
     )
 
@@ -54,6 +55,13 @@ def complete_profile(request):
 
         if form.is_valid():
             form.save()
+            operator_role = Role.objects.filter(hierarchy=40).first()
+            UserEnterpriseRole.objects.get_or_create(
+                user=request.user,
+                role=operator_role,
+                enterprise=None,
+            )
+
             messages.success(request, 'Perfil de usuario preechido com sucesso')
             return redirect('expense:index')
         
@@ -63,6 +71,7 @@ def complete_profile(request):
     context = dict(
         form=form,
         is_profile_complete=True,
+        title_page="COMPLETAR PERFIL"
     )
 
     return render(

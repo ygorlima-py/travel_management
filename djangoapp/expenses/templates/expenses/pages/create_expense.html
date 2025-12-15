@@ -23,20 +23,18 @@
                     {% for field in form %}
 
                         {% if field.name != 'picture' %}
+
+                            {% if field.name == 'category'%}
+                                <div class="form-row-two-columns">
+                            {% endif %}
                         
                             {% if field.name == 'state_uf'%}
-                                <div class="form-row-two-columns">
+                                <div class="form-row-tree-columns">
                             {% endif %}
 
-                            {% if field.name == 'nf'%}
-                                <div class="form-row-two-columns">
+                            {% if field.name == 'date'%}
+                                <div class="form-row-tree-columns">
                             {% endif %}
-
-                            {% if field.name == 'amount'%}
-                                <div class="form-row-two-columns">
-                            {% endif %}
-
-
 
                             <div class="form-group">
                                 <label for="{{field.id_for_label}}">{{field.label}}</label>
@@ -49,12 +47,12 @@
                                     </p>
                                 {% endif %}
                             </div>
-                        
-                            {% if field.name == 'city' %}
+
+                            {% if field.name == 'supply' %}
                                 </div>
                             {% endif %}
-
-                            {% if field.name == 'date' %}
+                        
+                            {% if field.name == 'nf' %}
                                 </div>
                             {% endif %}
 

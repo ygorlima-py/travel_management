@@ -30,9 +30,12 @@
     --min-border-bradius: 8px;
     --med-border-box: 10px;
     --big-border-box: 12px;
-    --space-container-top: 100px;
-    --padding-horizontal-forms: 50px;
-    --margin-top-minimum: 1rem;
+    --space-container-top: 10rem;
+    --padding-horizontal-forms: 5rem;
+    --margin-minimum: 1rem;
+    --margin-medium: 2rem;
+    --margin-big: 4rem;
+    --margin-biggest: 6rem;
     --max-width-form-profile: 65rem;
     --color-cold-gray-550: #707070;
     --color-cold-gray-800: #2e2e2e;
@@ -185,7 +188,6 @@ caption {
         white-space: nowrap;
         min-width: max-content;
     }
-    
     .openbtn {
         display: none;
     }
@@ -392,7 +394,6 @@ caption {
 }
 
 .form-wrapper {
-    max-width: 50rem;
     width: 100%;
     margin: 0;
     background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
@@ -400,6 +401,17 @@ caption {
     border-radius: var(--med-border-box);
     padding: var(--spacing-big);
 }
+
+.form-wrapper-relport {
+    width: 40%;
+    margin: 0;
+    background-image: url(https://img.freepik.com/free-vector/minimalist-white-abstract-background_23-2148816119.jpg?t=st=1762852471~exp=1762856071~hmac=fefc2b3ec2298da8aaa8905e2bdca722a9f69906929c213474dc2bdd9a010a2a&w=1480);
+    box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
+    border-radius: var(--med-border-box);
+    padding: var(--spacing-big);
+}
+
+
 
 .drag-and-drop {
     display: flex;
@@ -540,6 +552,10 @@ caption {
     border-radius: var(--default-border-radius);
     cursor: pointer;
     transition: filter var(--transition-fast) ease-in-out;
+}
+
+.enter-btn {
+    width: 100%;
 }
 
 .contact-links {
@@ -854,24 +870,33 @@ img {
 }
 
 .margin-top-minimum {
-    margin-top: var(--margin-top-minimum);
+    margin-top: var(--margin-minimum);
 }
-
-.margin-top-mendium {
-    margin-top: var(--spacing-med);
-}
-
-.margin-top-big {
-    margin-top: var(--spacing-big);
+.margin-top-biggest {
+    margin-top: var(--margin-biggest);
 }
 
 .margin-botton-mendium {
-    margin-bottom: var(--spacing-med);
+    margin-bottom: var(--margin-medium);
 }
 
 .margin-botton-med-high {
     margin-bottom: var(--spacing-med-high);
 }
+
+.margin-form-complete-profile {
+    margin: var(--margin-biggest);
+}
+
+.margin-form-cicle {
+    margin: calc(var(--margin-biggest)*1.5);
+}
+
+.margin-form-team {
+    margin: calc(var(--margin-biggest)*2);
+}
+
+
 
 .display-block-inline{
     display: block;
@@ -929,6 +954,12 @@ img {
     margin-right: calc(var(--spacing-med)*2);
 }
 
+@media (max-width: 768px) {
+    .form-flex {
+        flex-direction: column;
+        }
+}
+
 .loggin-flex {
     display: flex;
     min-height: 100vh;
@@ -941,6 +972,7 @@ img {
 
 .flex-frame {
     flex: 1;
+    max-width: 65rem;
 }
 
 .flex-frame-login-form {

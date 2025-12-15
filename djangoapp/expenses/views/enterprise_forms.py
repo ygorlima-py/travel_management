@@ -43,6 +43,7 @@ def register_enterprise(request):
     context = dict(
         form=EnterpriseRegisterForm(),
         title_page="CADASTRAR EMPRESA",   
+        is_register_enterprise=True,
     )
 
     return render(

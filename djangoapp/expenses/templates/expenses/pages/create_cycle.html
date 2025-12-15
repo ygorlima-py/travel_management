@@ -1,11 +1,80 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-    <div class="form-wrapper">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-arrows-spin"></i>
-            {{title_page}}
-        </h2>
-        {% include "expenses/partials/_user-form.html" %}
+    <div class="flex-frame-login-form margin-form-cicle">
+        <div class="form-wrapper flex-frame max-width-form-profile">
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-arrows-spin"></i>
+                {{title_page}}
+            </h2>
+            <form action="{{form_action}}" method="post">     
+    
+            {% csrf_token %}
+            
+            <div class="form-content">
+
+                {% for field in form %}
+                    
+                    {% if field.name == 'initial_date'%}
+                        <div class="form-row-two-columns">
+                    {% endif %}
+
+                    {% if field.name == 'initial_km'%}
+                        <div class="form-row-two-columns">
+                    {% endif %}
+
+
+                        <div class="form-group">  
+                            
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                            <div>
+                                {{field}}
+                                <label for="{{field.id_for_label}}">{{field.label}}</label>
+                            </div>
+                        {% else %}
+                            <label for="{{field.id_for_label}}">{{field.label}}</label>
+                            {{field}}
+                        {% endif %}
+
+                        {{field.errors}}
+
+                        {% if field.help_text %}
+                            <p class="help-text">
+                                {{field.help_text}}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    
+                    {% if field.name == 'end_date' %}
+                        </div>
+                    {% endif %}
+
+                    {% if field.name == 'end_km' %}
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="form-content">
+                <div class="form-group">
+                    <div class="message error">
+                        {{form.non_field_errors}}
+                    </div>         
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="form-content">
+                <div class="form-group">
+                    <button class="btn" type='submit'>
+                        {{title_page}}
+                    </button>                   
+                </div>
+            </div>
+
+        </div>
     </div>
 {% endblock content %}

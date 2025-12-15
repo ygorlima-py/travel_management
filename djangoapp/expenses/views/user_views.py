@@ -75,8 +75,13 @@ def reports(request):
 
 @login_required(login_url='expense:login')
 def chose_enterprise_or_user(request):
+
+    context = {
+        'is_chose': True,
+    }
     
     return render (
         request=request,
         template_name='expenses/pages/chose_register.html',
+        context=context,
     )

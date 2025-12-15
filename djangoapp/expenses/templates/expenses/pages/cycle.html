@@ -1,13 +1,13 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-<div class="expense-detail-container">
+<div class="expense-detail-container center-text">
     <h1 class="expense-detail-title expense-info-title">
         <i class="fa-solid fa-arrows-spin"></i>
         {{cycle.name}}
     </h1>
 
-    <div class="contact-links">
+    <div class="contact-links ">
         <a class='btn btn-link ' href="{% url "expense:cycles" %}">
             <i class="fa-solid fa-arrow-left"></i>
             VOLTAR
