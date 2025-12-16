@@ -8,7 +8,9 @@
                 <i class="fa-solid fa-arrows-spin"></i>
                 {{title_page | default:"SEM TITULO"}}
             </h2>
-            <form action="{{form_action}}" method="post">   
+            <form action="{{form_action}}" method="post"> 
+                {% csrf_token %}
+                
                 <div class="form-content">
 
                     {% for field in form %}

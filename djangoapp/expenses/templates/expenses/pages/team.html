@@ -207,26 +207,26 @@
 {% endif %}
 
 <main>
-      <form action="" method='POST'>
-            {% csrf_token %}
+    <form action="{% url "expense:team_delete" team.id %}" method='POST'>
+        {% csrf_token %}
 
-            {% if confirmation == 'no' %}
-                <input type="hidden" name="confirmation" value="yes">
-                <button 
-                id='delete'
-                class="btn btn-link btn-delete"
-                type='submit'>
-                    CONFIRMA A EXCLUSÃO ?
-                </button>            
-            {% else %}
-                <button 
-                class="btn btn-link btn-delete"
-                onclick='backToDeleteButton()'>
-                    <i class="fa-solid fa-trash"></i>
-                    DELETAR EQUIPE
-                </button>            
-            {% endif %}
-        </form>
+        {% if confirmation == 'no' %}
+            <input type="hidden" name="confirmation" value="yes">
+            <button 
+            id='delete'
+            class="btn btn-link btn-delete"
+            type='submit'>
+                CONFIRMA A EXCLUSÃO ?
+            </button>            
+        {% else %}
+            <button 
+            class="btn btn-link btn-delete"
+            onclick='backToDeleteButton()'>
+                <i class="fa-solid fa-trash"></i>
+                DELETAR EQUIPE
+            </button>            
+        {% endif %}
+    </form>
 </div>
 
 <script>

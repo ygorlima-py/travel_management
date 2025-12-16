@@ -32,7 +32,7 @@ class ExpensesAdmin(admin.ModelAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display= (
                 'id', 'user','phone',
-                'state_uf','city','fleet_number', 
+                'state_uf','city','fleet_number','enterprise' 
                 )
     ordering = '-id',
     list_display_links = 'id',

@@ -43,6 +43,7 @@ urlpatterns = [
     path('equipe/<int:team_id>/', views.team, name='team'), #type:ignore
     path('equipes/create_team', views.create_team, name='create_team'), #type:ignore
     path('equipe/<int:team_id>/update/', views.team_update, name='team_update'),
+    path('equipe/<int:team_id>/delete/', views.team_delete, name='team_delete'),
     path('equipe/<int:team_id>/invite_member/', views.invite_member, name='invite_member'),
     
     path('convite/<uuid:token>/', views.accept_invite, name='accept_invite'),

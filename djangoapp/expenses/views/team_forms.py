@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from utils.mixin import PermissionMixin
 from django.contrib import messages
 from expenses.form import CreateTeam, TeamInviteForm # type:ignore
-from expenses.models import UserEnterpriseRole, Team, UserProfile
+from expenses.models import UserEnterpriseRole, Team, UserProfile, Expenses
+from django.core.paginator import Paginator
 
 @login_required(login_url='expense:login')
 def create_team(request):
@@ -91,23 +93,43 @@ def team_update(request, team_id):
         context,      
     )
 
-# @login_required(login_url='expense:login')
-# def team_delete(request, cycle_id):
-#     # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
-#     cycle = get_object_or_404(Cycle, pk=cycle_id, owner_id=request.user)
+@login_required(login_url='expense:login')
+def team_delete(request, team_id):
+    user = request.user
+    team = get_object_or_404(Team, pk=team_id)
+
+
+    if not PermissionMixin.can_exclude_team(user, team):
+        messages.error(request, 'Você não pode excluir essa equipe')
+        return redirect('expense:teams')
     
-#     confirmation = request.POST.get('confirmation', 'no')
+    members = UserProfile.objects.filter(team=team)
+    expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
+    page_number = request.GET.get("page")
+    paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
+    page_obj = paginator.get_page(page_number)
+    role = PermissionMixin.get_user_role(request.user)
+        
 
-#     if confirmation == 'yes':
-#         cycle.delete()
-#         return redirect('expense:cycles')
+    # GET: Exibe página de confirmação
+    if request.method == 'POST':
+    
+        confirmation = request.POST.get('confirmation', 'no')
 
-#     return render(
-#         request,
-#         'expenses/pages/cycle.html',
-#         {
-#             'cycle': cycle,
-#             'confirmation': confirmation,
-#             'user': cycle.owner,
-#         }
-#     )
+        if confirmation == 'yes':   
+            team.delete()
+            messages.success(request, 'Equipe excluida com sucesso')
+            return redirect('expense:teams')
+
+    return render(
+        request,
+        'expenses/pages/team.html',
+        {
+            'team': team,
+            'confirmation': confirmation,
+            'user': user,
+            'members': members,
+            'page_obj': page_obj,
+            'role': role,
+        }
+    )

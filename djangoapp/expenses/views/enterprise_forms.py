@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.contrib import messages
 from expenses.form import EnterpriseRegisterForm
-from expenses.models import Role, UserEnterpriseRole
+from expenses.models import Role, UserEnterpriseRole, UserProfile
 
 @login_required(login_url='expense:login')
 def register_enterprise(request):
@@ -20,8 +20,12 @@ def register_enterprise(request):
 
         if form.is_valid():        
             enterprise = form.save(commit=False)
-            enterprise.owner = request.user # Preencho no campo enterprise.owner o owner
+            enterprise.owner = request.user # fill in the enterprise.owner field with the owner.
             enterprise.save()
+
+            profile = UserProfile.objects.get(user=request.user)
+            profile.enterprise = enterprise # fill in the company field with the company created by the user..
+            profile.save()
 
             owner_role = Role.objects.get(name='COMPANY_ADMIN')
 

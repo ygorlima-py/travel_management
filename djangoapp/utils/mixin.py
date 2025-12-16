@@ -42,10 +42,8 @@ class PermissionMixin:
     @staticmethod
     def get_user_enterprise(user):
         """Return enterprise of the user or None"""
-        from expenses.models import UserEnterpriseRole
-        team = PermissionMixin.get_user_team(user)
-        if team:
-            return team.enterprise
+        if hasattr(user, 'profile') and user.profile.enterprise:
+            return user.profile.enterprise
         return None
     
     @staticmethod
@@ -166,5 +164,14 @@ class PermissionMixin:
             return True
         
         return False
+    
+    @staticmethod
+    def can_exclude_team(user, team) -> bool:
+
+        # Only the company owner can delete teams.
+        return team.enterprise.owner == user
+            
+
+
 
 

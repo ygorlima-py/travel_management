@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from .state import State   
 from .team import Team
+from .enterprise import EnterPrise
 
 
 class UserProfile(models.Model):
@@ -75,6 +76,14 @@ class UserProfile(models.Model):
                     null=True,
                     choices=ACCOUNT_CHOICES,
                     default='',
+    )
+
+    enterprise = models.ForeignKey(
+                    EnterPrise,
+                    on_delete=models.SET_NULL,
+                    blank=True,
+                    null=True,
+                    related_name='employees',
     )
 
     

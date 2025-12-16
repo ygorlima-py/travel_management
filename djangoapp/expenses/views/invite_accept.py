@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import get_user_model
-from expenses.models import TeamInvite, UserEnterpriseRole, Role, UserProfile, Team
+from expenses.models import TeamInvite, UserEnterpriseRole, UserProfile, Team
 from django.contrib import messages
 from utils.mixin import PermissionMixin
 User = get_user_model()
@@ -25,6 +25,7 @@ def accept_invite(request, token):
         # Add member and create profile
         profile, created = UserProfile.objects.get_or_create(user=request.user)
         profile.team = invite.team
+        profile.enterprise = invite.team.enterprise
         profile.save()
 
         # Add Enterprise and Role in the User
