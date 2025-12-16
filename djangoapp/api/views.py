@@ -50,7 +50,7 @@ class DashbordView(APIView):
         # Get team 
         team = PermissionMixin.get_user_team(user)
         # Filter expenses of team
-        expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
+        expenses = Expenses.objects.for_user(user)
 
         return {
             'role': 'MANAGER',
@@ -71,7 +71,7 @@ class DashbordView(APIView):
     
     def _get_company_admin_dashbord(self, user):
         enterprise = PermissionMixin.get_user_enterprise(user)
-        expenses = Expenses.objects.filter(owner_expenses__profile__team__enterprise=enterprise)
+        expenses = Expenses.objects.for_user(user)
 
         return {
             'role': 'COMPANY_ADMIN',

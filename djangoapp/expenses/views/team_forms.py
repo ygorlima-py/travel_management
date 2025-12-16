@@ -60,7 +60,7 @@ def create_team(request):
 
 @login_required(login_url='expense:login')
 def team_update(request, team_id):
-    team = get_object_or_404(Team, pk=team_id)
+    team = get_object_or_404(Team, pk=team_id, enterprise=request.user.profile.enterprise)
     
     if request.method == "POST":
         form = CreateTeam(request.POST, instance=team)

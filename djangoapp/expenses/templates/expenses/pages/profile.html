@@ -166,9 +166,16 @@
     <div class="contact-links">
         <a class='btn btn-link' href="{% url "expense:user_update" %}">
             <i class="fa-solid fa-pen-to-square"></i>
-            ATUALIZAR PERFIL
+            ATUALIZAR  PERFIL
         </a>
+        {% if company_admin %}
+        <a class='btn btn-link' href="{% url "expense:update_enterprise" %}">
+            <i class="fa-solid fa-industry"></i>
+            ATUALIZAR  EMPRESA
+        </a>
+        {% endif %}
     </div>
+    
     {% else %}
         <main>
         <form action="{% url "expense:remove_member" user.profile.team.id user.id %}" method='POST'>

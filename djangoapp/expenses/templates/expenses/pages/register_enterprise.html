@@ -2,10 +2,12 @@
 
 {% block content %}
     <div class="contact-links">
+        {% if not is_update_enterprise %}
         <a class='btn btn-link ' href="{% url "expense:chose" %}">
             <i class="fa-solid fa-arrow-left"></i>
             VOLTAR
         </a>
+        {% endif %}
     </div>
     <div class="flex-frame-login-form">
         <div class="form-wrapper flex-frame max-width-form-profile
@@ -15,6 +17,8 @@
                 {{title_page}}
             </h2>
             <form action="{{form_action}}" method="post">   
+                {% csrf_token %}
+
                 <div class="form-content">
 
                     {% for field in form %}

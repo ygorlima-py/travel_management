@@ -25,6 +25,7 @@ urlpatterns = [
 
     # Enterprise URLs
     path('enterprise/register/', views.register_enterprise, name='register_enterprise'),
+    path('enterprise/update/', views.update_enterprise, name='update_enterprise'),
     
     # Cycles URLs
     path('ciclos/', views.cycles, name='cycles'), #type:ignore

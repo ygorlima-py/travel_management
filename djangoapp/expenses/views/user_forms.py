@@ -195,9 +195,6 @@ def remove_member(request, *args, **kwargs):
         },
     )
 
-# Só pode remover se for manager da equipe ou company_admin
-# Usuario precisa ser da equipe e empresa de quem ta deletando
-
 @login_required(login_url='expense:login')
 def logout_view(request):
     auth.logout(request)
