@@ -14,10 +14,10 @@
                 <i class="fa-solid fa-cart-shopping"></i>
                 {{title_page}}
             </h2>
-            <form action="{{form_action}}" method="post" enctype="multipart/form-data">     
+            <form id="form-expense" action="{{form_action}}" method="post" enctype="multipart/form-data">     
                 
                 {% csrf_token %}
-                <input type="file" name="picture" id="picture-input" accept="image/*" style="display: none;">
+                <input type="file" name="picture" id="picture-input" accept="image/*" style="display: none;" required>
 
                 <div class="form-content">
                     {% for field in form %}

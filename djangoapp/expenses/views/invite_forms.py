@@ -11,7 +11,7 @@ from utils.mixin import PermissionMixin
 def invite_member(request, team_id):
     team = get_object_or_404(Team, pk=team_id)
 
-    if PermissionMixin.can_invite_member(request.user, team):
+    if PermissionMixin.can_invite_or_remove_member(request.user, team):
 
         if request.method == 'POST':
             form = TeamInviteForm(request.POST, team=team)

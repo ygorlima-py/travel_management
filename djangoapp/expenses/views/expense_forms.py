@@ -22,6 +22,7 @@ def create_expense(request):
         if form.is_valid():        
             expense = form.save(commit=False) # Grarante que eu não salve na base de dados ainda
             expense.owner_expenses = request.user # Informo para expense.owner que esse contato pertence a esse usuário
+            expense.enterprise = request.user.profile.enterprise
             condition = Conditions(expense)
             cycle_id = condition.verify()
 

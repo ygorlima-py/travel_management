@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings 
 from .cycle import Cycle
 from .state import State 
+from .enterprise import EnterPrise
 from utils.queryset import ExpenseQuerySet
 
 class Category(models.Model):
@@ -114,6 +115,14 @@ class Expenses(models.Model):
         blank=True,
         null=True,
         related_name = 'expenses',
+    )
+
+    enterprise = models.ForeignKey(
+        EnterPrise,
+        on_delete=models.PROTECT,
+        related_name='expenses',
+        null=True,
+        blank=True,
     )
 
     def save(self, *args, **kwargs):

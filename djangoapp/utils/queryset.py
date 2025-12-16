@@ -10,10 +10,10 @@ class ExpenseQuerySet(models.QuerySet):
             return self.filter(owner_expenses=user)
         
         if PermissionMixin.is_manager(user) and team:
-            return self.filter(owner_expenses__profile__team=team)
+            return self.filter(enterprise=enterprise, owner_expenses__profile__team=team)
         
         if PermissionMixin.is_company_admin(user) and enterprise:
-            return self.filter(owner_expenses__profile__enterprise=enterprise)
+            return self.filter(enterprise=enterprise)
         
         return self.none()
     

@@ -68,3 +68,13 @@ pictureInput.addEventListener('change', (event)=> {
     }
 
 })
+
+const form = document.getElementById('form-expense');
+
+form.addEventListener('submit', function(e) {
+    if (!pictureInput.files || pictureInput.files.length === 0) {
+        e.preventDefault();
+        alert('Por favor, adicione uma imagem do recibo!');
+        return false;
+    }
+});

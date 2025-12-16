@@ -133,3 +133,4 @@ def team_delete(request, team_id):
             'role': role,
         }
     )
+

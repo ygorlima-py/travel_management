@@ -11,6 +11,12 @@
                 <i class="fa-solid fa-arrow-left"></i>
                 VOLTAR
         </a>
+        <div class="contact-links">
+            <a class='btn btn-link btn-approved' href="{% url "expense:index" %}">
+                <i class="fa-solid fa-cart-shopping"></i>
+                VER DESPESAS DO USUÁRIO
+            </a>
+        </div>
     </div>
     <div class="expense-detail-grid">
 
@@ -164,13 +170,42 @@
         </a>
     </div>
     {% else %}
-    <div class="contact-links">
-        <a class='btn btn-link btn-approved' href="{% url "expense:index" %}">
-            <i class="fa-solid fa-cart-shopping"></i>
-            VER DESPESAS DO USUÁRIO
-        </a>
-    </div>
-    {% endif %}
+        <main>
+        <form action="{% url "expense:remove_member" user.profile.team.id user.id %}" method='POST'>
+            {% csrf_token %}
 
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button 
+                id='delete'
+                class="btn btn-link btn-delete"
+                type='submit'>
+                    CONFIRMA A REMOÇÃO?
+                </button>            
+            {% else %}
+                <button 
+                class="btn btn-link btn-delete"
+                onclick='backToDeleteButton()'>
+                    <i class="fa-solid fa-trash"></i>
+                    REMOVER USUÁRIO
+                </button>            
+            {% endif %}
+        </form>
+    </div>
+
+    <script>
+        
+        window.addEventListener('DOMContentLoaded', function (){
+        {% if confirmation == 'no' %}
+            const button = document.getElementById('delete');
+            
+            if (button) {
+                button.scrollIntoView({behavior: 'smooth', block: 'center'})
+            }
+        {% endif %} 
+        });
+
+    </script>
+    {% endif %}
 </div>
 {% endblock content %}

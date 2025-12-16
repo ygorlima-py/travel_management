@@ -1,11 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages, auth
 from expenses.form import RegisterForm, UpdateFormUser, UserProfileForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
-from django.contrib.auth.models import User
-from expenses.models import UserProfile, UserEnterpriseRole, Role
+from expenses.models import UserProfile, UserEnterpriseRole, Role, Team, TeamInvite
+from utils.mixin import PermissionMixin
+from django.contrib.auth import get_user_model
 
 ''' Route for the user to register on the platform '''
 def register(request): 
@@ -139,6 +139,64 @@ def login_view(request):
             'is_login': True,
         }
     )
+
+@login_required(login_url='expense:login')
+def remove_member(request, *args, **kwargs):
+    team_id = kwargs.get('team_id')
+    user_remove_id = kwargs.get('user_id')
+
+    team = get_object_or_404(Team, pk=team_id)
+
+    if not PermissionMixin.can_invite_or_remove_member(request.user, team):
+        messages.error(request, 'Você não pode excluir este membro')
+        return redirect('expense:teams')
+    
+    User = get_user_model()
+    user_remove = get_object_or_404(User, pk=user_remove_id)
+
+    profile = get_object_or_404(
+                    UserProfile,
+                    user=user_remove,
+                    team=team
+                    )
+    
+    if request.method == "POST":
+        confirmation = request.POST.get('confirmation', 'no')
+        
+        if confirmation == 'yes':  
+            from django.db import transaction
+
+            with transaction.atomic():
+                # Remove team and enterprise 
+                profile.team = None
+                profile.enterprise = None
+                profile.save(update_fields=['team', 'enterprise'])
+
+                # Remove role enterprise
+                UserEnterpriseRole.objects.filter(
+                    user=user_remove,
+                    enterprise=team.enterprise,
+                ).delete()
+
+                TeamInvite.objects.filter(
+                    email=user_remove.email,
+                    team=team,
+                ).delete()
+
+            messages.success(request, 'Membro excluido com sucesso')
+            return redirect('expense:teams')
+    
+    return render( 
+        request,
+        'expenses/pages/profile.html',
+        {
+            'user': user_remove,
+            'confirmation':confirmation,
+        },
+    )
+
+# Só pode remover se for manager da equipe ou company_admin
+# Usuario precisa ser da equipe e empresa de quem ta deletando
 
 @login_required(login_url='expense:login')
 def logout_view(request):
