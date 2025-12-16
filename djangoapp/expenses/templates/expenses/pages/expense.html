@@ -7,22 +7,44 @@
         DETALHES DA DESPESA
     </h1>
     <div class="contact-links">
-        {% if expense.status.name != "APROVADO" %}
-            <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">
-                <i class="fa-regular fa-circle-check"></i>
-                APROVAR
-            </a>
+        
+        {% if company_admin %}
+            {% if expense.status.name != "APROVADO" and expense.status.name != "RECUSADO"%}
+                <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">
+                    <i class="fa-regular fa-circle-check"></i>
+                    APROVAR
+                </a>
+            
+                <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                    RECUSAR
+                </a>
+            {% endif %}
+
+        {% elif manager %}
+
+            {% if expense.owner != user %}
+                {% if expense.status.name != "APROVADO" and expense.status.name != "RECUSADO"%}
+                <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">
+                    <i class="fa-regular fa-circle-check"></i>
+                    APROVAR
+                </a>
+
+
+                <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                    RECUSAR
+                </a>
+                {% endif %}
+            {% endif %}   
         {% endif %}
-        {% if expense.status.name != "RECUSADO" %}
-            <a class='btn btn-link btn-delete' href="{% url "expense:recused" expense.id %}">
-                <i class="fa-regular fa-circle-xmark"></i>
-                RECUSAR
-            </a>
-        {% endif %}
+
+        {% if expense.owner_expenses == user %}
         <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR
         </a>
+        {% endif %}
     
         <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>
             {% csrf_token %}
@@ -31,10 +53,12 @@
                 <input type="hidden" name="confirmation" value="yes">
                 <button class="btn btn-link btn-delete" type='submit'>CONFIRMA A EXCLUSÃO ?</button>            
             {% else %}
+                {% if expense.owner_expenses == user %}
                 <button class="btn btn-link btn-delete" type='submit'>
                     <i class="fa-solid fa-trash"></i>
                     DELETAR
-                </button>            
+                </button>
+                {% endif %}            
             {% endif %}
         </form>
     </div>

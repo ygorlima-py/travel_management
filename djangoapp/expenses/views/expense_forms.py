@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from expenses.form import ExpenseForm, AlertRecusedForm
-from expenses.models import Expenses
+from expenses.models import Expenses, Status
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -52,7 +52,7 @@ def create_expense(request):
 
 @login_required(login_url='expense:login')
 def expense_update(request, expense_id):
-    expense = get_object_or_404(Expenses, pk=expense_id)
+    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
     
     if request.method == "POST":
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
@@ -90,10 +90,8 @@ def expense_update(request, expense_id):
 
 @login_required(login_url='expense:login')
 def expense_delete(request, expense_id):
-    # 1) Busca o contato pelo id; se não existir (ou show=False), retorna 404
-    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
 
-    print('Despesa', expense)
+    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
 
     confirmation = request.POST.get('confirmation', 'no')
     print('confirmation', confirmation)
@@ -116,6 +114,8 @@ def expense_delete(request, expense_id):
 @login_required(login_url='expense:login') #type:ignore
 def expense_approved(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id)
+    status_approved = get_object_or_404(Status, name='APROVADO')
+
 
     if PermissionMixin.is_operator(request.user):
         # Validation 1: Can not approve own expenses
@@ -128,15 +128,11 @@ def expense_approved(request, expense_id):
         if not PermissionMixin.can_approve_expense(request.user, expense):
             messages.error(request, "Você não pode aprovar despesas de outra equipe")
             return redirect("expense:index")
-    
-    # Validation 3: The expense status must be pending
-    if expense.status_id != 4:
-        messages.error(request, 'Só é possível aprovar despesas pendentes')
-        return redirect("expense:expense", expense_id=expense_id)
-    
+
+
     # Approve
-    expense.status_id = 5
-    expense.save(update_fields=['status_id'])
+    expense.status = status_approved
+    expense.save(update_fields=['status'])
 
     messages.success(request, f'Despesa de {expense.owner_expenses} aprovada com sucesso')
     return redirect ('expense:index')
@@ -144,6 +140,8 @@ def expense_approved(request, expense_id):
 @login_required(login_url='expense:login')
 def recused(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id)
+    status_recused = get_object_or_404(Status, name='RECUSADO')
+    status_pendding = get_object_or_404(Status, name='PENDENTE')
 
     if PermissionMixin.is_operator(request.user):
         # Validation 1: Can not recuse own expenses
@@ -158,11 +156,12 @@ def recused(request, expense_id):
             return redirect("expenses:index")
         
     # Validation 3: The expense status must be pending
-    if expense.status_id != 4:
+    if expense.status != status_pendding:
         messages.error(request, 'Só é possível recusar despesas pendentes')
         return redirect("expense:expense", expense_id=expense_id)
     
     form_action = reverse('expense:recused', kwargs={'expense_id': expense_id})
+
 
     if request.method == 'POST':
         
@@ -180,8 +179,8 @@ def recused(request, expense_id):
             message.expense = expense # Informo para expense.owner que esse contato pertence a esse usuário
             message.save()
 
-            expense.status = 6 #type: ignore
-            expense.save(update_fields=['status_id'])
+            expense.status = status_recused #type: ignore
+            expense.save(update_fields=['status'])
 
             return redirect('expense:index')
 
