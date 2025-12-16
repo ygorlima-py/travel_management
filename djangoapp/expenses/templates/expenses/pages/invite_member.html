@@ -1,44 +1,47 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-    <div class="form-wrapper">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-user-plus"></i>
-            {{title_page}}
-        </h2>
-        <form action="{{form_action}}" method="post">     
-            {% csrf_token %}
-            
-            <div class="form-content">
+    <div class="flex-frame-login-form margin-form-team">
+        <div class="form-wrapper flex-frame max-width-form-profile
+            margin-top-mendium padding-forms">
+            <h2 class="expense-detail-title expense-info-title">
+                <i class="fa-solid fa-user-plus"></i>
+                {{title_page}}
+            </h2>
+            <form action="{{form_action}}" method="post">     
+                {% csrf_token %}
                 
-                <!-- Email -->
-                <div class="form-group">
-                    <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
-                    {{form.email}}
-                    {{form.email.errors}}
-                    {% if form.email.help_text %}
-                        <p class="help-text">{{form.email.help_text}}</p>
-                    {% endif %}
+                <div class="form-content">
+                    
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="{{form.email.id_for_label}}">{{form.email.label}}</label>
+                        {{form.email}}
+                        {{form.email.errors}}
+                        {% if form.email.help_text %}
+                            <p class="help-text">{{form.email.help_text}}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Role (RadioSelect) -->
+                    <div class="form-group">
+                        <label class='bold-color'>{{form.role.label}}</label>
+                        {{form.role}}
+                        {{form.role.errors}}
+                        {% if form.role.help_text %}
+                            <p class="help-text">{{form.role.help_text}}</p>
+                        {% endif %}
+                    </div>
+
                 </div>
 
-                <!-- Role (RadioSelect) -->
-                <div class="form-group">
-                    <label class='bold-color'>{{form.role.label}}</label>
-                    {{form.role}}
-                    {{form.role.errors}}
-                    {% if form.role.help_text %}
-                        <p class="help-text">{{form.role.help_text}}</p>
-                    {% endif %}
+                <div class="form-content">
+                    <div class="form-group">
+                        <button class="btn" type="submit">{{title_page}}</button>
+                    </div>
                 </div>
 
-            </div>
-
-            <div class="form-content">
-                <div class="form-group">
-                    <button class="btn" type="submit">{{title_page}}</button>
-                </div>
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock content %}

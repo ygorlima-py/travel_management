@@ -170,8 +170,22 @@ class PermissionMixin:
 
         # Only the company owner can delete teams.
         return team.enterprise.owner == user
+    
+    @staticmethod
+    def can_invite_member(user, team) -> bool:
+        if not PermissionMixin.is_operator(user):
+            user_enterprise = PermissionMixin.get_user_enterprise(user)
             
+            if team.enterprise == user_enterprise:
+                return True
 
+            return False
+        return False    
+
+
+# Posso enviar convite?
+# preciso ser manager da equipe ou company_admin
+# a equipe precisa ser da minha empresa
 
 
 
