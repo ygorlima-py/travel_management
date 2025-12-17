@@ -355,7 +355,7 @@ caption {
     padding: 1rem 2rem;
     width: 100%;
     max-width: 32rem;
-    border-radius: var(--default-border-radius);
+    border-radius: calc(var(--default-border-radius)*5)  0 0 calc(var(--default-border-radius)*5);
     border: 1px solid var(--link-light-color);
 }
 
@@ -1019,4 +1019,24 @@ img {
     text-align: center;
 }
 
+.SearchboxComponentSearchButton {
+    border: 1px solid #d3d3d3;
+    background-color: #f8f8f8;
+    width: 64px;
+    border-radius: 0 40px 40px 0;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    color: inherit
+}
+
+.IconWrapperHost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    vertical-align: middle;
+    color: var(--link-dark-color)
+}
 

@@ -3,16 +3,21 @@
 {% block content %}
 <main id='index' class='content'>
     <div class="search">
-        <form action="#" method="GET">
+        <form action="{% url "expense:search" %}" method="GET" id="search-form">
             <input 
             type="search" 
             class="search-input"
-            placeholder='Search'
+            placeholder='Buscar'
             id='search'
             name='q'
-            value=" "
+            value=""
             >
         </form>
+        <button class="SearchboxComponentSearchButton" form="search-form">
+            <span class="IconWrapperHost">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+        </button>
     </div>
     {% if page_obj %}
     <div class='responsive-table'>

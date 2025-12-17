@@ -36,8 +36,7 @@ def invite_member(request, team_id):
             return render(
                 request,
                 'expenses/pages/invite_member.html',
-                context,
-                
+                context,     
                 )
 
         context = dict(
