@@ -291,13 +291,13 @@ caption {
 }
 
 .table-row-header {
-    background: var(--clr-light-gray);
-    color: var(--clr-black);
+    background: var(--link-dark-color);
+    color: var(--clr-white);
 }
 
 .table-cel,
 .table-header {
-    padding: var(--spacing-min);
+    padding: calc(var(--spacing-min)/2);
     text-align: center;
 }
 
@@ -1020,8 +1020,8 @@ img {
 }
 
 .SearchboxComponentSearchButton {
-    border: 1px solid #d3d3d3;
-    background-color: #f8f8f8;
+    border: 1px solid var(--link-dark-color);
+    background-color: var(--link-dark-color);
     width: 64px;
     border-radius: 0 40px 40px 0;
     justify-content: center;
@@ -1037,6 +1037,6 @@ img {
     justify-content: center;
     position: relative;
     vertical-align: middle;
-    color: var(--link-dark-color)
+    color: var(--clr-white)
 }
 

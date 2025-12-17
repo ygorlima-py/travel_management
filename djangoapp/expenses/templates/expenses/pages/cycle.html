@@ -174,85 +174,82 @@
         </div>
     </div>
 
-    {% if expenses %}
+    {% if page_obj %}
     <div class='responsive-table content'>
         <table class='contacts-table'>
             <caption>
                 <h2 class="expense-detail-title expense-info-title">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    TODAS AS DESPESAS REALIZADAS NESTE CICLO
+                    DESPESAS DO CICLO
                 </h2>
             </caption>
+
             <thead>
                 <tr class='table-row table-row-header'>
-                    <th class='table-header'>ID</th>
+                    <th class='table-header'></th>
+                    <th class='table-header'>Solicitante</th>
                     <th class='table-header'>Categoria</th>
+                    <th class='table-header'>Status</th>
                     <th class='table-header'>Fornecedor</th>
                     <th class='table-header'>Cidade</th>
-                    <th class='table-header'>Estado</th>
-                    <th class='table-header'>Status</th>
                     <th class='table-header'>Data</th>
-                    <th class='table-header'>Quantidade</th>
                     <th class='table-header'>Valor Total</th>
                 </tr>
             </thead>
 
             <tbody>
-            {% for expense in expenses %} 
-                <tr class='table-row'>
-                    <td class="table-cel">
-                        <a class='table-link' href="{% url "expense:expense" expense.id %}">
-                            {{expense.id}}
-                        </a>
-                    </td>
-                    
-                    <td class="table-cel">
-                        {{expense.category}}
-                    </td>
-                    
-                    <td class="table-cel">      
-                        {{expense.supply}}
-                    </td>
-                    
-                    <td class="table-cel">
-                        {{expense.city}}
-                    </td>
-                    
-                    <td class="table-cel">
-                        {{expense.state_uf.uf_name}}
-                    </td>
+                {% for expense in page_obj %}
+                    <tr class='table-row'>
+                        
+                        <td class="table-cel">
+                            <a class='table-link' href="{% url "expense:expense" expense.id %}">
+                            <i class="fa-solid fa-up-right-from-square" title="Abrir despesa"></i>
+                            </a>
+                        </td>
+                        <td class="table-cel">         
+                            {{expense.owner_expenses.first_name}} {{expense.owner_expenses.last_name}}
+                        </td>
+                        
+                        <td class="table-cel">
+                            {{expense.category}}
+                        </td>
 
-                    <td class="table-cel">
-                    {% if expense.status.name == "PENDENTE" %}
-                        <span class="icon-status-pending">
-                            <i class="fa-solid fa-hourglass-half"></i>
-                        </span>
-                    {% elif expense.status.name == "APROVADO" %}
-                        <span class="icon-status-approved">
-                            <i class="fa-regular fa-circle-check"></i>
-                        </span>
-                    {% else %}
-                        <span class="icon-status-recused">
-                            <i class="fa-regular fa-circle-xmark"></i>
-                        </span>
-                    {% endif %}
-                    </td>
-                    
-                    <td class="table-cel">
-                        {{expense.date}}
-                    </td>
-                    
-                    <td class="table-cel">
-                        {{expense.amount}}
-                    </td>
+                        <td class="table-cel">
+                        {% if expense.status.name == "PENDENTE" %}
+                            <span class="icon-status-pending">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </span>
+                        {% elif expense.status.name == "APROVADO" %}
+                            <span class="icon-status-approved">
+                                <i class="fa-regular fa-circle-check"></i>
+                            </span>
+                        {% else %}
+                            <span class="icon-status-recused">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </span>
+                        {% endif %}
+                        </td>
+                        
+                        <td class="table-cel">      
+                            {{expense.supply}}
+                        </td>
+                        
+                        <td class="table-cel">
+                            {{expense.city}}
+                        </td>
+                        
+                        <td class="table-cel">
+                            {{expense.date|date:"d/m/Y" }}
+                        </td>
 
-                    <td class="table-cel">
-                        R$ {{expense.value}}
-                    </td>
-                </tr>
+                        <td class="table-cel">
+                            R$ {{expense.value}}
+                        </td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
+        {% include "expenses/partials/_pagination.html" %}
     </div>
 {% else %}
     <div class='not-found content'>

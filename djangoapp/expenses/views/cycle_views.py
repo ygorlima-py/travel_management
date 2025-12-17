@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from utils.calculation import Calculation 
 from utils.mixin import PermissionMixin
+from django.core.paginator import Paginator
+
 
 
 @login_required(login_url='expense:login')
@@ -26,11 +28,13 @@ def cycle(request, cycle_id):
     
     cycle = get_object_or_404(Cycle.objects.for_user(request.user).filter(pk=cycle_id))
 
-    if PermissionMixin.is_manager(request.user) or PermissionMixin.is_company_admin(request.user):
-        expenses = Expenses.objects.filter(cycle=cycle)
 
-    else:    
-        expenses = Expenses.objects.for_user(request.user).filter(cycle=cycle)
+    expenses = Expenses.objects.for_user(request.user).filter(cycle=cycle)
+
+    
+    paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     
 
     role = PermissionMixin.get_user_role(request.user)
@@ -38,7 +42,7 @@ def cycle(request, cycle_id):
 
     context = {
         'cycle': cycle,
-        'expenses': expenses,
+        'page_obj': page_obj,
         'calculation': calculation,
         'role': role,
     }
