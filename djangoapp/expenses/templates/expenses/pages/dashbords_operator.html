@@ -21,16 +21,6 @@
         </h2>
         <div class="grid-four-columns">
             <div class="expense-info-item center-text user-member">
-                {% comment %} Total cost enterprise {% endcomment %}
-                <p class="expense-info-label">
-                    <i class="fa-solid fa-file-invoice-dollar"></i>
-                    Valor de despesas pendentes de aprovação
-                </p>
-                <p id='pending-expenses-value'   class="expense-info-value expense-value-highlight">
-                
-                </p>  
-            </div>
-            <div class="expense-info-item center-text user-member">
                 {% comment %} Team Registers {% endcomment %}
                 <p class="expense-info-label">
                     <i class="fa-solid fa-circle-check"></i>
@@ -40,6 +30,18 @@
                 
                 </p>  
             </div>
+
+            <div class="expense-info-item center-text user-member">
+                {% comment %} Total cost enterprise {% endcomment %}
+                <p class="expense-info-label">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    Valor de despesas recusadas no mês
+                </p>
+                <p id='pending-expenses-value'   class="expense-info-value expense-value-highlight">
+                
+                </p>  
+            </div>
+            
             <div class="expense-info-item center-text user-member">
                 {% comment %} Total cost enterprise {% endcomment %}
                 <p class="expense-info-label">

@@ -32,8 +32,8 @@ class DashbordView(APIView):
 
         return {
             'role': 'OPERATOR',
-            'total_pending': self._total_by_status(expenses, 'PENDENTE'),
-            'total_approved_month': self._total_aproved_month(expenses, 'APROVADO'),
+            'total_pending': self._total_by_status(expenses, 'RECUSADO'),
+            'total_approved_month': self._total_by_status(expenses, 'APROVADO'),
             'awaiting_approval': self._awaiting_approval(expenses, user),
             'current_cicle': self._current_cicle(user),
             'chart_by_category': self._chart_category(expenses),
@@ -54,8 +54,8 @@ class DashbordView(APIView):
 
         return {
             'role': 'MANAGER',
-            'total_pending_team': self._total_by_status(expenses, 'PENDENTE'),
-            'total_approved_month': self._total_aproved_month(expenses, 'APROVADO'),
+            'total_pending_team': self._total_by_status(expenses, 'RECUSADO'),
+            'total_approved_month': self._total_by_status(expenses, 'APROVADO'),
             'awaiting_approval': self._awaiting_approval(expenses, user),
             'team_members': self._team_members(team),
             'chart_by_category': self._chart_category(expenses),
@@ -97,15 +97,11 @@ class DashbordView(APIView):
         return status.id 
 
     def _total_by_status(self, queryset, status_name):
-        status_id = self._get_status_id(status_name)
-        return queryset.filter(status_id=status_id).aggregate(Sum('value'))['value__sum'] or 0
-    
-    def _total_aproved_month(self, queryset, status_name):
         from datetime import datetime
         current_month = datetime.now().month
         status_id = self._get_status_id(status_name)
-
         return queryset.filter(status_id=status_id, date__month=current_month).aggregate(Sum('value'))['value__sum'] or 0
+    
 
     def _current_cicle(self, user):
         cicle = Cycle.objects.filter(owner=user, is_open=True).first()
