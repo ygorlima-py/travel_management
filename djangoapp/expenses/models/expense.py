@@ -125,6 +125,10 @@ class Expenses(models.Model):
         blank=True,
     )
 
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
     def save(self, *args, **kwargs):
         if not self.status:            
             self.status = Status.objects.get(name='PENDENTE')

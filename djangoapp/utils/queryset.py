@@ -7,13 +7,13 @@ class ExpenseQuerySet(models.QuerySet):
         enterprise = PermissionMixin.get_user_enterprise(user)
 
         if PermissionMixin.is_operator(user):
-            return self.filter(owner_expenses=user)
+            return self.filter(owner_expenses=user).order_by('-updated_at')
         
         if PermissionMixin.is_manager(user) and team:
-            return self.filter(enterprise=enterprise, owner_expenses__profile__team=team)
+            return self.filter(enterprise=enterprise, owner_expenses__profile__team=team).order_by('-updated_at')
         
         if PermissionMixin.is_company_admin(user) and enterprise:
-            return self.filter(enterprise=enterprise)
+            return self.filter(enterprise=enterprise).order_by('-updated_at')
         
         return self.none()
     

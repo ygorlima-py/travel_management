@@ -132,7 +132,7 @@ def expense_approved(request, expense_id):
 
     # Approve
     expense.status = status_approved
-    expense.save(update_fields=['status'])
+    expense.save()
 
     messages.success(request, f'Despesa de {expense.owner_expenses} aprovada com sucesso')
     return redirect ('expense:index')
@@ -180,7 +180,7 @@ def recused(request, expense_id):
             message.save()
 
             expense.status = status_recused #type: ignore
-            expense.save(update_fields=['status'])
+            expense.save()
 
             return redirect('expense:index')
 

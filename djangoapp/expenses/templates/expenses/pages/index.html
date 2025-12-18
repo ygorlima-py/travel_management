@@ -63,14 +63,14 @@
                         <td class="table-cel">
                         {% if expense.status.name == "PENDENTE" %}
                             <span class="icon-status-pending">
-                                <i class="fa-solid fa-hourglass-half"></i>
+                                <i class="fa-solid fa-hourglass-half" title="Aguardando de Aprovação"></i>
                             </span>
                         {% elif expense.status.name == "APROVADO" %}
-                            <span class="icon-status-approved">
+                            <span class="icon-status-approved" title="Aprovado">
                                 <i class="fa-regular fa-circle-check"></i>
                             </span>
                         {% else %}
-                            <span class="icon-status-recused">
+                            <span class="icon-status-recused" title="Recusado">
                                 <i class="fa-regular fa-circle-xmark"></i>
                             </span>
                         {% endif %}

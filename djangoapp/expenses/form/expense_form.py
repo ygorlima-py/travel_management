@@ -39,19 +39,25 @@ class ExpenseForm(forms.ModelForm):
     nf = forms.CharField(
         required=False,
         label='Numero da Nota Fiscal',
-        help_text='Digite o numero da nota fiscal, caso não possua, ignore esse campo'
+        help_text='Digite o numero do cupom fiscal'
     )
 
     amount = forms.FloatField(
         required=True,
         label='* Quantidade',
-        help_text='Digite a quantidade que foi consumida nesta despesa'
+        help_text='Digite a quantidade que foi consumida nesta despesa',
+        widget=forms.NumberInput(attrs={
+            "min": "0"
+        })
     )
 
     value = forms.DecimalField(
         required=True,
         label='* Valor da despesa',
-        help_text='Digite o valor total desta despesa'
+        help_text='Digite o valor total desta despesa',
+        widget=forms.NumberInput(attrs={
+            "min": "0"
+        })
     )
 
     description = forms.CharField(
