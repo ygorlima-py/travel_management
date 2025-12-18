@@ -122,6 +122,7 @@ class DashbordView(APIView):
                 .filter(date__gte=last_twelve_months)
                 .values('category__name')
                 .annotate(total=Sum('value'))
+                .order_by('category__name')
                 )
         
         return {

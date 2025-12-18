@@ -1,8 +1,8 @@
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from expenses.models import Expenses
+from expenses.models import Expenses, UserProfile
 from utils.reports import GenerateReports
 from datetime import datetime
 from utils.mixin import PermissionMixin
@@ -10,11 +10,18 @@ from utils.mixin import PermissionMixin
 @login_required(login_url='expense:login')
 def profile(request, username):
     User = get_user_model()
-    user = User.objects.filter(username=username).first()
+    user = get_object_or_404(User, username=username)
     
-    if user is None:
-        raise Http404("Perfil não encontrado")
-    
+    if request.user != user:
+        enterprise = PermissionMixin.get_user_enterprise(request.user)
+        is_employee = UserProfile.objects.filter(
+                            user=user,
+                            enterprise=enterprise,
+                        ).exists()
+        
+        if not is_employee:
+            return HttpResponseForbidden("Acesso negado")
+
     context = {
         'user': user,
     }

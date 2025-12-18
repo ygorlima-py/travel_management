@@ -21,9 +21,7 @@ class CycleQuerySet(models.QuerySet):
     def for_user(self, user):  
         team = PermissionMixin.get_user_team(user)
         enterprise = PermissionMixin.get_user_enterprise(user)
-
-        print('Essa é a desgraça da minha empresa: ', enterprise)
-
+        
         if PermissionMixin.is_operator(user):
             return self.filter(owner=user)
 

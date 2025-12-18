@@ -33,7 +33,7 @@ const drop = (event) => {
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.style.maxWidth = "100%";
-        img.style.maxHeight = "100%";
+        img.style.maxHeight = "70%";
 
         frame.innerHTML = "";   // limpa o quadro
         frame.appendChild(img);
@@ -50,7 +50,7 @@ pictureFrame.addEventListener("click", () => {
         pictureInput.click();
     }
 
-})
+});
 
 // It triggers when the input value changes.
 pictureInput.addEventListener('change', (event)=> {
@@ -61,20 +61,36 @@ pictureInput.addEventListener('change', (event)=> {
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.style.maxWidth = "100%";
-        img.style.maxHeight = "100%";
+        img.style.maxHeight = "70%";
 
         pictureFrame.innerHTML = "";   // limpa o quadro
         pictureFrame.appendChild(img);
     }
 
-})
-
-const form = document.getElementById('form-expense');
-
-form.addEventListener('submit', function(e) {
-    if (!pictureInput.files || pictureInput.files.length === 0) {
-        e.preventDefault();
-        alert('Por favor, adicione uma imagem do recibo!');
-        return false;
-    }
 });
+
+// Show picture recive in the drag and drop
+window.addEventListener('DOMContentLoaded', function() {
+    const dragDrop = document.getElementById('nf-picture');
+    const img = dragDrop.querySelector('img');
+
+    if (img) {
+        dragDrop.style.padding = '0';
+        pictureInput.removeAttribute('required'); // Remove the atribute required of input
+    }
+
+    const form = document.getElementById('form-expense');
+    
+    form.addEventListener('submit', function(e) {
+        const dragDrop = document.getElementById('nf-picture');
+        const img = dragDrop.querySelector('img');
+
+        if (!img && (!pictureInput.files || pictureInput.files.length === 0)) {
+            alert('Por favor, adicione uma imagem do recibo!');
+            e.preventDefault();
+            return false;
+        }
+    });
+});
+
+    

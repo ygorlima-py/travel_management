@@ -2,13 +2,18 @@
 
 {% block content %}
     <div class='form-flex'>
+
         <div id='nf-picture' class="drag-and-drop flex-frame">
+            {% if form.instance.picture %}
+                <img src="{{form.instance.picture.url}}" alt="Recibo" style="max-width: 100%; max-height: 80%;">
+            {% else %}
             <a class="display-block-text-center">
                 <i class="fa-solid fa-cloud-arrow-up fa-3x"></i>
                 <p>Arraste a imagem do recibo aqui ou clique para selecionar<p>
             </a>
-            
+            {% endif %}            
         </div>
+
         <div class="form-wrapper flex-frame">
             <h2 class="expense-detail-title expense-info-title">
                 <i class="fa-solid fa-cart-shopping"></i>

@@ -11,6 +11,7 @@ urlpatterns = [
     path('expense/<int:expense_id>/delete', views.expense_delete, name='expense_delete' ),#type:ignore
     path('expense/<int:expense_id>/approved/', views.expense_approved, name='approved'), #type:ignore
     path('expense/<int:expense_id>/recused/', views.recused, name='recused'), #type:ignore
+    path('expense/<str:username>/filter_per_user/', views.filter_per_user, name='filter_per_user'), 
     path('expense/create/', views.create_expense, name='create'),
     
     # Search

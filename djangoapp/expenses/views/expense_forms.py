@@ -53,7 +53,8 @@ def create_expense(request):
 @login_required(login_url='expense:login')
 def expense_update(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
-    
+    status_pendding = get_object_or_404(Status, name='PENDENTE')
+
     if request.method == "POST":
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
         if form.is_valid():
@@ -65,10 +66,10 @@ def expense_update(request, expense_id):
             if cycle_id is not None:
                 updated_expense.cycle_id = cycle_id
 
+            expense.status = status_pendding
             updated_expense.save()
 
-            expense.status_id = 4 #type: ignore
-            expense.save(update_fields=['status_id'])
+            
             
             messages.success(request, "Despesa atualizada")
             return redirect('expense:index')
@@ -80,6 +81,7 @@ def expense_update(request, expense_id):
         'form': form,
         'expense':expense,
         'title_page':"ATUALIZAR DESPESA",
+        'is_expense_form': True,
     }
 
     return render(

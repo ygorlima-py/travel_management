@@ -11,12 +11,14 @@
                 <i class="fa-solid fa-arrow-left"></i>
                 VOLTAR
         </a>
+        {% if not operator %}
         <div class="contact-links">
-            <a class='btn btn-link btn-approved' href="{% url "expense:index" %}">
+            <a class='btn btn-link btn-approved' href="{% url "expense:filter_per_user" user.username%}">
                 <i class="fa-solid fa-cart-shopping"></i>
                 VER DESPESAS DO USUÁRIO
             </a>
         </div>
+        {% endif %}
     </div>
     <div class="expense-detail-grid">
 
