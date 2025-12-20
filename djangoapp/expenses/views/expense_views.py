@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.db.models import Q
 from django.core.paginator import Paginator
-from expenses.models import Expenses
+from expenses.models import Expenses, ExpenseAudit
 from utils.mixin import PermissionMixin
 
 # Create your views here.
@@ -31,10 +31,20 @@ def expense(request, expense_id):
     last_alert = single_expense.alerts_recused.last() # Pega o ultimo alerta # type:ignore
     role = PermissionMixin.get_user_role(request.user)
     
+    qs_audits = (
+        ExpenseAudit.objects
+        .filter(expense=single_expense)
+        .order_by('created_at')
+    )   
+    list_audits = list(qs_audits)
+    last_audit = list_audits[-1] if list_audits else None
+
     context = {
         'expense': single_expense,
         'alert': last_alert,
         'role': role,
+        'last_audit': last_audit,
+        'audits': list_audits,
     }
 
     return render (

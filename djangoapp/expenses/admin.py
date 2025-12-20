@@ -116,3 +116,11 @@ class UserEnterPriseAdmin(admin.ModelAdmin):
 
     list_display_links = 'enterprise',
 
+@admin.register(models.ExpenseAudit)
+class ExpenseAuditAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'expense', 'action', 'performed_by',
+    )
+
+    list_display_links = 'id',
+

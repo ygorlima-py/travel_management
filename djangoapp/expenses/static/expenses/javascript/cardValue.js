@@ -12,33 +12,33 @@ export async function injectionCardValue(data) {
         cardProjectionMonth.textContent = `R$ ${projectionMonth.toFixed(2).replace('.', ',')}`;
         }
     else if (data.role == "MANAGER"){
-        const cardTotalPendingTeamValue = document.getElementById('pending-expenses-value'); 
+        const cardTotalRecusedTeamValue = document.getElementById('recused-expenses-value'); 
         const cardTotalApprovedMonth = document.getElementById('total-approved-month');
         const cardAwaitingApproval = document.getElementById('awaiting-approval');
         const cardTeamMembers = document.getElementById('team-members');
-        const TotalPendingTeamValue = data.total_pending_team;
+        const TotalRecusedTeamValue = data.total_recused_team;
         const TotalApprovedMonth = data.total_approved_month;     
         const AwaitingApproval = data.awaiting_approval;
         const teamMembers = data.team_members;
 
-        cardTotalPendingTeamValue.textContent = `R$ ${TotalPendingTeamValue.toFixed(2).replace('.', ',')}`; 
+        cardTotalRecusedTeamValue.textContent = `R$ ${TotalRecusedTeamValue.toFixed(2).replace('.', ',')}`; 
         cardTotalApprovedMonth.textContent = `R$ ${TotalApprovedMonth.toFixed(2).replace('.', ',')}`;
         cardAwaitingApproval.textContent = AwaitingApproval;
         cardTeamMembers.textContent = teamMembers;
 
         }
     else if (data.role == "OPERATOR") {
-        const cardTotalPendingValue = document.getElementById('pending-expenses-value'); 
+        const cardTotalRecusedValue = document.getElementById('recused-expenses-value'); 
         const cardTotalApprovedMonth = document.getElementById('total-approved-month');
         const cardAwaitingApproval = document.getElementById('awaiting-approval');
         const cardCurrentCicle = document.getElementById('current-cicle')
 
-        const TotalPendingValue = data.total_pending;
+        const TotalRecusedValue = data.total_recused;
         const TotalApprovedMonth = data.total_approved_month;     
         const AwaitingApproval = data.awaiting_approval;
         const currentCicle = data.current_cicle.name;
 
-        cardTotalPendingValue.textContent = `R$ ${TotalPendingValue.toFixed(2).replace('.', ',')}`; 
+        cardTotalRecusedValue.textContent = `R$ ${TotalRecusedValue.toFixed(2).replace('.', ',')}`; 
         cardTotalApprovedMonth.textContent = `R$ ${TotalApprovedMonth.toFixed(2).replace('.', ',')}`;
         cardAwaitingApproval.textContent = AwaitingApproval;
         cardCurrentCicle.textContent = currentCicle;

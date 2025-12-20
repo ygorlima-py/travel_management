@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from expenses.form import ExpenseForm, AlertRecusedForm
-from expenses.models import Expenses, Status
+from expenses.models import Expenses, Status, ExpenseAudit
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from utils.conditions import Conditions #type: ignore
-from django.http import Http404
+from django.http import HttpResponseForbidden
 from utils.mixin import PermissionMixin
+from utils.audit import Auditing
 
 @login_required(login_url='expense:login')
 def create_expense(request):
@@ -30,6 +31,9 @@ def create_expense(request):
                 expense.cycle_id = cycle_id
                 
             expense.save()
+
+            Auditing(expense, request, "CREATED")
+
             return redirect('expense:create')
 
         return render(
@@ -52,8 +56,11 @@ def create_expense(request):
 
 @login_required(login_url='expense:login')
 def expense_update(request, expense_id):
-    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
     status_pendding = get_object_or_404(Status, name='PENDENTE')
+    expense = Expenses.objects.filter(pk=expense_id, owner_expenses=request.user, status__name__in=['PENDENTE', 'RECUSADO']).first()
+
+    if not expense:
+        return HttpResponseForbidden('Not Permission')
 
     if request.method == "POST":
         form = ExpenseForm(request.POST, request.FILES, instance=expense)
@@ -67,10 +74,10 @@ def expense_update(request, expense_id):
                 updated_expense.cycle_id = cycle_id
 
             expense.status = status_pendding
-            updated_expense.save()
 
-            
-            
+            updated_expense.save()
+            Auditing(expense, request, "UPDATED")
+
             messages.success(request, "Despesa atualizada")
             return redirect('expense:index')
         
@@ -93,14 +100,30 @@ def expense_update(request, expense_id):
 @login_required(login_url='expense:login')
 def expense_delete(request, expense_id):
 
-    expense = get_object_or_404(Expenses, pk=expense_id, owner_expenses=request.user)
-
+    expense = get_object_or_404(
+                Expenses,
+                pk=expense_id,
+                owner_expenses=request.user,
+                )
+    
+    last_audit = (
+        ExpenseAudit.objects
+        .filter(expense=expense)
+        .order_by('-created_at')
+        .first()
+    )
+    print(last_audit)
+    if last_audit and last_audit.is_checked:
+        return HttpResponseForbidden('Not authorization')
+    
     confirmation = request.POST.get('confirmation', 'no')
     print('confirmation', confirmation)
 
 
     if confirmation == 'yes':
+        Auditing(expense, request, "DELETED")
         expense.delete()
+
         return redirect('expense:index')
 
     return render(
@@ -135,6 +158,7 @@ def expense_approved(request, expense_id):
     # Approve
     expense.status = status_approved
     expense.save()
+    Auditing(expense, request, "APPROVED")
 
     messages.success(request, f'Despesa de {expense.owner_expenses} aprovada com sucesso')
     return redirect ('expense:index')
@@ -183,6 +207,13 @@ def recused(request, expense_id):
 
             expense.status = status_recused #type: ignore
             expense.save()
+            
+            Auditing(
+                    expense=expense,
+                    request=request,
+                    action="REJECTED", 
+                    note=message,
+                    )
 
             return redirect('expense:index')
 

@@ -13,6 +13,8 @@ urlpatterns = [
     path('expense/<int:expense_id>/recused/', views.recused, name='recused'), #type:ignore
     path('expense/<str:username>/filter_per_user/', views.filter_per_user, name='filter_per_user'), 
     path('expense/create/', views.create_expense, name='create'),
+
+
     
     # Search
     path('search/', views.search, name='search'), 

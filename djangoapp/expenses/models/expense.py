@@ -107,6 +107,7 @@ class Expenses(models.Model):
         on_delete=models.PROTECT,
         null=True,
         blank=True,
+        related_name='expense',
     )
 
     cycle = models.ForeignKey(
@@ -158,3 +159,66 @@ class AlertRecused(models.Model):
 
     def __str__(self) -> str:
         return self.message # type: ignore
+    
+class ExpenseAudit(models.Model):
+    class Meta:
+        verbose_name = "Auditoria de despesa"
+        verbose_name_plural = "Auditorias de Despesas"
+        indexes = [
+            models.Index(fields=["expense", "-created_at"]),
+            models.Index(fields=["performed_by", "-created_at"]),
+        ]
+
+    class Action(models.TextChoices):
+        CREATED = "CREATED", "Criada"
+        UPDATED = "UPDATED", "Atualizada"
+        APPROVED = "APPROVED", "Aprovada"
+        REJECTED = "REJECTED", "Recusada"
+        DELETED = "DELETED", "Excluída"
+
+    expense = models.ForeignKey(
+        Expenses,
+        on_delete=models.SET_NULL,
+        related_name="audits",
+        null=True,
+        blank=True,
+    )
+
+    action = models.CharField(max_length=20, choices=Action.choices)
+
+    performed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='expense_audits',
+    )
+
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="status_audits",
+    )
+
+    notes = models.ForeignKey(
+        AlertRecused,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="alert_audits",
+    )
+
+    is_checked = models.BooleanField(
+                                null=True,
+                                blank=True,
+                                default=False,
+                                )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.expense.supply} - {self.get_action_display()} por {self.performed_by.first_name} {self.performed_by.first_name}"
+
+
+

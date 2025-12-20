@@ -32,7 +32,7 @@ class DashbordView(APIView):
 
         return {
             'role': 'OPERATOR',
-            'total_pending': self._total_by_status(expenses, 'RECUSADO'),
+            'total_recused': self._total_by_status(expenses, 'RECUSADO'),
             'total_approved_month': self._total_by_status(expenses, 'APROVADO'),
             'awaiting_approval': self._awaiting_approval(expenses, user),
             'current_cicle': self._current_cicle(user),
@@ -54,7 +54,7 @@ class DashbordView(APIView):
 
         return {
             'role': 'MANAGER',
-            'total_pending_team': self._total_by_status(expenses, 'RECUSADO'),
+            'total_recused_team': self._total_by_status(expenses, 'RECUSADO'),
             'total_approved_month': self._total_by_status(expenses, 'APROVADO'),
             'awaiting_approval': self._awaiting_approval(expenses, user),
             'team_members': self._team_members(team),

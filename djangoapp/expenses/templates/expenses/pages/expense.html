@@ -38,28 +38,12 @@
             {% endif %}   
         {% endif %}
 
-        {% if expense.owner_expenses == user %}
+        {% if expense.owner_expenses == user and expense.status.name != "APROVADO"%}
         <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR
         </a>
         {% endif %}
-    
-        <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>
-            {% csrf_token %}
-
-            {% if confirmation == 'no' %}
-                <input type="hidden" name="confirmation" value="yes">
-                <button class="btn btn-link btn-delete" type='submit'>CONFIRMA A EXCLUSÃO ?</button>            
-            {% else %}
-                {% if expense.owner_expenses == user %}
-                <button class="btn btn-link btn-delete" type='submit'>
-                    <i class="fa-solid fa-trash"></i>
-                    DELETAR
-                </button>
-                {% endif %}            
-            {% endif %}
-        </form>
     </div>
     
     <div class="expense-detail-grid center-text">
@@ -84,8 +68,8 @@
                     </span>
                 </div>
                 <div class="expense-info-item">
-                    <span class="expense-info-label">Fornecedor</span>
-                    <span class="expense-info-value">{{expense.supply}}</span>
+                    <span class="expense-info-label">N° da despesa</span>
+                    <span class="expense-info-value">{{expense.pk}}</span>
                 </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">N° Nota Fiscal</span>
@@ -101,6 +85,10 @@
                 Localização
             </h2>
             <div class="expense-info-grid">
+                <div class="expense-info-item">
+                    <span class="expense-info-label">Fornecedor</span>
+                    <span class="expense-info-value">{{expense.supply}}</span>
+                </div>
                 <div class="expense-info-item">
                     <span class="expense-info-label">Cidade</span>
                     <span class="expense-info-value">{{expense.city|default:"Não informado"}}</span>
@@ -210,7 +198,66 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="expense-image-card">
+            <h2 class="expense-info-title">
+                <i class="fa-solid fa-timeline"></i>
+                Trilha de Auditoria
+            </h2>
+            <div class="expense-image-wrapper">
+                <div class="main-container">
+                <!-- event 1st of timeline -->
+                    {% for audit in audits %}
+                    <div class="text-wrapper {% cycle 'left' 'right' %}">
+                        <!-- all text content of timeline -->
+                        <div class="line-content">
+                            <h3>
+                                Despesa {{audit.get_action_display}} por 
+                                {{audit.performed_by.first_name}} {{audit.performed_by.last_name}} 
+                                em {{audit.created_at|date:"d/m/Y H:i"}}
+                            </h3>
+                            <p>{{audit.notes.message | default:""}}</p>
+
+                            {% if audit.status.name == "PENDENTE" %}
+                                <span class="icon-status-pending">
+                                    <i class="fa-solid fa-hourglass-half" title="Aguardando de Aprovação"></i>
+                                </span>
+                            {% elif audit.status.name == "APROVADO" %}
+                                <span class="icon-status-approved" title="Aprovado">
+                                    <i class="fa-regular fa-circle-check"></i>
+                                </span>
+                            {% else %}
+                                <span class="icon-status-recused" title="Recusado">
+                                    <i class="fa-regular fa-circle-xmark"></i>
+                                </span>
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>    
+        </div>
+        
     </div>
+
+     
+
+    <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>
+            {% csrf_token %}
+
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button class="btn btn-link btn-delete" type='submit'>CONFIRMA A EXCLUSÃO ?</button>            
+            {% else %}
+                {% if expense.owner_expenses == user and not last_audit.is_checked %}
+                <button class="btn btn-link btn-delete" type='submit'>
+                    <i class="fa-solid fa-trash"></i>
+                    DELETAR
+                </button>
+                {% endif %}            
+            {% endif %}
+    </form>
 
     
 </div>
