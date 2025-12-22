@@ -75,7 +75,7 @@ class DashbordView(APIView):
 
         return {
             'role': 'COMPANY_ADMIN',
-            'total_enterprise': expenses.aggregate(Sum('value'))['value__sum'] or 0,
+            'total_enterprise': self._total_by_enterprise(expenses),
             'total_per_month': self._total_per_month(expenses),
             'team_registers': self._teams_registers(enterprise),
             'projection_month': self._projection_end_month(expenses),
@@ -102,6 +102,24 @@ class DashbordView(APIView):
         status_id = self._get_status_id(status_name)
         return queryset.filter(status_id=status_id, date__month=current_month).aggregate(Sum('value'))['value__sum'] or 0
     
+    def _total_by_enterprise(self, queryset):
+        from datetime import timedelta
+        from django.utils import timezone
+
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        status_id = self._get_status_id('APROVADO')
+        data = (
+            queryset
+            .filter(
+                status_id=status_id,
+                date__gte=last_twelve_months,
+                )
+                .aggregate(Sum('value'))['value__sum'] or 0)
+        
+        return data
+    
+
 
     def _current_cicle(self, user):
         cicle = Cycle.objects.filter(owner=user, is_open=True).first()
@@ -113,9 +131,13 @@ class DashbordView(APIView):
         
         now = timezone.now()
         last_twelve_months = now - timedelta(days=365)
+        status_id = self._get_status_id("APROVADO")
 
         data = (queryset
-                .filter(date__gte=last_twelve_months)
+                .filter(
+                    date__gte=last_twelve_months,
+                    status__pk=status_id,
+                    )
                 .values('category__name')
                 .annotate(total=Sum('value'))
                 .order_by('category__name')
@@ -604,7 +626,9 @@ class DashbordView(APIView):
 
     """Specific methods of the Admin"""
     def _total_per_month(self, queryset):
+        status_id = self._get_status_id("APROVADO")
         data = (queryset
+                .filter(status__pk=status_id)
                 .annotate(month=TruncMonth('date'))
                 .values('month')
                 .annotate(total=Sum('value'))
@@ -618,16 +642,28 @@ class DashbordView(APIView):
 
     def _chart_per_team(self, enterprise):
         from expenses.models import Team
+        from django.utils import timezone
+        from datetime import timedelta
         
-        teams = Team.objects.filter(enterprise=enterprise).annotate(
+        now = timezone.now()
+        last_twelve_months = now - timedelta(days=365)
+        
+        teams = (
+            Team
+            .objects
+            .filter(
+                enterprise=enterprise,
+                members__user__expenses_owner__date__gte=last_twelve_months,
+                )
+            .annotate(
             total=Sum('members__user__expenses_owner__value')
-        )
+        ))
         
         return {
             'labels': [team.name for team in teams],
             'datasets': [{
                 'axis': 'y',
-                'label': 'Gasto por equipe R$',
+                'label': 'Custo por equipe nos ultimos 12 meses R$',
                 'data': [float(team.total or 0) for team in teams],
                 'fill': False,
                 'backgroundColor': ['#1F618D'],
@@ -639,8 +675,14 @@ class DashbordView(APIView):
     def _projection_end_month(self, queryset):
         from datetime import datetime
         current_month = datetime.now().month
-        
-        total_month = queryset.filter(date__month=current_month).aggregate(Sum('value'))['value__sum'] or 0
+        status_id = self._get_status_id("APROVADO")
+        total_month = (
+            queryset
+            .filter(
+                date__month=current_month,
+                status__pk=status_id,
+                )
+            .aggregate(Sum('value'))['value__sum'] or 0)
         current_day = datetime.now().day
         days_month_qtd = 30
         

@@ -43,12 +43,10 @@ def reports(request):
         user = request.user
         
         if PermissionMixin.is_company_admin(user):
-            enterprise = PermissionMixin.get_user_enterprise(user)
-            expenses = Expenses.objects.filter(owner_expenses__profile__team__enterprise=enterprise)
+            expenses = Expenses.objects.for_user(user)
         
         elif PermissionMixin.is_manager(user):
-            team = PermissionMixin.get_user_team(user)
-            expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
+            expenses = Expenses.objects.for_user(user)
 
         else:
             expenses = Expenses.objects.for_user(user)
