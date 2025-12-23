@@ -2,6 +2,7 @@ from django import forms
 from expenses.models import UserProfile, State
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.contrib.auth import password_validation
 
 
 
@@ -40,6 +41,21 @@ class UpdateFormUser(forms.ModelForm):
         label='*Usuário',
         help_text='(Obrigatório) Crie um usuário, não pode conter espaços. ' \
         'Apenas letas, numeros e simbolos $%&*@'
+    )
+
+    password1 = forms.CharField(
+        label='Senha',
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        help_text=password_validation.password_validators_help_text_html(),
+        required=False,
+    )
+
+    password2 = forms.CharField(
+        label='Confirme sua senha',
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),\
+        required=False,
     )
 
     phone = forms.CharField(
@@ -105,7 +121,7 @@ class UpdateFormUser(forms.ModelForm):
         'first_name', 
         'last_name',
         'email',
-        'username'
+        'username',
         )
 
     def __init__(self, *args, **kwargs):

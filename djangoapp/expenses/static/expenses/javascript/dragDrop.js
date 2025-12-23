@@ -61,7 +61,7 @@ pictureInput.addEventListener('change', (event)=> {
         const img = document.createElement("img");
         img.src = URL.createObjectURL(file);
         img.style.maxWidth = "100%";
-        img.style.maxHeight = "70%";
+        img.style.maxHeight = "100vh";
 
         pictureFrame.innerHTML = "";   // limpa o quadro
         pictureFrame.appendChild(img);

@@ -225,7 +225,8 @@ def recused(request, expense_id):
 
     context = dict(
         form=AlertRecusedForm(),
-        form_action=form_action
+        form_action=form_action,
+        expense_id=expense_id,
     )
 
     return render(

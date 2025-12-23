@@ -245,7 +245,6 @@
 
     <form action="{% url "expense:expense_delete" expense.id %}" method='POST'>
             {% csrf_token %}
-
             {% if confirmation == 'no' %}
                 <input type="hidden" name="confirmation" value="yes">
                 <button class="btn btn-link btn-delete" type='submit'>CONFIRMA A EXCLUSÃO ?</button>            

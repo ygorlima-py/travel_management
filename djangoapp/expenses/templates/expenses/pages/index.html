@@ -2,6 +2,10 @@
 
 {% block content %}
 <main id='index' class='content'>
+    <h2 class="expense-detail-title expense-info-title">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    TODAS AS DESPESAS REALIZADAS
+    </h2>
     <div class="search">
         <form action="{% url "expense:search" %}" method="GET" id="search-form">
             <input 
@@ -24,10 +28,7 @@
     <div class='responsive-table'>
         <table class='contacts-table'>
             <caption>
-                <h2 class="expense-detail-title expense-info-title">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    TODAS AS DESPESAS REALIZADAS
-                </h2>
+                
             </caption>
 
             <thead>

@@ -1,8 +1,15 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
-<div class="flex-frame-login-form margin-form-team">
-    <div class="form-wrapper flex-frame max-width-form-profile
+    <div class="contact-links back-button">
+        <a class='btn btn-link ' href="{% url "expense:expense" expense_id %}">
+            <i class="fa-solid fa-arrow-left"></i>
+            VOLTAR
+        </a>
+    </div>
+
+    <div class="flex-frame-login-form">
+        <div class="form-wrapper flex-frame max-width-form-profile
             margin-top-mendium padding-forms">
             <h2 class="expense-detail-title expense-info-title">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -45,6 +52,6 @@
             </div>
         
         </form>
+        </div>
     </div>
-</div>
 {% endblock content %}

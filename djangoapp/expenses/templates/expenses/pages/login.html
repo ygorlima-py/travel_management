@@ -1,4 +1,5 @@
 {% extends "expenses/base.html" %}
+{% load static %}
 
 {% block content %}
     <div class="loggin-flex">
@@ -7,26 +8,31 @@
             
         </div>
 
-        <div class="form-wrapper flex-frame">
-            <div class="padding-forms">
-                <img src="" alt="logo">
-                
-                </img>
-                <h2 class="expense-detail-title expense-info-title">
-                    Login
-                </h2>
+        <div class="form-wrapper flex-frame flex-container-login">
+            <div class="login-card-form">
+                <div class="padding-forms">
+                    <div class="image-logo-container">
+                        <img 
+                            src="{% static "expenses/images/logo192.png" %}" 
+                            alt="logo" class="logo-image">
+                        </img>
+                    </div>
+                    <h2 class="expense-detail-title expense-info-title">
+                        Login
+                    </h2>
 
-                {% if user.is_authenticated %}
-                    <p>
-                        Usuário {{user.username}} Logado com sucesso.
-                        Clique <a href="{% url "expense:logout" %}">Aqui</a> para sair.
-                    </p>
+                    {% if user.is_authenticated %}
+                        <p>
+                            Usuário {{user.username}} Logado com sucesso.
+                            Clique <a href="{% url "expense:logout" %}">Aqui</a> para sair.
+                        </p>
 
-                {% else %}
+                    {% else %}
 
-                    {% include "expenses/partials/_user-form.html" %}
+                        {% include "expenses/partials/_user-form.html" %}
 
-                {% endif %}   
+                    {% endif %}   
+                </div>
             </div>
         </div>
     </div>
