@@ -14,6 +14,12 @@
     --clr-light-shadow-5: rgba(200, 200, 255, 5%);
     --clr-light-shadow-10: rgba(200, 200, 255, 10%);
     --clr-light-shadow-20: rgba(200, 200, 255, 20%);
+    --logo-clr-blue-green-light: #36BBD9;
+    --logo-clr-blue-green: #3BACD9;
+    --logo-clr-blue: #4192D9;
+    --logo-clr-blue-dark: #4A79D9;
+    --logo-violet-blue-dark: #595FD9;
+    --login-page-color: #1800ad;
     --main-page-width: 120rem;
     --table-min-width: 60rem;
     --biggest-font-size: 5rem;
@@ -39,6 +45,10 @@
     --max-width-form-profile: 65rem;
     --color-cold-gray-550: #707070;
     --color-cold-gray-800: #2e2e2e;
+    --padding-big: 4rem;
+    --padding-medium: 2rem;
+    --paddind-small: 1rem;
+    --background-color-blue-transiction-white: var(--login-page-color)
 }
 
 *,
@@ -239,11 +249,6 @@ caption {
         grid-column: span 2;
         text-align: center;
     }
-
-    .loggin-flex-frame-image {
-        display: none;
-    }
-
 }
 
 .menu-link {
@@ -1011,12 +1016,15 @@ img {
 
 .loggin-flex {
     display: flex;
-    min-height: 100vh;
+    min-height: 90vh;
 }
 
-.loggin-flex-frame-image {
+.col-1 {
+    flex: 1;
+}
+
+.col-2 {
     flex: 2;
-    background-image: url(https://blog.zignet.com.br/wp-content/uploads/2024/12/checklist-viagem-de-carro.jpg);
 }
 
 .flex-frame {
@@ -1177,6 +1185,11 @@ img {
     border-radius: 50%;
     z-index: 1;
 }
+
+.height-register{
+    min-height: 90vh;
+}
+
 /*for left events*/
 .left{
     left: 0;
@@ -1209,8 +1222,8 @@ img {
 }
 
 .logo-image {
-    min-width: 100px;
-    max-height: 200px;
+    min-width: 60px;
+    max-height: 60px;
 }
 
 .image-logo-container {
@@ -1219,16 +1232,146 @@ img {
 }
 
 .flex-container-login {
-    background-color: var(--link-dark-color);
-    background-image: none;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0;
+    background-image: none;
 }
 
 .login-card-form {
     border-radius: 12px;
     background-color: white;
     padding: var(--padding-horizontal-forms);
+}
+
+.input-with-icon {
+    position: relative;
+    display: block;
+}
+
+.input-with-icon input{
+    width: 100%;
+    padding-left: 40px;  /* ✅ Espaço para o ícone */
+}
+
+.input-with-icon i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);  /* ✅ Centraliza verticalmente */;
+    color: var(--link-dark-color);
+}
+
+.login-pitch{ 
+    display: flex;
+    flex-direction: column;
+    font-family: "Libre Franklin",
+                "Franklin Gothic Medium",
+                "Franklin Gothic",
+                "Helvetica Neue",
+                Helvetica,
+                Arial,
+                sans-serif;
+}
+
+
+.login-pitch-title {
+    color: var(--clr-white);
+    font-size: calc(var(--biggest-font-size)*0.7);
+    margin: 0;
+}
+
+.container-logo-text-flext {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: var(--padding-big);
+}
+
+.biggest-font-size {
+    font-size: var(--biggest-font-size);
+}
+
+.background-transiction-blue{
+    background: linear-gradient(135deg,
+                                #2b3990 60%,
+                                #4475d4 100%
+                                );
+}
+
+.background-image-blue {
+    background-image: linear-gradient(135deg,
+                                rgba(43, 57, 144, 0.90) 30%,
+                                rgba(68, 117, 212, 1) 100%
+                                ),url("../images/cover.png");
+    
+    background-size: cover, cover;
+    background-position: center, center;
+}
+
+.phrase-effect{
+    display: flex;
+    padding: var(--padding-big);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--clr-white);
+    font-size: calc(var(--biggest-font-size));
+    font-weight: bolder;
+    border-bottom: 0.5px dotted var(--clr-white);
+    /* text-align:center; */
+}
+
+.pitch-description {
+    display: flex;
+    flex-direction: row;
+    color: var(--clr-white);
+    font-size: calc(var(--medium-font-size)*1) ;
+}
+
+.description-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.padding-inside-description-box {
+    padding: var(--padding-medium);
+}
+
+.circle-icon {
+    border-radius: 50%;
+    padding: 10px;
+    background-color: var(--clr-white);
+    color: #1800ad;
+}
+
+@media (max-width: 480px){
+    .loggin-flex {
+        flex-direction: column-reverse;
+    }
+
+    .phrase-effect {
+        display:block;
+        font-size: var(--big-font-size);
+        word-wrap: break-word;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .container-logo-text-flext{
+        margin-left: 0;
+        padding: 0;
+    }
+
+    .flex-container-login {
+        min-height: 100vh;
+        padding-top: 0;
+    }
+
+    .login-card-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }

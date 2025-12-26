@@ -2,18 +2,83 @@
 {% load static %}
 
 {% block content %}
+<div class="background-image-blue">
+    <div class="container-logo-text-flext">
+        <img 
+            src="{% static "expenses/images/logo_transparent_512.png" %}" 
+            alt="logo" class="logo-image">
+        </img>
+        <h1 class="login-pitch-title">ExpenseFlow</h1>
+    </div>
     <div class="loggin-flex">
+        <div class="col-2 login-pitch">
+            <div class="phrase-effect">
+                <p>
+                    A SOLUÇÃO COMPLETA PARA
+                    GERENCIAMENTO DE DESPESAS
+                    DO SEU NEGÓCIO
+                </p>
+            </div>
+            <div class="description-box">
+                <div class="pitch-description">
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-business-time circle-icon"></i>
+                            Aprove ou recuse despesas da sua empresa com um clique
+                        </p>
+                    </div>
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-people-group circle-icon"></i>
+                            Crie equipes para gerenciar seu negócio com mais controle
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-        <div class="loggin-flex-frame-image">
+            <div class="description-box">
+                <div class="pitch-description">
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-sitemap circle-icon"></i>
+                            Organize todas as despesas em um só lugar, sem planilhas soltas
+                        </p>
+                    </div>
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-chart-area circle-icon"></i>
+                            Dashboards em tempo real com métricas claras do seu negócio
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="description-box">
+                <div class="pitch-description">
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-file-circle-check circle-icon"></i>
+                            Anexe comprovantes e notas fiscais em cada despesa, com histórico completo
+                        </p>
+                    </div>
+                    <div class="col-1 padding-inside-description-box">
+                        <p>
+                            <i class="fa-solid fa-shield-halved circle-icon"></i>
+                            Fluxo de aprovação por nível de acesso, garantindo segurança e auditoria
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             
         </div>
 
-        <div class="form-wrapper flex-frame flex-container-login">
+        <div class=" col-1 form-wrapper flex-frame flex-container-login">
             <div class="login-card-form">
                 <div class="padding-forms">
                     <div class="image-logo-container">
                         <img 
-                            src="{% static "expenses/images/logo192.png" %}" 
+                            src="{% static "expenses/images/logo_transparent_512.png" %}" 
                             alt="logo" class="logo-image">
                         </img>
                     </div>
@@ -36,4 +101,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock content %}

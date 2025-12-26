@@ -43,7 +43,19 @@
                     </div>
                 {% else %}
                     <label for="{{field.id_for_label}}">{{field.label}}</label>
-                    {{field}}
+                    {% if field.name == 'username'%}    
+                        <div class="input-with-icon">
+                            {{field}}
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                    {% elif field.name == 'password'%}    
+                        <div class="input-with-icon">
+                            {{field}}
+                            <i class="fa-solid fa-lock"></i>
+                        </div>    
+                    {% else %}
+                        {{field}}
+                    {% endif %}
                 {% endif %}
 
                 {{field.errors}}

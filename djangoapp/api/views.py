@@ -119,8 +119,6 @@ class DashbordView(APIView):
         
         return data
     
-
-
     def _current_cicle(self, user):
         cicle = Cycle.objects.filter(owner=user, is_open=True).first()
         return {'name': cicle.name if cicle else None}
