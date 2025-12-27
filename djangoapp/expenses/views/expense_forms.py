@@ -33,9 +33,9 @@ def create_expense(request):
             expense.save()
 
             Auditing(expense, request, "CREATED")
-
+            messages.success(request, "DESPESA LANÇADA COM SUCESSO", extra_tags='fa-circle-check')
             return redirect('expense:create')
-
+        
         return render(
         request,
         'expenses/pages/create_expense.html',

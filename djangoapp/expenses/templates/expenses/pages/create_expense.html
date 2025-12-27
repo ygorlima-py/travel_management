@@ -1,6 +1,15 @@
 {% extends "expenses/base.html" %}
+{% load static %}
 
-{% block content %}
+{% block content %} 
+    
+    <div class="message success">
+        <i class="fa-solid fa-circle-check fa-2x"></i>
+        <p class="message-text">
+            DESPESA LANÇADA COM SUCESSO
+        </p>         
+    </div>         
+
     <div class='form-flex'>
 
         <div id='nf-picture' class="drag-and-drop flex-frame">
@@ -90,4 +99,9 @@
             </form>
         </div>
     </div>
+
+    {% block javascript %}
+    <script type='module' src="{% static "expenses/javascript/disableMessage.js" %}"></script>
+    {% endblock javascript %}
+
 {% endblock content %}

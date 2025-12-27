@@ -1,5 +1,13 @@
+{% load static %}
 <nav id="mySidepanel" class="sidebar">
     {% if user.is_authenticated %}
+        <div class="container-logo-text-flext sidebar-logo-text-flex">
+            <img 
+                src="{% static "expenses/images/logo_transparent_512.png" %}" 
+                alt="logo" class="logo-image-sidebar">
+            </img>
+            <h1 class="sidebar-pitch-title">ExpenseFlow</h1>
+        </div>
         <a href="javascript:void(0)" id='close' class="menu-link" onclick="closeNav()">
             <i class="fa-solid fa-circle-xmark"></i>
             Fechar Menu

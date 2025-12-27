@@ -52,7 +52,22 @@
                         <div class="input-with-icon">
                             {{field}}
                             <i class="fa-solid fa-lock"></i>
-                        </div>    
+                        </div> 
+                    {% elif field.name == 'password1'%}    
+                        <div class="input-with-icon">
+                            {{field}}
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    {% elif field.name == 'password2'%}    
+                        <div class="input-with-icon">
+                            {{field}}
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                    {% elif field.name == 'email'%}    
+                        <div class="input-with-icon">
+                            {{field}}
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
                     {% else %}
                         {{field}}
                     {% endif %}
@@ -113,10 +128,10 @@
         <div class="form-group">
                 {% if is_login %}
                 <div class="padding-forms">        
-                    <button class="btn enter-btn" type='submit'>
+                    <button class="btn enter-btn border-radius-form-login" type='submit'>
                         ENTRAR
                     </button>
-                    <a class='btn btn-link btn-approved center-text margin-top-minimum' href="{% url "expense:register"%}">
+                    <a class='btn btn-link btn-approved center-text margin-top-minimum border-radius-form-login' href="{% url "expense:register"%}">
                         CADASTRAR-SE
                     </a> 
                 </div>

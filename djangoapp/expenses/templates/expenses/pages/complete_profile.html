@@ -1,19 +1,34 @@
 {% extends "expenses/base.html" %}
+{% load static %}
+
 
 {% block content %}
-    <div class="contact-links">
-        <a class='btn btn-link ' href="{% url "expense:chose" %}">
-            <i class="fa-solid fa-arrow-left"></i>
-            VOLTAR
-        </a>
+<div class="background-image-blue-light">
+    <div class="complete-profile-container">
+        <div class="container-logo-text-flext background-transiction-blue">
+            <img 
+                src="{% static "expenses/images/logo_transparent_512.png" %}" 
+                alt="logo" class="logo-image">
+            </img>
+            <h1 class="login-pitch-title">ExpenseFlow</h1>
+        </div>
+
+        <div class="contact-links">
+            <a class='btn btn-link ' href="{% url "expense:chose" %}">
+                <i class="fa-solid fa-arrow-left"></i>
+                VOLTAR
+            </a>
+        </div>
+        
+        <div class="flex-frame-login-form">
+            <div class="form-wrapper flex-frame max-width-form-profile">
+                <h2 class="expense-detail-title expense-info-title">
+                    <i class="fa-solid fa-user"></i>
+                    {{title_page}}
+                </h2>
+                {% include "expenses/partials/_user-form.html" %}
+            </div>
+        </div>
     </div>
-    
-    <div class="flex-frame-login-form">
-    <div class="form-wrapper flex-frame max-width-form-profile">
-        <h2 class="expense-detail-title expense-info-title">
-            <i class="fa-solid fa-arrows-spin"></i>
-            {{title_page}}
-        </h2>
-        {% include "expenses/partials/_user-form.html" %}
-    </div>
+</div>
 {% endblock content %}
