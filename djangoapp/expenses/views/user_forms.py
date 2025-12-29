@@ -41,7 +41,8 @@ def register(request):
         {
             'form':form,
             'is_register': True,
-            'title_page': 'CADASTRAR'
+            'title_page': 'CADASTRAR',
+            'green_button': 'btn-approved',
         }
     )
 

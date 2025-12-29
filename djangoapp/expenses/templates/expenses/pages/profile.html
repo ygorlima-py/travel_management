@@ -164,12 +164,12 @@
 
     {% if request.user == user %}
     <div class="contact-links">
-        <a class='btn btn-link' href="{% url "expense:user_update" %}">
+        <a class='btn btn-link btn-border-white' href="{% url "expense:user_update" %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR  PERFIL
         </a>
         {% if company_admin %}
-        <a class='btn btn-link' href="{% url "expense:update_enterprise" %}">
+        <a class='btn btn-link btn-border-white' href="{% url "expense:update_enterprise" %}">
             <i class="fa-solid fa-industry"></i>
             ATUALIZAR  EMPRESA
         </a>

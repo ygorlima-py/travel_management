@@ -4,6 +4,9 @@ import { createChartLine } from './chartLine.js'
 import { createChartHorizontalBar } from './chartHorizontalBar.js'
 import { injectionCardValue } from './cardValue.js'
 
+Chart.defaults.color = '#fff';
+Chart.defaults.font.size = 12;
+
 async function fetchChartData(url) {
     try {
         const response = await fetch(url);

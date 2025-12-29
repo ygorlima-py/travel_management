@@ -22,57 +22,59 @@
         {% if cycles %}
         {% for cycle in cycles %}
         {% if cycle.owner == user %}
-        <a  class='remove-text-decoration'  href="{% url "expense:cycle" cycle.id %}">
-            <div class="expense-info-card">
-                <h2 class="expense-info-title">
-                    <i class="fa-solid fa-arrows-spin"></i>
-                    {{cycle.name}}
-                </h2>
-                <div class="expense-info-grid">
-                    <div class="expense-info-item">
-                        <span class="expense-info-label">
+        <div class="card-cicles-container">
+            <a  class='remove-text-decoration'  href="{% url "expense:cycle" cycle.id %}">
+                <div class="expense-info-card">
+                    <h2 class="expense-info-title">
+                        <i class="fa-solid fa-arrows-spin"></i>
+                        {{cycle.name}}
+                    </h2>
+                    <div class="expense-info-grid">
+                        <div class="expense-info-item">
+                            <span class="expense-info-label">
+                                <i class="fa-solid fa-calendar"></i>
+                                Data Inicial
+                            </span>
+                            <span class="expense-info-value">{{cycle.initial_date}}</span>
+                        </div>
+                        <div class="expense-info-item">
+                            <span class="expense-info-label">
                             <i class="fa-solid fa-calendar"></i>
-                            Data Inicial
-                        </span>
-                        <span class="expense-info-value">{{cycle.initial_date}}</span>
-                    </div>
-                    <div class="expense-info-item">
-                        <span class="expense-info-label">
-                        <i class="fa-solid fa-calendar"></i>
-                            Data Final
-                        </span>
-                        <span class="expense-info-value">
-                            <span class="expense-info-value">{{cycle.end_date}}</span>
-                        </span>
-                    </div>
-                    <div class="expense-info-item">
-                        <span class="expense-info-label">
-                            <i class="fa-solid fa-user"></i>
-                            Criado por:
-                        </span>
-                        <span class="expense-info-value">{{cycle.owner.first_name}} {{cycle.owner.last_name}}</span>
-                    </div>
-                    <div class="expense-info-item">
-                        <span class="expense-info-label">
-                            <i class="fa-solid fa-clock"></i>
-                            Status
-                        </span>
-                        {% if cycle.is_open %}
-                            <span class="expense-badge expense-approved">
-                                <i class="fa-solid fa-unlock"></i>
-                                Aberto
+                                Data Final
                             </span>
-                        {% else %}  
-                            <span class="expense-badge expense-recused">
-                                <i class="fa-solid fa-lock"></i>
-                                Fechado
+                            <span class="expense-info-value">
+                                <span class="expense-info-value">{{cycle.end_date}}</span>
                             </span>
-                        {% endif %}
+                        </div>
+                        <div class="expense-info-item">
+                            <span class="expense-info-label">
+                                <i class="fa-solid fa-user"></i>
+                                Criado por:
+                            </span>
+                            <span class="expense-info-value">{{cycle.owner.first_name}} {{cycle.owner.last_name}}</span>
+                        </div>
+                        <div class="expense-info-item">
+                            <span class="expense-info-label">
+                                <i class="fa-solid fa-clock"></i>
+                                Status
+                            </span>
+                            {% if cycle.is_open %}
+                                <span class="expense-badge expense-approved">
+                                    <i class="fa-solid fa-unlock"></i>
+                                    Aberto
+                                </span>
+                            {% else %}  
+                                <span class="expense-badge expense-recused">
+                                    <i class="fa-solid fa-lock"></i>
+                                    Fechado
+                                </span>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-        {% endif %}
+            </a>
+        </div>
+                {% endif %}
         {% endfor %}
     
 

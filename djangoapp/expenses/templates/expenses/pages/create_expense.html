@@ -12,7 +12,7 @@
 
     <div class='form-flex'>
 
-        <div id='nf-picture' class="drag-and-drop flex-frame">
+        <div id='nf-picture' class="drag-and-drop flex-frame internal-website-form">
             {% if form.instance.picture %}
                 <img src="{{form.instance.picture.url}}" alt="Recibo">
             {% else %}
@@ -23,7 +23,7 @@
             {% endif %}            
         </div>
 
-        <div class="form-wrapper flex-frame">
+        <div class="form-wrapper flex-frame internal-website-form form-create-expense">
             <h2 class="expense-detail-title expense-info-title">
                 <i class="fa-solid fa-cart-shopping"></i>
                 {{title_page}}

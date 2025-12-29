@@ -147,9 +147,8 @@ class DashbordView(APIView):
                 'data': [float(item['total']) for item in data],
                 'backgroundColor': [
                     '#CB4335',
-                    '#1F618D',
-                    '#F1C40F',
                     '#27AE60',
+                    '#F1C40F',
                     '#884EA0',
                     '#D35400',
                     '#2C3E50',
@@ -178,8 +177,8 @@ class DashbordView(APIView):
                 'label': 'Evolução mensal dos custos R$',
                 'data': [item['total'] for item in serialized_data],
                 'fill': False,
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'tension': 0.1,
             }]
         }
@@ -210,8 +209,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Valor total gasto nos ultimos 12 meses x Ciclo  R$',
                 'data': [item['total'] for item in serialized_data],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -249,8 +248,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': label,
                 'data': [item['avg_per_day'] for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -283,8 +282,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Consumo médio de combustível por membro nos últimos 12 meses (km/L)',
                 'data': [round(item['avg_fuel'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -317,8 +316,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Consumo médio de combustível por ciclo nos últimos 12 meses (km/L)',
                 'data': [round(item['avg_fuel'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -365,8 +364,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Consumo médio de combustível por equipe nos últimos 12 meses (km/L)',
                 'data': [item['avg_fuel'] for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -412,8 +411,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por litro de combustível por equipe nos últimos 12 meses (R$/L)',
                 'data': [item['avg_cost_fuel'] for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -462,8 +461,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por litro de combustível por membro nos últimos 12 meses (R$/L)',
                 'data': [item['avg_cost_fuel'] for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -485,8 +484,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio de combustível por ciclo nos últimos 12 meses / Litro R$',
                 'data': [round(item['avg_cost'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -533,8 +532,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por km por equipe nos últimos 12 meses (R$/L)',
                 'data': [item['avg_cost_km'] for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -557,8 +556,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio por quilômetro por membro nos últimos 12 meses / Km R$',
                 'data': [round(item['avg_cost'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -581,8 +580,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Custo médio / Km R$',
                 'data': [round(item['avg_cost'], 2) for item in result],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -616,8 +615,8 @@ class DashbordView(APIView):
             'datasets': [{
                 'label': 'Gasto por membro nos ultimos 30 dias R$',
                 'data': [float(item['total'] or 0) for item in data],
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }
@@ -664,8 +663,8 @@ class DashbordView(APIView):
                 'label': 'Custo por equipe nos ultimos 12 meses R$',
                 'data': [float(team.total or 0) for team in teams],
                 'fill': False,
-                'backgroundColor': ['#1F618D'],
-                'borderColor': ['#1F618D'],
+                'backgroundColor': ['#2980B9'],
+                'borderColor': ['#2980B9'],
                 'borderWidth': 1,
             }]
         }

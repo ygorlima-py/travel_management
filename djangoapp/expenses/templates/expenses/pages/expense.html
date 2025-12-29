@@ -39,7 +39,7 @@
         {% endif %}
 
         {% if expense.owner_expenses == user and expense.status.name != "APROVADO"%}
-        <a class='btn btn-link' href="{% url "expense:expense_update" expense.id %}">
+        <a class='btn btn-link btn-border-white' href="{% url "expense:expense_update" expense.id %}">
             <i class="fa-solid fa-pen-to-square"></i>
             ATUALIZAR
         </a>
@@ -204,7 +204,7 @@
                 <i class="fa-solid fa-timeline"></i>
                 Trilha de Auditoria
             </h2>
-            <div class="expense-image-wrapper" style="background-color: white;">
+            <div class="expense-image-wrapper">
                 <div class="main-container">
                 <!-- event 1st of timeline -->
                     {% for audit in audits %}
