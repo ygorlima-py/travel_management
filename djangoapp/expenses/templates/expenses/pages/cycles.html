@@ -1,7 +1,23 @@
 {% extends "expenses/base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="expense-detail-container center-text">
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h1 class="expense-detail-title expense-info-title">
         <i class="fa-solid fa-arrows-spin"></i>
         MEUS CICLOS
@@ -79,11 +95,15 @@
     
 
         {% else %}
-        <div class="single-contact">
-            <h1 class="single-cont act-name">
+        <div class="none-cicle-container">
+            <h1 class="none-cicle-text">
                 Nenhum ciclo criado
             </h1>
         </div>
         {% endif %}
     </div>
+
+    {% block javascript %}
+        <script type='module' src="{% static "expenses/javascript/disableMessage.js" %}"></script>
+    {% endblock javascript %}
 {% endblock content %}

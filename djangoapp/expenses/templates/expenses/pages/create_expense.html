@@ -2,13 +2,21 @@
 {% load static %}
 
 {% block content %} 
-    
-    <div class="message success">
-        <i class="fa-solid fa-circle-check fa-2x"></i>
-        <p class="message-text">
-            DESPESA LANÇADA COM SUCESSO
-        </p>         
-    </div>         
+
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 
     <div class='form-flex'>
 
@@ -99,9 +107,5 @@
             </form>
         </div>
     </div>
-
-    {% block javascript %}
-    <script type='module' src="{% static "expenses/javascript/disableMessage.js" %}"></script>
-    {% endblock javascript %}
 
 {% endblock content %}

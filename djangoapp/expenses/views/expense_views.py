@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from expenses.models import Expenses, ExpenseAudit
 from utils.mixin import PermissionMixin
 
+
 # Create your views here.
 @login_required(login_url='expense:login')
 def index(request):

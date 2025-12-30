@@ -12,4 +12,12 @@ def is_manager_or_company_admin(func):
         return HttpResponseForbidden("Not Permission")
     return wrapper
 
+def is_company_admin(func):
+    @wraps(func)
+    def wrapper(request, *args, **kwargs):
 
+        if PermissionMixin.is_company_admin(request.user):
+            return func(request, *args, **kwargs)
+        
+        return HttpResponseForbidden("Not Permission")
+    return wrapper

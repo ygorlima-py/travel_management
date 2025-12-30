@@ -33,9 +33,11 @@ def create_expense(request):
             expense.save()
 
             Auditing(expense, request, "CREATED")
-            messages.success(request, "DESPESA LANÇADA COM SUCESSO", extra_tags='fa-circle-check')
+            messages.success(request, "Despesa lançada com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:create')
         
+        messages.error(request, "Erro ao lançar despesa", extra_tags='fa-circle-xmark')
+
         return render(
         request,
         'expenses/pages/create_expense.html',
@@ -78,7 +80,7 @@ def expense_update(request, expense_id):
             updated_expense.save()
             Auditing(expense, request, "UPDATED")
 
-            messages.success(request, "Despesa atualizada")
+            messages.success(request, "Despesa atualizada com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:index')
         
     else:
@@ -124,6 +126,7 @@ def expense_delete(request, expense_id):
         Auditing(expense, request, "DELETED")
         expense.delete()
 
+        messages.success(request, "Despesa deletada com sucesso", extra_tags='fa-circle-check')
         return redirect('expense:index')
 
     return render(
@@ -160,7 +163,7 @@ def expense_approved(request, expense_id):
     expense.save()
     Auditing(expense, request, "APPROVED")
 
-    messages.success(request, f'Despesa de {expense.owner_expenses} aprovada com sucesso')
+    messages.success(request, f'Despesa aprovada com sucesso', extra_tags='fa-circle-check' )
     return redirect ('expense:index')
 
 @login_required(login_url='expense:login')
@@ -214,7 +217,7 @@ def recused(request, expense_id):
                     action="REJECTED", 
                     note=message,
                     )
-
+            messages.error(request, "Despesa recusada",  extra_tags='fa-circle-xmark' )
             return redirect('expense:index')
 
         return render(

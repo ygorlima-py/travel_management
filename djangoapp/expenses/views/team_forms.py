@@ -6,6 +6,7 @@ from django.contrib import messages
 from expenses.form import CreateTeam, TeamInviteForm # type:ignore
 from expenses.models import UserEnterpriseRole, Team, UserProfile, Expenses
 from django.core.paginator import Paginator
+from utils.decorators import is_company_admin
 
 @login_required(login_url='expense:login')
 def create_team(request):
@@ -24,14 +25,9 @@ def create_team(request):
         
         if form.is_valid():        
             team = form.save(commit=False) # Grarante que eu não salve na base de dados ainda
-            team.team_manager = request.user # Informo para team_manager que esse time pertence a esse usuário
             team.save()
-
-            profile, created = UserProfile.objects.get_or_create(user=request.user)
-            profile.team = team
-            profile.save()    
             
-            messages.success(request, 'Equipe criada com sucesso')
+            messages.success(request, "Equipe criada com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:teams')
         
         context = dict(
@@ -58,28 +54,78 @@ def create_team(request):
         context, 
         )
 
+
+@login_required(login_url='expense:login')
+@is_company_admin
+def join_team(request, team_id):
+    user = request.user
+    team = get_object_or_404(Team, pk=team_id, enterprise=request.user.profile.enterprise)
+    profile = get_object_or_404(UserProfile, user=user)
+
+    team.team_manager = request.user
+    team.save()
+
+    profile.team = team
+    profile.save()
+    messages.success(request, f"Você entrou na equipe {team.name}")
+    return redirect ('expense:team', team_id=team_id)
+
+@login_required(login_url='expense:login')
+@is_company_admin
+def join_team(request, team_id):
+    user = request.user
+    team = get_object_or_404(Team, pk=team_id, enterprise=request.user.profile.enterprise)
+    profile = get_object_or_404(UserProfile, user=user)
+
+    if team.team_manager is None:
+        team.team_manager = request.user
+        team.save()
+
+    profile.team = team
+    profile.save()
+    messages.success(request, f"Você entrou na equipe {team.name}")
+    return redirect ('expense:team', team_id=team_id)
+
+@login_required(login_url='expense:login')
+@is_company_admin
+def exit_team(request, team_id):
+    user = request.user
+    team = get_object_or_404(Team, pk=team_id, enterprise=request.user.profile.enterprise)
+    profile = get_object_or_404(UserProfile, user=user)
+
+    if team.team_manager == request.user:
+        team.team_manager = None
+        team.save()
+
+    profile.team = None
+    profile.save()
+    messages.success(request, f"Você saiu da equipe {team.name}")
+    return redirect ('expense:team', team_id=team_id)
+
+
 @login_required(login_url='expense:login')
 def team_update(request, team_id):
     team = get_object_or_404(Team, pk=team_id, enterprise=request.user.profile.enterprise)
     
     if request.method == "POST":
-        form = CreateTeam(request.POST, instance=team)
+        form = CreateTeam(request.POST, instance=team, user=request.user)
         if form.is_valid():
             update_team = form.save(commit=False)
-            update_team.team_manager = request.user.id
             update_team.save()
 
-            messages.success(request, "Equipe atualizada")
+            messages.success(request, "Equipe atualizada com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:team', team_id=team.pk)
         
     else:
         form = CreateTeam(
             instance=team,
+            user=request.user,
             initial={
                 'name': team.name,
                 'cost_center': team.cost_center,
                 'enterprise': team.enterprise,
-            })
+            },
+            )
     
     context = {
         'form': form,
@@ -89,7 +135,7 @@ def team_update(request, team_id):
 
     return render(
         request,
-        'expenses/pages/create_cycle.html',
+        'expenses/pages/create_team.html',
         context,      
     )
 
@@ -118,7 +164,7 @@ def team_delete(request, team_id):
 
         if confirmation == 'yes':   
             team.delete()
-            messages.success(request, 'Equipe excluida com sucesso')
+            messages.success(request, "Equipe deletada com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:teams')
 
     return render(

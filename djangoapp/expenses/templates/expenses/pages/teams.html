@@ -1,7 +1,23 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
+
 <div class="expense-detail-container">
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h1 class="expense-detail-title expense-info-title">
         <i class="fa-solid fa-people-group"></i>
             MINHAS EQUIPES
@@ -44,7 +60,7 @@
                             Gestor Responsável
                         </span>
                         <span class="expense-info-value">
-                            <span class="expense-info-value">{{team.team_manager.first_name}}</span>
+                            <span class="expense-info-value">{{team.team_manager.get_full_name | default:"Sem gestor"}}</span>
                         </span>
                     </div>
                     <div class="expense-info-item">
@@ -77,8 +93,8 @@
         {% endfor %}
 
         {% else %}
-        <div class="single-contact">
-            <h1 class="single-cont act-name">
+        <div class="none-team-container">
+            <h1 class="none-team-text">
                 Você não possui equipes
             </h1>
         </div>

@@ -25,7 +25,7 @@ def invite_member(request, team_id):
                 send_invite = SendInvite(invite.email, team_id) # Create url in utils
 
                 if send_invite.send_invite():
-                    messages.success(request, f'Convite enviado para {invite.email}')
+                    messages.success(request, f'Convite enviado para {invite.email} com sucesso')
                     return redirect('expense:team', team_id=team.pk)
                 
             context = dict(

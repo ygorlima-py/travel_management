@@ -173,6 +173,23 @@ caption {
     text-align: center;
 }
 
+.form-wrapper.form-invite-member,
+.form-wrapper.form-report,
+.form-wrapper.form-create-team,
+.form-wrapper.form-alert,
+.form-wrapper.form-complete-form,
+.form-wrapper.form-register-enterprise,
+.form-wrapper.form-update-enterprise {
+    align-self: flex-start;
+    margin: 4rem 1.5rem;
+    background: #003648;
+    
+}
+
+.update-enterprise-container{
+    justify-content: center;
+}
+
 
 @media screen and (max-width: 900px) {
     .sidebar {
@@ -438,8 +455,10 @@ caption {
 }
 
 .message.error {
-    background: rgba(255, 0, 0, 0.3);
-    border: 1px solid rgba(255, 0, 0, 90%);
+    background: rgba(255, 34, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .message.warning {
@@ -455,12 +474,12 @@ caption {
 .form-wrapper {
     width: 100%;
     margin: 0;
-        background: linear-gradient(
-            135deg,
-            #011f29 25%,
-            #003648 50%,
-            var(--link-dark-color) 75%,
-            #4475d4 100%
+    background: linear-gradient(
+        135deg,
+        #011f29 25%,
+        #003648 50%,
+        var(--link-dark-color) 75%,
+        #4475d4 100%
     );
     box-shadow: 2px 2px 5px var(--clr-dark-shadow-20);
     border-radius: var(--med-border-box);
@@ -616,8 +635,7 @@ caption {
 }
 
 .btn {
-    background: #011f29;
-
+    background: rgba(255, 255, 255, 0.1);
     color: var(--clr-white);
     font-weight: bold;
     border: none;
@@ -650,9 +668,19 @@ caption {
     background: rgb(73, 150, 10);
 }
 
+.btn-link.btn-delete:hover {
+    background-color: rgb(144, 24, 32);
+    color: var(--clr-white)
+}
+
+.btn-link.btn-approved:hover {
+    background: rgb(40, 105, 10);
+    color: var(--clr-white)
+}
 
 .btn:hover {
-    filter: brightness(90%);
+    background-color: var(--clr-white);
+    color: #003648;
 }
 
 .btn:focus,
@@ -718,29 +746,29 @@ img {
     background: #003648;
     border-radius: var(--med-border-box);
     padding: var(--spacing-med);
-    box-shadow: 0 1px 6px var(--clr-dark-shadow-20);
-    transition: transform var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
-    border: 2px solid var(--clr-white);
+    /* box-shadow: 0 1px 3px var(--clr-dark-shadow-20) */
+    /* border: 2px solid var(--clr-white); */
 }
 
 .user-member,
 .expense-info-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 12px var(--clr-white);
+    transform: translateY(5px);
+    box-shadow: 2px 1px 3px var(--clr-white);
 }
 
 .expense-info-title {
     font-size: var(--medium-font-size);
     color: var(--clr-white);
-    background-color: #003648;
-    border: 1px solid var(--clr-white);
+    background-color: var(--link-dark-color);
+    /* border: 1px solid var(--clr-white); */
     border-radius: calc(var(--default-border-radius)*4);
     width: auto;
     margin-bottom: var(--spacing-min);
     padding-bottom: calc(var(--spacing-min) * 0.5);
     padding-left: calc(var(--spacing-min) * 0.5);
     padding-top: calc(var(--spacing-min) * 0.5);
-    font-weight: 600;
+    font-weight: 700;
+    text-align: center;
 }
 
 .expense-info-grid {
@@ -769,6 +797,22 @@ img {
     letter-spacing: 0.5px;
     display: block;
     margin-bottom: 0.4rem;
+    border: 1px solid var(--link-dark-color);
+    background-color: var(--link-dark-color);
+    border-radius: 12px;
+}
+
+.icon-container-user {
+    font-size: var(--small-font-size);
+    color: var(--clr-white);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 0.4rem;
+}
+
+.expense-info-item.center-text.user-member{
+    background-color: var(--link-dark-color);
 }
 
 .expense-info-value {
@@ -784,7 +828,6 @@ img {
     border-radius: var(--med-border-box);
     padding: var(--spacing-med);
     box-shadow: 0 4px 6px var(--clr-dark-shadow-10);
-    border: 1px solid var(--clr-light-gray);
 }
 
 .expense-description-title {
@@ -867,6 +910,7 @@ img {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin: 10px;
 }
 
 .expense-pending {
@@ -1438,7 +1482,7 @@ img {
     border-radius: 50%;
     padding: 10px;
     background-color: var(--clr-white);
-    color: #1800ad;
+    color: #003648;
 }
 
 .flex-description-box {
@@ -1574,7 +1618,13 @@ img {
     justify-content: center;
     padding: var(--padding-big);
     margin: var(--margin-big);
-    background-color: var(--login-page-color);
+    background: linear-gradient(
+    135deg,
+    #011f29 25%,
+    #003648 60%,
+    var(--link-dark-color) 90%,
+    #4475d4 100%
+    );
     border: none;
 }
 
@@ -1588,5 +1638,51 @@ img {
 
 .complete-profile-container .contact-links a,
 .container-button-back-enterprise .contact-links a {
-    background-color: var(--login-page-color);
+    background-color: #011f29;
+}
+
+.complete-profile-container .contact-links a:hover,
+.container-button-back-enterprise .contact-links a:hover {
+    background-color: var(--clr-white);
+    color: #011f29;
+
+}
+
+#id_account_type,
+#id_state_uf,
+#id_category,
+#id_enterprise,
+#id_plan_type{
+    background-color: #003648;
+    text-align: center;
+}
+
+.none-member-text,
+.none-cicle-container,
+.none-team-container,
+.none-expense-container{
+    text-align: center;
+}
+
+.none-member-text,
+.none-cicle-text,
+.none-team-text,
+.none-expense-text{
+    color: var(--clr-white);
+}
+
+.none-member-text{
+    font-weight: bold;
+}
+
+.message-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+
+.internal-website-form img {
+    max-height: 85vh;
 }

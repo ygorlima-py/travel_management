@@ -1,7 +1,24 @@
 {% extends "expenses/base.html" %}
+{% load static %}
+
 
 {% block content %}
 <main id='index' class='content'>
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <h2 class="expense-detail-title expense-info-title">
                     <i class="fa-solid fa-cart-shopping"></i>
                     TODAS AS DESPESAS REALIZADAS
@@ -99,11 +116,16 @@
         {% include "expenses/partials/_pagination.html" %}
     </div>
 {% else %}
-    <div class="single-contact">
-        <h1 class="single-cont act-name">
+    <div class="none-expense-container">
+        <h1 class="none-expense-text">
             Nenhuma despesa encontrada
         </h1>
     </div>
 {% endif %}
 <main>
+
+{% block javascript %}
+<script type='module' src="{% static "expenses/javascript/disableMessage.js" %}"></script>
+{% endblock javascript %}
+
 {% endblock content %}

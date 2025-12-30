@@ -21,6 +21,7 @@ def create_cycle(request):
             cycle = form.save(commit=False) # Grarante que eu não salve na base de dados ainda
             cycle.owner = request.user # Informo para expense.owner que esse contato pertence a esse usuário
             cycle.save()
+            messages.success(request, "Ciclo criado com sucesso", extra_tags='fa-circle-check')
             return redirect('expense:cycles')
 
         return render(
@@ -51,8 +52,8 @@ def cycle_update(request, cycle_id):
             update_cycle.owner_id = request.user.id
             update_cycle.save()
 
-            messages.success(request, "Ciclo atualizado")
-            return redirect('expense:cycle_update', cycle_id=cycle.pk)
+            messages.success(request, "Ciclo atualizado com sucesso", extra_tags='fa-circle-check')
+            return redirect('expense:cycles')
         
     else:
         form = CreateCycle(
@@ -88,6 +89,7 @@ def cycle_delete(request, cycle_id):
 
     if confirmation == 'yes':
         cycle.delete()
+        messages.success(request, "Ciclo deletado  com sucesso", extra_tags='fa-circle-check')
         return redirect('expense:cycles')
 
     return render(

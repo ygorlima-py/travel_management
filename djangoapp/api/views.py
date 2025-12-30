@@ -603,11 +603,16 @@ class DashbordView(APIView):
         
         now = timezone.now()
         last_month = now - timedelta(days=30)
+        status_id = self._get_status_id('APROVADO') 
 
         data = (queryset
-                .filter(date__gte=last_month)
+                .filter(
+                    date__gte=last_month,
+                    status_id=status_id,
+                    )
                 .values('owner_expenses__username')
                 .annotate(total=Sum('value'))
+                .order_by('-total')
                 )
         
         return {

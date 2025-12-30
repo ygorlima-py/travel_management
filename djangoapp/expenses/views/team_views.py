@@ -42,7 +42,7 @@ def team(request, team_id):
         )
     
     members = team.members.select_related('user') # type:ignore   
-    expenses = Expenses.objects.filter(owner_expenses__profile__team=team)
+    expenses = Expenses.objects.filter(owner_expenses__profile__team=team).order_by("-updated_at")
     page_number = request.GET.get("page")
     paginator = Paginator(expenses, 25)  # Show 25 contacts per page.
     page_obj = paginator.get_page(page_number)

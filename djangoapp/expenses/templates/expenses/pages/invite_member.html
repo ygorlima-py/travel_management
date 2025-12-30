@@ -30,6 +30,7 @@
                         {% endif %}
                     </div>
 
+                    {% if company_admin %}
                     <!-- Role (RadioSelect) -->
                     <div class="form-group">
                         <label class='bold-color'>{{form.role.label}}</label>
@@ -39,6 +40,7 @@
                             <p class="help-text">{{form.role.help_text}}</p>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                 </div>
 

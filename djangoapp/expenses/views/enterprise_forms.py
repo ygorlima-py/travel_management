@@ -82,7 +82,7 @@ def update_enterprise(request):
 
     return render(
         request,
-        'expenses/pages/register_enterprise.html',
+        'expenses/pages/update_enterprise.html',
         context, 
     )
 

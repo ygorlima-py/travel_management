@@ -2,28 +2,10 @@
 {% load static %}
 
 {% block content %}
-<div class="background-image-blue">
-    <div class="register-enterprise-container">
-        <div class="container-logo-text-flext background-transiction-blue">
-            <img 
-                src="{% static "expenses/images/logo_transparent_512.png" %}" 
-                alt="logo" class="logo-image">
-            </img>
-            <h1 class="login-pitch-title">ExpenseFlow</h1>
-        </div>
-        <div class="container-button-back-enterprise">
-            <div class="contact-links">
-                {% if not is_update_enterprise %}
-                <a class='btn btn-link ' href="{% url "expense:chose" %}">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    VOLTAR
-                </a>
-                {% endif %}
-            </div>
-        </div>
+    <div class="update-enterprise-container">
         <div class="flex-frame-login-form">
             <div class="form-wrapper flex-frame max-width-form-profile
-                margin-top-mendium padding-forms form-register-enterprise">
+                margin-top-mendium padding-forms form-update-enterprise">
                 <h2 class="expense-detail-title expense-info-title">
                     <i class="fa-solid fa-building"></i>
                     {{title_page}}
@@ -80,5 +62,4 @@
             </div>
         </div>
     </div>
-</div>
 {% endblock content %}

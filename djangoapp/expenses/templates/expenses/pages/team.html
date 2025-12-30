@@ -1,7 +1,22 @@
 {% extends "expenses/base.html" %}
 
 {% block content %}
+
 <div class="expense-detail-container">
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
     <h1 class="expense-detail-title expense-info-title">
         <i class="fa-solid fa-people-group"></i>
         {{team.name}}
@@ -20,16 +35,16 @@
             <i class="fa-solid fa-user-plus"></i>
             ADICIONAR MEMBRO
         </a>
-        {% if team.is_active %}
-            <a class='btn btn-link btn-delete' href="#">
-                <i class="fa-solid fa-lock"></i>
-                DESATIVAR EQUIPE
-            </a>
-        {% else %}
-            <a class='btn btn-link btn-approved' href="#">
-                <i class="fa-solid fa-unlock"></i>
-                ATIVAR EQUIPE
-            </a>
+        {% if company_admin %}
+            {% if user.profile.team != team %}
+                <a class='btn btn-link  btn-approved ' href="{% url "expense:join_team" team.pk %}">
+                    ENTRAR NA EQUIPE
+                </a>
+            {% else %}
+                <a class='btn btn-link btn-delete' href="{% url "expense:exit_team" team.pk %}">
+                    SAIR DA EQUIPE
+                </a>
+            {% endif %}
         {% endif %}
     </div>
     
@@ -57,7 +72,7 @@
                         <i class="fa-solid fa-user-tie"></i>
                         Gestor Responsável
                     </span>
-                    <span class="expense-info-value">{{team.team_manager.first_name}}</span>
+                    <span class="expense-info-value">{{team.team_manager.get_full_name|default:"Sem gestor"}}</span>
                 </div>
             
                 <div class="expense-info-item">
@@ -100,7 +115,7 @@
                 {% for member in members %}
                 <div class="expense-info-item center-text user-member">
                     <a class="remove-text-decoration" href="{% url "expense:profile" member.user.username %}">
-                        <p class="expense-info-label">
+                        <p class="icon-container-user">
                             <i class="fa-solid fa-user fa-2x"></i>
                         </p>
                         <p class="expense-info-value">
@@ -110,7 +125,7 @@
                 </div>
 
                 {% empty %}
-                    <p>Nenhum membro na equipe</p>
+                    <p class="none-member-text">Nenhum membro na equipe</p>
                 {% endfor %}
             </div>
         </div>     
@@ -123,7 +138,7 @@
             <caption>
                 <h2 class="expense-detail-title expense-info-title">
                     <i class="fa-solid fa-cart-shopping"></i>
-                    TODAS AS DESPESAS DA EQUPE
+                    Todas as despesas da equipe
                 </h2>
             </caption>
             <thead>
@@ -194,32 +209,33 @@
     {% include "expenses/partials/_pagination.html" %}
     </div>
 {% else %}
-    <div class='not-found content'>
-        <h1 class="single-cont act-name">
-            Nenhuma despesa neste ciclo
+    <div class="none-expense-container">
+        <h1 class="none-expense-text">
+            Nenhuma despesa nesta equipe
         </h1>
     </div>
 {% endif %}
 
-<main>
-    <form action="{% url "expense:team_delete" team.id %}" method='POST'>
-        {% csrf_token %}
+    {% if company_admin %}
+        <form action="{% url "expense:team_delete" team.id %}" method='POST'>
+            {% csrf_token %}
 
-        {% if confirmation == 'no' %}
-            <input type="hidden" name="confirmation" value="yes">
-            <button 
-            id='delete'
-            class="btn btn-link btn-delete"
-            type='submit'>
-                CONFIRMA A EXCLUSÃO ?
-            </button>            
-        {% else %}
-            <button 
-            class="btn btn-link btn-delete"
-            onclick='backToDeleteButton()'>
-                <i class="fa-solid fa-trash"></i>
-                DELETAR EQUIPE
-            </button>            
+            {% if confirmation == 'no' %}
+                <input type="hidden" name="confirmation" value="yes">
+                <button 
+                id='delete'
+                class="btn btn-link btn-delete"
+                type='submit'>
+                    CONFIRMA A EXCLUSÃO ?
+                </button>            
+            {% else %}
+                <button 
+                class="btn btn-link btn-delete"
+                onclick='backToDeleteButton()'>
+                    <i class="fa-solid fa-trash"></i>
+                    DELETAR EQUIPE
+                </button>            
+            {% endif %}
         {% endif %}
     </form>
 </div>

@@ -117,7 +117,6 @@ def login_view(request):
         if form.is_valid(): # Return bool verifying if data digited is valid
             user = form.get_user() # Select user form
             auth.login(request, user) # Authentication logging in as user
-            messages.success(request,'Você está logado') # Message success to user log
             
             # If user have a team invite
             if invite_token:
@@ -184,8 +183,8 @@ def remove_member(request, *args, **kwargs):
                     team=team,
                 ).delete()
 
-            messages.success(request, 'Membro excluido com sucesso')
-            return redirect('expense:teams')
+            messages.success(request, 'Membro excluido com sucesso', extra_tags='fa-circle-check')
+            return redirect('expense:team', team_id=team.pk)
     
     return render( 
         request,
