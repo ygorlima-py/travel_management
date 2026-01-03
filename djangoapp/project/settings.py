@@ -25,7 +25,10 @@ DATA_DIR = BASE_DIR.parent / 'data' / 'web'
 SECRET_KEY = 'django-insecure-%y7ev=f&vrrkf0uhcih9dz%2th%6s6@jdj!@4_dj2h#2fi8+(i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "0").strip() == "1"
+CSRF_TRUSTED_ORIGINS = [
+    o.strip() for o in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if o.strip()
+]
 
 ALLOWED_HOSTS = [
     h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',')
