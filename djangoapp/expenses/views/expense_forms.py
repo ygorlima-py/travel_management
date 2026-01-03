@@ -143,28 +143,26 @@ def expense_delete(request, expense_id):
 def expense_approved(request, expense_id):
     expense = get_object_or_404(Expenses, pk=expense_id)
     status_approved = get_object_or_404(Status, name='APROVADO')
+    status_pending = get_object_or_404(Status, name='PENDENTE')
 
+    # Validation 1: Expense must be PENDING
+    if expense.status != status_pending:
+        messages.error(request, 'Só é possível aprovar despesas pendentes')
+        return redirect('expense:expense', expense_id=expense_id)
 
-    if PermissionMixin.is_operator(request.user):
-        # Validation 1: Can not approve own expenses
-        if expense.owner_expenses == request.user:
-            messages.error(request, 'Você não pode aprovar as próprias despesas')
-            return redirect('expense:expense', expense_id=expense_id)
-        
-    if PermissionMixin.is_manager(request.user):
-        # Validation 2: Is need be of same team
-        if not PermissionMixin.can_approve_expense(request.user, expense):
-            messages.error(request, "Você não pode aprovar despesas de outra equipe")
-            return redirect("expense:index")
-
-
+    # Validation 2: Check permission (validate OPERATOR, MANAGER, COMPANY_ADMIN)
+    if not PermissionMixin.can_approve_expense(request.user, expense):
+        messages.error(request, "Você não tem permissão para aprovar esta despesa")
+        return redirect("expense:index")
+    
     # Approve
     expense.status = status_approved
     expense.save()
     Auditing(expense, request, "APPROVED")
 
-    messages.success(request, f'Despesa aprovada com sucesso', extra_tags='fa-circle-check' )
-    return redirect ('expense:index')
+    messages.success(request, 'Despesa aprovada com sucesso', extra_tags='fa-circle-check')
+    return redirect('expense:index')
+
 
 @login_required(login_url='expense:login')
 def recused(request, expense_id):
@@ -181,9 +179,9 @@ def recused(request, expense_id):
     if PermissionMixin.is_manager(request.user):
         # Validation 2: Is need be of same team
         if not PermissionMixin.can_approve_expense(request.user, expense):
-            messages.error(request, "Você não pode aprovar despesas de outra equipe")
-            return redirect("expenses:index")
-        
+            messages.error(request, "Você não pode recusar esta despesa")
+            return redirect("expense:index")
+    
     # Validation 3: The expense status must be pending
     if expense.status != status_pendding:
         messages.error(request, 'Só é possível recusar despesas pendentes')

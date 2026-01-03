@@ -3,6 +3,21 @@
 
 {% block content %}
 <div class="background-image-blue">
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                {% if message.level_tag == 'success' or message.level_tag == 'error'  %}
+                    <div class="message {{message.level_tag}}">
+                        <i class="fa-solid {{message.extra_tags}} fa-2x"></i>
+                        <p class="message-text">
+                            {{message}}
+                        </p>         
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="container-logo-text-flext background-transiction-blue">
         <img 
             src="{% static "expenses/images/logo_transparent_512.png" %}" 
@@ -10,7 +25,7 @@
         </img>
         <h1 class="login-pitch-title">ExpenseFlow</h1>
     </div>
-    <div class="loggin-flex">
+    <div class="loggin-flex login-margin">
         <div class="col-2 login-pitch">
             <div class="phrase-effect">
                 <p>
@@ -103,6 +118,11 @@
                         {% include "expenses/partials/_user-form.html" %}
 
                     {% endif %}   
+                    <div class="logo-globalhost">
+                        <p>Powered by</p>
+                        <img src="{% static "expenses/images/logo_global_host_trimmed.png" %}" 
+                            alt="logo-globalhost">
+                    </div>
                 </div>
             </div>
         </div>

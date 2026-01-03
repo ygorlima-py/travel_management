@@ -694,12 +694,6 @@ caption {
     border-radius: 10px;
 }
 
-img {
-    max-height: 600px;
-    min-width: 400px;
-    border-radius: 20px;
-}
-
 /* Estilos para página de despesa única */
 .expense-detail-container {
     max-width: 110rem;
@@ -1341,8 +1335,8 @@ img {
 }
 
 .logo-image {
-    min-width: 60px;
-    max-height: 60px;
+    min-width: 50px;
+    max-height: 50px;
 }
 
 .logo-image-sidebar {
@@ -1409,7 +1403,7 @@ img {
 
 .login-pitch-title {
     color: var(--clr-white);
-    font-size: calc(var(--biggest-font-size)*0.7);
+    font-size: calc(var(--biggest-font-size)*0.5);
     margin: 0;
 }
 
@@ -1434,10 +1428,13 @@ img {
 }
 
 .background-transiction-blue{
-    background: linear-gradient(135deg,
-                                var(--link-dark-color) 60%,
-                                #4475d4 100%
-                                );
+    background: linear-gradient(
+            135deg,
+            #011f29 25%,
+            #003648 50%,
+            var(--link-dark-color) 75%,
+            #4475d4 100%
+    );
 }
 
 .background-image-blue {
@@ -1452,10 +1449,10 @@ img {
 
 .phrase-effect{
     display: flex;
-    padding: var(--padding-big);
+    padding: var(--padding-medium);
     font-family: Arial, Helvetica, sans-serif;
     color: var(--clr-white);
-    font-size: calc(var(--biggest-font-size));
+    font-size: calc(var(--biggest-font-size)*0.8);
     font-weight: bolder;
     /* border-bottom: 0.5px dotted var(--clr-white); */
     /* text-align:center; */
@@ -1475,7 +1472,7 @@ img {
 }
 
 .padding-inside-description-box {
-    padding: var(--padding-medium);
+    padding: 1.5rem;
 }
 
 .circle-icon {
@@ -1574,6 +1571,7 @@ img {
     .register-enterprise-container .flex-frame-login-form {
         margin: 0 15px;
     }
+
 }
 
 .background-image-blue-light {
@@ -1685,4 +1683,32 @@ img {
 
 .internal-website-form img {
     max-height: 85vh;
+}
+
+.logo-globalhost {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-globalhost p {
+    color: var(--clr-white);
+    font-size: 12px;
+    font-weight: bolder;
+}
+.logo-globalhost img {
+    max-width: 150px;
+    min-height: 25px;
+}
+
+.loggin-flex.login-margin {
+    margin-top: 50px;
+}
+
+@media(max-width: 480px) {
+    
+    .loggin-flex.login-margin {
+        margin-top: 0px;
+    }
 }

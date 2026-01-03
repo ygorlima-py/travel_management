@@ -4,6 +4,7 @@ from .cycle import Cycle
 from .state import State 
 from .enterprise import EnterPrise
 from utils.queryset import ExpenseQuerySet
+from utils.images import resize_image
 
 class Category(models.Model):
     class Meta:
@@ -134,6 +135,9 @@ class Expenses(models.Model):
         if not self.status:            
             self.status = Status.objects.get(name='PENDENTE')
         super().save(*args, **kwargs)
+
+        if self.picture:
+            resize_image(self.picture, new_width=400)
         
     def __str__(self) -> str:
         return self.supply # type: ignore

@@ -99,9 +99,6 @@ class PermissionMixin:
         4. OPERATOR → CANNOT approve
         """
 
-        # Rule 1 is the owner
-        if expense.owner_expenses == user:
-            return False # Can not aprove expenses
 
         # Rule 2: COMPANY_ADMIN from same enterprise
         if PermissionMixin.is_company_admin(user):
@@ -112,6 +109,9 @@ class PermissionMixin:
             
         # Rule 3: MANAGER from same Team
         if PermissionMixin.is_manager(user):
+            if user == expense.owner_expenses:
+                return False
+            
             user_team = PermissionMixin.get_user_team(user)
             owner_team = PermissionMixin.get_user_team(expense.owner_expenses)
             if user_team and user_team == owner_team:

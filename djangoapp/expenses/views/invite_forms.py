@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from expenses.models import Team
+from expenses.models import Team, Role
 from expenses.form import TeamInviteForm
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
@@ -14,7 +14,15 @@ def invite_member(request, team_id):
     if PermissionMixin.can_invite_or_remove_member(request.user, team):
 
         if request.method == 'POST':
-            form = TeamInviteForm(request.POST, team=team)
+            if not PermissionMixin.is_company_admin(request.user):
+                post_data = request.POST.copy()
+                operator_role = Role.objects.get(name="OPERATOR")
+                post_data['role'] = operator_role.id
+                form = TeamInviteForm(request.POST, team=team)
+            
+            else:
+                form = TeamInviteForm(request.POST, team=team)
+
 
             if form.is_valid():
                 invite = form.save(commit=False)

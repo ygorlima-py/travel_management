@@ -86,8 +86,17 @@ class TeamInviteForm(forms.ModelForm):
         from expenses.models import Role
         self.fields['role'].queryset = Role.objects.filter(name__in=['OPERATOR', 'MANAGER'])   
         self.fields['role'].initial = Role.objects.get(name='OPERATOR').id
-        self.fields['role'].empty_label = None  # ✅ ADICIONAR AQUI
-        self.fields['role'].required = True
+        self.fields['role'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        # ✅ Se role não foi enviado (MANAGER não vê no template), define como OPERATOR
+        if not cleaned_data.get('role'):
+            from expenses.models import Role
+            cleaned_data['role'] = Role.objects.get(name='OPERATOR')
+        
+        return cleaned_data
 
     def clean_email(self):
         email = self.cleaned_data.get('email').lower().strip() # type:ignore

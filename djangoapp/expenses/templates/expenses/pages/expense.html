@@ -23,7 +23,7 @@
 
         {% elif manager %}
 
-            {% if expense.owner != user %}
+            {% if expense.owner_expenses != user %}
                 {% if expense.status.name != "APROVADO" and expense.status.name != "RECUSADO"%}
                 <a class='btn btn-link btn-approved' href="{% url "expense:approved" expense.id %}">
                     <i class="fa-regular fa-circle-check"></i>
