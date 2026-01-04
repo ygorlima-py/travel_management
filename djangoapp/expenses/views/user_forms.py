@@ -128,8 +128,8 @@ def login_view(request):
         else:
             messages.error(request, 'Login Invalido')
 
-
-
+    if request.user.is_authenticated:
+        return redirect('expense:index')
 
     return render(
         request,
