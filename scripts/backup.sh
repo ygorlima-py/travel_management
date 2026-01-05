@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/vars.sh"
+
 DATE="$(date +%Y%m%d_%H%M%S)"
-
-PROJECT_DIR="$HOME/projects/travel_management"
-BACKUP_DIR="$HOME/backups"
-
-# Nome do serviço PostgreSQL no docker-compose
-DB_SERVICE="psql"  # ✅ CORRIGIDO - conforme seu POSTGRES_HOST no .env
-
-# Nome do banco e usuário conforme .env
-DB_NAME="management_data_base"  # ✅ CORRIGIDO - POSTGRES_DB
-DB_USER="management_user"       # ✅ CORRIGIDO - POSTGRES_USER
 
 mkdir -p "$BACKUP_DIR"
 cd "$PROJECT_DIR"
