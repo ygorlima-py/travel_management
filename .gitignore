@@ -10,6 +10,7 @@ db.sqlite3
 /data/
 # Backup files # 
 *.bak 
+/scripts/vars.sh
 
 # If you are using PyCharm # 
 # User-specific stuff

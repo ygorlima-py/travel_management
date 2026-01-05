@@ -1,5 +1,0 @@
-PROJECT_DIR="$HOME/projects/travel_management"
-BACKUP_DIR="$HOME/backups"
-DB_SERVICE="psql"
-DB_NAME="management_data_base"
-DB_USER="management_user" 
