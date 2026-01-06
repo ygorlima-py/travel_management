@@ -69,4 +69,4 @@ def get_oauth_credentials() -> Credentials:
 
 
 if __name__ == "__main__":
-    print(CREDENTIALS_FILE)
+    get_oauth_credentials()
