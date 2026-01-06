@@ -24,7 +24,7 @@ find "$BACKUP_DIR" -type f -name "db_*.dump" -mtime +3 -delete
 find "$BACKUP_DIR" -type f -name "media_*.tar.gz" -mtime +3 -delete
 
 
-VENV_PY="$PROJECT_DIR/.venv/bin/python"
+VENV_PY="$PROJECT_DIR/venv/bin/python"
 
 cd "$PROJECT_DIR"
 
