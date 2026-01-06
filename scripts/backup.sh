@@ -19,6 +19,17 @@ tar -czf "$BACKUP_DIR/media_${DATE}.tar.gz" -C "$PROJECT_DIR" data/web/media/
 echo "✅ Backup concluído:"
 ls -lh "$BACKUP_DIR"/*"$DATE"*
 
-# Limpeza: manter 7 dias
-find "$BACKUP_DIR" -type f -name "db_*.dump" -mtime +7 -delete
-find "$BACKUP_DIR" -type f -name "media_*.tar.gz" -mtime +7 -delete
+# Limpeza: manter 3 dias
+find "$BACKUP_DIR" -type f -name "db_*.dump" -mtime +3 -delete
+find "$BACKUP_DIR" -type f -name "media_*.tar.gz" -mtime +3 -delete
+
+
+VENV_PY="$PROJECT_DIR/.venv/bin/python"
+
+cd "$PROJECT_DIR"
+
+echo ✅ Fazendo autentificação"
+"$VENV_PY" "$PROJECT_DIR/backup/auth.py"
+
+echo ✅ Comprimindo e enviando backup"
+"$VENV_PY" "$PROJECT_DIR/backup/compress_file.py"

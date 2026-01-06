@@ -11,6 +11,7 @@ db.sqlite3
 # Backup files # 
 *.bak 
 /scripts/vars.sh
+/secrets/
 
 # If you are using PyCharm # 
 # User-specific stuff
