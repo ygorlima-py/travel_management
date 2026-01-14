@@ -23,6 +23,8 @@ urlpatterns = [
     path('', include('expenses.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
+    path("stripe/", include("djstripe.urls", namespace="djstripe")),
+    path("billing/", include("billings.urls")),
 ]
 
 

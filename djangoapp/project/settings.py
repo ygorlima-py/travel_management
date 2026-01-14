@@ -51,8 +51,8 @@ INSTALLED_APPS = [
     'expenses',
     'rest_framework',
     'api',
-
-    
+    'djstripe',
+    'billings.apps.BillingsConfig',    
 ]
 
 MIDDLEWARE = [
@@ -172,3 +172,12 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "{your secret key}")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "{your secret key}")
+STRIPE_LIVE_MODE = True if os.environ.get("STRIPE_LIVE_MODE") == "1" else False  
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+STRIPE_SECRET_KEY = STRIPE_LIVE_SECRET_KEY if STRIPE_LIVE_MODE else STRIPE_TEST_SECRET_KEY
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+
+DJSTRIPE_WEBHOOK_SECRET = os.getenv("DJSTRIPE_WEBHOOK_SECRET", "")

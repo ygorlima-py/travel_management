@@ -124,3 +124,11 @@ class ExpenseAuditAdmin(admin.ModelAdmin):
 
     list_display_links = 'id',
 
+
+@admin.register(models.UserSubscription)
+class UserSubscriptionAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'plan', 'status', 'current_period_end',
+    )
+
+    list_display_links = 'id',
